@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/04/25 11:32:41 by dcampas-         ###   ########.fr        #
+#    Updated: 2025/04/26 15:23:56 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,7 @@ INCLUDES = -I$(LIBFT_DIR)
 
 SRC =	src/main.c\
 		src/parsing/token.c\
-
-
+		src/parsing/aux_token.c
 
 
 

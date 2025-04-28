@@ -3,21 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/25 12:08:58 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:14:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <unistd.h>
+//# include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <stdbool.h>
+
+# include <readline/readline.h>
+# include <readline/history.h>
+
+# include "libft/inc/libft.h"
 
 typedef enum	e_token_type
 {
@@ -39,10 +44,14 @@ typedef struct	s_token
 
 }	t_token;
 
-# include <readline/readline.h>
-# include <readline/history.h>
+//TOKEN
+t_token	*new_token(t_token_type type, const char *value, int len);
+void	free_tokens(t_token *token);
+int		skip_spaces(const char *line, int i);
+void	print_tokens(t_token *token);
 
-# include "libft/inc/libft.h"
+t_token	*tokenize(const char *line);
+
 
 #endif
 

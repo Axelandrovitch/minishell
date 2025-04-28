@@ -3,27 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/25 10:48:21 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:14:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <stdbool.h>
-
-
-# include <readline/readline.h>
-# include <readline/history.h>
 
 int main()
 {
 	char	*input;
+	t_token	*tokens;
 
 	while (1)
 	{
@@ -34,9 +26,16 @@ int main()
 			printf ("exit\n");
 			break ;
 		}
-		if (input)
-		{
+		if (input && *input)
 			add_history(input);
+		
+		tokens = tokenize(input);
+		print_tokens(tokens);
+		if (!tokens)
+		{
+			printf("Error: Tokenization failed\n");
+			free(input);
+			continue;
 		}
 		free(input);
 	}
