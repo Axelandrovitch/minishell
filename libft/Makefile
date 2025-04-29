@@ -24,7 +24,8 @@ FTMEM_DIR		=	$(SRC_DIR)ft_mem/ft_bzero.c \
 					$(SRC_DIR)ft_mem/ft_memchr.c \
 					$(SRC_DIR)ft_mem/ft_memcmp.c \
 					$(SRC_DIR)ft_mem/ft_memmove.c \
-					$(SRC_DIR)ft_mem/ft_memset.c 
+					$(SRC_DIR)ft_mem/ft_memset.c \
+					$(SRC_DIR)ft_mem/ft_memcpy.c 
 
 FTPUT_DIR		=	$(SRC_DIR)ft_put/ft_putchar_fd.c \
 					$(SRC_DIR)ft_put/ft_putendl_fd.c \

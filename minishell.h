@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/26 14:14:12 by marvin           ###   ########.fr       */
+/*   Updated: 2025/04/29 11:29:00 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ typedef enum	e_token_type
 	T_REDIR_APPEND,	// ">>"
 	T_HEREDOC,		// "<<"
 	T_DQUOTE,		// "\"comi dobles\""
-	T_SQUOTE		// "'comi simples'"
+	T_SQUOTE,		// "'comi simples'"
+	T_EMPTY
 
 }	t_token_type;
+
 typedef struct	s_token
 {
 	t_token_type	type;
@@ -51,6 +53,9 @@ int		skip_spaces(const char *line, int i);
 void	print_tokens(t_token *token);
 
 t_token	*tokenize(const char *line);
+
+// $
+char		*expand_variables(const char *input);
 
 
 #endif
