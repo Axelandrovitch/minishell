@@ -11,20 +11,24 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <stdlib.h>
 
-int	main(int ac, char **av, char **env)
+int	main(int ac,char **av )
 {
 	char	*input;
 	char	*expanded;
 	t_token	*tokens;
 	char **env_v;
 
-	(void)ac;
-	(void)av;
+	if (ac != 1)
+	{
+		printf("Usage: %s\n", av[0]);
+		return (0);
+	}
 	while (1)
 	{
-		env_v = set_path_environment(env);
-		//print_vector(env_v);
+		env_v = set_path_environment();
+		print_vector(env_v);
 		free_vector(env_v);
 		input = readline("minishell> ");
 		if (!input)

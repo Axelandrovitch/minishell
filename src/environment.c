@@ -58,26 +58,23 @@ static void	form_bin_path(char **envp_vec)
 	}
 }
 
-char	**set_path_environment(char **envp)
+char	**set_path_environment(void)
 {
-	size_t	i;
-	char	**envp_vec;
+	const char	*envp;
+	char		**envp_vec;
 
-	i = 0;
-	while (envp[i])
+	envp = getenv("PATH");
+	if (!envp)
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			envp_vec = ft_split(envp[i] + 5, ':');
-			if (!envp_vec)
-			{
-				printf("Memory allocation failed\n");
-				exit (1);
-			}
-			form_bin_path(envp_vec);
-			return (envp_vec);
-		}
-		i++;
+		printf("No environment found\n");
+		exit(1);
 	}
-	return (NULL);
+	envp_vec = ft_split(envp + 5, ':');
+	if (!envp_vec)
+	{
+		printf("Memory allocation failed\n");
+		exit (1);
+	}
+	form_bin_path(envp_vec);
+	return (envp_vec);
 }
