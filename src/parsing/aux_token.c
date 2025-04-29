@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:23:03 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 12:40:11 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:56:41 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	free_tokens(t_token *token)
 	while (token)
 	{
 		tmp = token->next;
-		free(token->value);
+		if (token->value)
+			free(token->value);
 		free(token);
 		token = tmp;
 	}

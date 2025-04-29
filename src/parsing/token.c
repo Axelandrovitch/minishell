@@ -6,13 +6,12 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:29:00 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 12:33:25 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:09:42 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// 
 static t_token	*handle_quotes(const char *line, int *i, char quote_type)
 {
 	int		start;
@@ -24,20 +23,15 @@ static t_token	*handle_quotes(const char *line, int *i, char quote_type)
 	start = *i;
 	while (line[*i] && line[*i] != quote_type)
 	{
-		if (line[*i] == '\\' && line[*i + 1] != '\0' && 
-			(line[*i + 1] == quote_type || line[*i + 1] == '\\'))
+		if (line[*i] == '\\' && line[*i + 1] != '\0'
+			&& (line[*i + 1] == quote_type || line[*i + 1] == '\\'))
 		{
 			(*i)++;
 		}
 		(*i)++;
 	}
-
 	if (line[*i] != quote_type)
-	{
-		// Error: comilla sin cerrar
-		printf("Error: Unmatched quote '%c'\n", quote_type);
-		return (NULL);
-	}
+		perror("Error: Unclosed quote\n");
 	len = *i - start;
 	if (len == 0)
 		token = new_token(T_EMPTY, "", 0);
@@ -48,7 +42,6 @@ static t_token	*handle_quotes(const char *line, int *i, char quote_type)
 		else
 			token = new_token(T_SQUOTE, line + start, len);
 	}
-	
 	if (!token)
 		return (NULL);
 	if (line[*i] == quote_type)
@@ -56,13 +49,11 @@ static t_token	*handle_quotes(const char *line, int *i, char quote_type)
 	return (token);
 }
 
-
 static t_token	*handle_pipe(int *i)
 {
 	t_token	*token;
 
 	token = new_token(T_PIPE, "|", 1);
-
 	if (!token)
 		return (NULL);
 	(*i)++;
@@ -70,14 +61,13 @@ static t_token	*handle_pipe(int *i)
 }
 
 // Handles redirection tokens (<<, >>, <, >)
-static t_token *handle_redir(const char *line, int *i)
+static t_token	*handle_redir(const char *line, int *i)
 {
-	t_token *token;
+	t_token	*token;
 
 	//no se salga de los límites de la cadena
 	if (line[*i] == '\0')
-		return NULL;
-
+		return (NULL);
 	if (line[*i] == '<' && line[*i + 1] != '\0' && line[*i + 1] == '<')
 	{
 		token = new_token(T_HEREDOC, "<<", 2);
@@ -99,9 +89,8 @@ static t_token *handle_redir(const char *line, int *i)
 		(*i)++;
 	}
 	else
-		return NULL;
-
-	return token;
+		return (NULL);
+	return (token);
 }
 
 // Handles word tokens (words, commands, etc.)
@@ -112,23 +101,18 @@ static t_token	*handle_word(const char *line, int *i)
 
 	start = *i;
 	len = 0;
-	//printf("START WORD: %c (pos %d)\n", line[start], start); // DEBUG
 	while (line[*i] && line[*i] != ' ' && line[*i] != '\t' && line[*i] != '|'
 		&& line[*i] != '<' && line[*i] != '>' && line[*i] != '"' && line[*i] != '\'')
 	{
-		//printf("READING: %c (pos %d)\n", line[*i], *i); // DEBUG
 		(*i)++;
 		len++;
 	}
-	//printf("NEW TOKEN: start=%d len=%d\n", start, len); // DEBUG
-
 	return (new_token(T_WORD, line + start, len));
 }
 
-
 // Tokenizes the input line into a linked list of tokens
 // Returns the head of the linked list
-t_token			*tokenize(const char *line)
+t_token	*tokenize(const char *line)
 {
 	t_token	*head;
 	t_token	*last;
@@ -143,7 +127,6 @@ t_token			*tokenize(const char *line)
 		i = skip_spaces(line, i);
 		if (line[i] == '\0')
 			break ;
-
 		if (line[i] == '"')
 			new_tok = handle_quotes(line, &i, '"');
 		else if (line[i] == '\'')
@@ -154,10 +137,8 @@ t_token			*tokenize(const char *line)
 			new_tok = handle_redir(line, &i);
 		else
 			new_tok = handle_word(line, &i);
-
 		if (!new_tok)
 			return (free_tokens(head), NULL);
-		
 		if (!head)
 			head = new_tok;
 		else
@@ -166,4 +147,3 @@ t_token			*tokenize(const char *line)
 	}
 	return (head);
 }
-
