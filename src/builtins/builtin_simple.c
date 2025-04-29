@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:32:27 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 17:16:45 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:55:06 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	builtin_echo(char **args)
 
 	i = 1;
 	newline = 1;
-	if (args[i] && ft_strcmp(args[i], "-n") == 0)
+	while (args[i][0] == '-' && args[i] && ft_strncmp(args[i], "-n", 2) == 0)
 	{
 		newline = 0;
 		i++;
