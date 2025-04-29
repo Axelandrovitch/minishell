@@ -6,9 +6,10 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 12:35:49 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 14:12:55 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -41,8 +42,11 @@ int	main(int ac, char **av, char **env)
 		{
 			printf("Error: Tokenization failed\n");
 			free(input);
+			free(expanded);
 			continue ;
 		}
+		free_tokens(tokens);
+		free(expanded);
 		free(input);
 	}
 	return (0);
