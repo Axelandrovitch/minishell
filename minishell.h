@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 11:29:00 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:08:49 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ typedef enum	e_token_type
 	T_REDIR_OUT,	// ">"
 	T_REDIR_APPEND,	// ">>"
 	T_HEREDOC,		// "<<"
-	T_DQUOTE,		// "\"comi dobles\""
-	T_SQUOTE,		// "'comi simples'"
+	T_DQUOTE,		// "comi dobles"
+	T_SQUOTE,		// 'comi simples'
 	T_EMPTY
 
 }	t_token_type;
@@ -65,6 +65,5 @@ void	print_vector(char **vec);
 
 // memory related functions
 void	free_vector(char **vec);
-
 #endif
 
