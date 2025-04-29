@@ -57,6 +57,14 @@ t_token	*tokenize(const char *line);
 // $
 char		*expand_variables(const char *input);
 
+// environment functions
+char	**set_path_environment(char **envp);
+
+// debugging functions
+void	print_vector(char **vec);
+
+// memory related functions
+void	free_vector(char **vec);
 
 #endif
 

@@ -23,7 +23,8 @@ INCLUDES = -I$(LIBFT_DIR)
 SRC =	src/main.c\
 		src/parsing/token.c\
 		src/parsing/aux_token.c\
-		src/parsing/parse.c
+		src/parsing/parse.c \
+		src/environment.c
 
 
 
