@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-static int	builtin_pwd(void)
+int	builtin_pwd(void) //PWD ANOTHER ARG-> pwd: too many arguments
 {
 	char	*cwd;
 
@@ -27,13 +27,19 @@ static int	builtin_pwd(void)
 	return (0);
 }
 
-static int	builtin_echo(char **args)
+int	builtin_echo(char **args) //LEAK WHEN echo -n (NO ARG)
 {
 	int	i;
 	int	newline;
 
 	i = 1;
 	newline = 1;
+
+	if (!args[1])
+	{
+		printf("\n");
+		return (0);
+	}
 	while (args[i][0] == '-' && args[i] && ft_strncmp(args[i], "-n", 2) == 0)
 	{
 		newline = 0;
@@ -51,7 +57,7 @@ static int	builtin_echo(char **args)
 	return (0);
 }
 
-static int	builtin_exit(char **args)
+int	builtin_exit(char **args)
 {
 	int	exit_code;
 
@@ -67,27 +73,4 @@ static int	builtin_exit(char **args)
 	exit(exit_code);
 }
 
-int	execute_builtin(t_token *tokens)
-{
-	char **args;
 
-	if (!tokens)
-		return (1);
-	args = get_args_from_tokens(tokens);
-	if (!args || !args[0])
-		return (free_vector(args), 1);
-
-	if (strcmp(args[0], "pwd") == 0)
-		builtin_pwd();
-	else if (strcmp(args[0], "echo") == 0)
-		builtin_echo(args);
-	else if (strcmp(args[0], "exit") == 0)
-		builtin_exit(args);
-	else
-	{
-		free_vector(args);
-		return (1);
-	}
-	free_vector(args);
-	return (0);
-}

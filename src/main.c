@@ -46,7 +46,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}*/
 
-		execute_builtin(tokens);
+		execute_builtin(tokens, env);
 
 		free_tokens(tokens);
 		free(expanded);

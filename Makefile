@@ -26,6 +26,7 @@ SRC =	src/main.c\
 		src/parsing/parse.c \
 		src/environment.c\
 		src/builtins/builtin_simple.c\
+		src/builtins/builtin_env.c\
 		src/builtins/execute.c
 
 

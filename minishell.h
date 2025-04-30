@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 17:18:21 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:41:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,14 @@ void	print_vector(char **vec);
 void	free_vector(char **vec);
 
 // builtins
-int		execute_builtin(t_token *tokens);
+int		builtin_pwd(void);
+int		builtin_echo(char **args);
+int		builtin_exit(char **args);
+int		builtin_cd(char **args);
+int		builtin_env(char **args);
+int		builtin_export(char **args, char **env);
+
+
+int		execute_builtin(t_token *tokens, char **env);
 
 #endif
-
