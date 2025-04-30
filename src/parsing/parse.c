@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:35:23 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 12:44:33 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:03:11 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*expand_variables(const char *input)
 		return (NULL);
 	while (input[i])
 	{
-		// Si encontramos una comilla, actualizamos el estado
+		// Si encontramos una comilla
 		if (input[i] == '\'' || input[i] == '\"')
 		{
 			update_quote_state(input[i], &in_single_q, &in_double_q);

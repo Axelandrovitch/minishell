@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:23:03 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 12:56:41 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:22:54 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	free_tokens(t_token *token)
 	}
 }
 
+/*
 // Converts the token type to a string for debugging purposes !!!DELETE!!!
 const char *token_type_to_string(t_token_type type)
 {
@@ -72,13 +73,58 @@ const char *token_type_to_string(t_token_type type)
 	}
 }
 
-
-
 void	print_tokens(t_token *token)
 {
 	while (token)
 	{
-		printf("Type: %s | %s \n", token_type_to_string(token->type), token->value);
+		printf("Type: %s --> %s \n", token_type_to_string(token->type), token->value);
 		token = token->next;
 	}
+}*/
+
+// Counts the number of tokens in the linked list
+static int	count_tokens(t_token *tokens)
+{
+	int	count;
+
+	count = 0;
+	while (tokens)
+	{
+		if (tokens->type == T_WORD || tokens->type == T_DQUOTE || tokens->type == T_SQUOTE)
+			count++;
+		tokens = tokens->next;
+	}
+	//printf("Count: %d\n", count);
+	return (count);
+}
+
+char	**get_args_from_tokens(t_token *tokens)
+{
+	char	**args;
+	int		i;
+	char	*clean_value;
+
+	args = malloc(sizeof(char *) * (count_tokens(tokens) + 1));
+	if (!args)
+		return (NULL);
+	i = 0;
+	while (tokens)
+	{
+		if (tokens->type == T_WORD)
+		{
+			args[i] = ft_strdup(tokens->value);
+			if (!args[i++])
+				return (NULL);
+		}
+		else if (tokens->type == T_DQUOTE || tokens->type == T_SQUOTE)
+		{
+			clean_value = ft_strndup(tokens->value, ft_strlen(tokens->value));
+			if (!clean_value)
+				return (NULL);
+			args[i++] = clean_value;
+		}
+		tokens = tokens->next;
+	}
+	args[i] = NULL;
+	return (args);
 }

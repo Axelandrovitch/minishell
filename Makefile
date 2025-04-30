@@ -6,7 +6,7 @@
 #    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/04/29 11:29:43 by dcampas-         ###   ########.fr        #
+#    Updated: 2025/04/29 17:18:26 by dcampas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,9 @@ SRC =	src/main.c\
 		src/parsing/token.c\
 		src/parsing/aux_token.c\
 		src/parsing/parse.c \
-		src/environment.c
-
+		src/environment.c\
+		src/builtins/builtin_simple.c\
+		src/builtins/execute.c
 
 
 OBJ = $(SRC:.c=.o)

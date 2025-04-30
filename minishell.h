@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 11:29:00 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:18:21 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ typedef enum	e_token_type
 	T_REDIR_OUT,	// ">"
 	T_REDIR_APPEND,	// ">>"
 	T_HEREDOC,		// "<<"
-	T_DQUOTE,		// "\"comi dobles\""
-	T_SQUOTE,		// "'comi simples'"
+	T_DQUOTE,		// "comi dobles"
+	T_SQUOTE,		// 'comi simples'
 	T_EMPTY
 
 }	t_token_type;
@@ -52,10 +52,15 @@ void	free_tokens(t_token *token);
 int		skip_spaces(const char *line, int i);
 void	print_tokens(t_token *token);
 
+
+char	**get_args_from_tokens(t_token *tokens);
+
 t_token	*tokenize(const char *line);
 
 // $
-char		*expand_variables(const char *input);
+char	*expand_variables(const char *input);
+
+// 
 
 // environment functions
 char	**set_path_environment(char **envp);
@@ -65,6 +70,9 @@ void	print_vector(char **vec);
 
 // memory related functions
 void	free_vector(char **vec);
+
+// builtins
+int		execute_builtin(t_token *tokens);
 
 #endif
 

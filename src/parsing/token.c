@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:29:00 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/29 13:09:42 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:37:16 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_token	*handle_quotes(const char *line, int *i, char quote_type)
 		(*i)++;
 	}
 	if (line[*i] != quote_type)
-		perror("Error: Unclosed quote\n");
+		return (fprintf(stderr, "Error: Unclosed quote\n"), NULL);
 	len = *i - start;
 	if (len == 0)
 		token = new_token(T_EMPTY, "", 0);
