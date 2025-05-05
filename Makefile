@@ -15,7 +15,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 READLINE = -lreadline
 
-#libft
+# libft
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 INCLUDES = -I$(LIBFT_DIR)
@@ -23,26 +23,38 @@ INCLUDES = -I$(LIBFT_DIR)
 SRC =	src/main.c\
 		src/parsing/token.c\
 		src/parsing/aux_token.c\
-		src/parsing/parse.c \
+		src/parsing/parse.c\
 		src/environment.c\
 		src/builtins/builtin_simple.c\
 		src/builtins/execute.c
 
-
+OBJ_DIR = obj
 OBJ = $(SRC:.c=.o)
+OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(OBJ)))
 
+all: $(OBJ_DIR) $(LIBFT) $(NAME)
 
-all: $(LIBFT) $(NAME)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o: src/%.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/%.o: src/parsing/%.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)/%.o: src/builtins/%.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(NAME): $(OBJ_FILES)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJ_FILES) $(LIBFT) -o $(NAME) $(READLINE)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJ) $(LIBFT) -o $(NAME) $(READLINE)
-
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
-	rm -f $(OBJ)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
@@ -51,3 +63,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
