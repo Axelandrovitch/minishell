@@ -63,7 +63,7 @@ char	*expand_variables(const char *input);
 // 
 
 // environment functions
-char	**set_path_environment(char **envp);
+char	**set_path_environment(void);
 
 // debugging functions
 void	print_vector(char **vec);
