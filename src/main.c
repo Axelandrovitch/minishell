@@ -19,7 +19,7 @@ int	main(int ac,char **av )
 	char	*input;
 	char	*expanded;
 	t_token	*tokens;
-	char	**env_v;
+	// char	**env_v;
 
 	if (ac != 1)
 	{
@@ -28,9 +28,9 @@ int	main(int ac,char **av )
 	}
 	while (1)
 	{
-		env_v = set_path_environment();
-		print_vector(env_v);
-		free_vector(env_v);
+		// env_v = set_path_environment();
+		// print_vector(env_v);
+		// free_vector(env_v);
 		input = readline("minishell> ");
 		if (!input)
 		{
