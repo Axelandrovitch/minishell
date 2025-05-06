@@ -78,3 +78,30 @@ char	**set_path_environment(void)
 	form_bin_path(envp_vec);
 	return (envp_vec);
 }
+
+char	*get_pathname(char *command, char **path_variable)
+{
+	size_t	i;
+	int		fd;
+	char	*pathname;
+
+	i = 0;
+	fd = 0;
+	pathname = NULL;
+	if (!path_variable || !command)
+		exit(1);
+	while (path_variable[i])
+	{
+		pathname = ft_strjoin(path_variable[i], command);
+		if (!pathname)
+			exit(EXIT_FAILURE);
+		fd = access(pathname, X_OK);
+		if (fd != -1)
+			return (pathname);
+		free(pathname);
+		i++;
+	}
+	return (NULL);
+}
+
+
