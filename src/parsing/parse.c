@@ -47,7 +47,7 @@ static char	*extract_and_expand(const char *input, int *pos)
 
 	i = 0;
 	(*pos)++;
-	while (input[*pos] && (ft_isalnum(input[*pos]) || input[*pos] == '_'))
+	while (input[*pos] && (ft_isalnum(input[*pos]) || input[*pos] == '_' || input[i] == '{')) // echo ${PATH}
 	{
 		var[i++] = input[*pos];
 		(*pos)++;
