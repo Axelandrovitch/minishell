@@ -12,35 +12,29 @@
 
 #include "../../minishell.h"
 
-int	builtin_pwd(void) //PWD ANOTHER ARG-> pwd: too many arguments
+int	builtin_pwd(char **args)
 {
-	char	*cwd;
+	char	*cwd; 
 
-	cwd = getcwd(NULL, 0);
+	if (args[1])
+		return (printf("pwd: too many arguments\n"), 1);
+	cwd = getcwd(NULL, 0); //Get the current working directory
 	if (!cwd)
-	{
-		perror("getcwd");
-		return (1);
-	}
+		return (perror("getcwd"),1);
+
 	printf("%s\n", cwd);
 	free(cwd);
 	return (0);
 }
 
-int	builtin_echo(char **args) //LEAK WHEN echo -n (NO ARG)
+int	builtin_echo(char **args)
 {
 	int	i;
 	int	newline;
 
 	i = 1;
 	newline = 1;
-
-	if (!args[1])
-	{
-		printf("\n");
-		return (0);
-	}
-	while (args[i][0] == '-' && args[i] && ft_strncmp(args[i], "-n", 2) == 0)
+	while (args[i] && args[i][0] == '-' && args[i] && ft_strncmp(args[i], "-n", 2) == 0)
 	{
 		newline = 0;
 		i++;

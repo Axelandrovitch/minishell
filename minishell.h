@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/04/30 12:41:59 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/06 16:15:26 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct	s_token
 t_token	*new_token(t_token_type type, const char *value, int len);
 void	free_tokens(t_token *token);
 int		skip_spaces(const char *line, int i);
-void	print_tokens(t_token *token);
+//void	print_tokens(t_token *token);
 
 
 char	**get_args_from_tokens(t_token *tokens);
@@ -72,14 +72,19 @@ void	print_vector(char **vec);
 void	free_vector(char **vec);
 
 // builtins
-int		builtin_pwd(void);
+int		builtin_pwd(char **args);
 int		builtin_echo(char **args);
 int		builtin_exit(char **args);
-int		builtin_cd(char **args);
+
+int		builtin_cd(char **args, char **env);
+
 int		builtin_env(char **args);
 int		builtin_export(char **args, char **env);
 
+char **copy_env(char **env);
 
 int		execute_builtin(t_token *tokens, char **env);
+
+void	execute_command(t_token *tokens, char **env);//Borrar
 
 #endif

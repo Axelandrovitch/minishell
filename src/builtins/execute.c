@@ -22,10 +22,12 @@ int	execute_builtin(t_token *tokens, char **env)
 	if (!args || !args[0])
 		return (free_vector(args), 1);
 
+	printf("DEBUG: %s\n", tokens[0].value);
+
 	if (!args[0])
 		return (printf("Error: No command provided\n"), free_vector(args), 1);
 	if (strcmp(args[0], "pwd") == 0)
-		builtin_pwd();
+		builtin_pwd(args);
 	else if (ft_strcmp(args[0], "echo") == 0)
 		builtin_echo(args);
 	else if (ft_strcmp(args[0], "exit") == 0)
@@ -36,9 +38,9 @@ int	execute_builtin(t_token *tokens, char **env)
 		builtin_export(args, env);
 
 	/*else if (ft_strcmp(args[0], "unset") == 0)
-		builtin_unset(args, env);
+		builtin_unset(args, env);*/
 	else if (ft_strcmp(args[0], "cd") == 0)
-		builtin_cd(args, env);*/
+		builtin_cd(args, env);
 	else
 	{
 		free_vector(args);

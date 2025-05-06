@@ -18,11 +18,16 @@ int	builtin_env(char **env) // BASH ONLY ACCEPT 1 ARGUMENT
 {
 	int	i;
 	
+	if (env[1])
+	{
+		printf("env: too many arguments\n");
+		return (1);
+	}
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strchr(env[i], '='))
-			printf("%s", env[i]);
+			printf("%s\n", env[i]);
 		i++;	
 	}
 	return (0);
