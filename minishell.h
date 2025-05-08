@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdbool.h>
+# include <sys/wait.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -46,6 +47,13 @@ typedef struct	s_token
 
 }	t_token;
 
+typedef struct s_command_block
+{
+	t_token	*tokens;
+	struct s_command_block	*next;
+
+}	t_command_block;
+
 //TOKEN
 t_token	*new_token(t_token_type type, const char *value, int len);
 void	free_tokens(t_token *token);
@@ -56,6 +64,10 @@ void	print_tokens(t_token *token);
 char	**get_args_from_tokens(t_token *tokens);
 
 t_token	*tokenize(const char *line);
+
+t_command_block	*set_command_block(t_token *head_token);
+
+t_command_block	*parse_pipeline(t_token *tokens);
 
 // $
 char	*expand_variables(const char *input);

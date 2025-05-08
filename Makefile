@@ -24,9 +24,10 @@ SRC =	src/main.c\
 		src/parsing/token.c\
 		src/parsing/aux_token.c\
 		src/parsing/parse.c\
+		src/parsing/parser.c\
 		src/environment.c\
 		src/builtins/builtin_simple.c\
-		src/builtins/execute.c
+		src/builtins/exec_commands.c
 
 OBJ_DIR = obj
 OBJ = $(SRC:.c=.o)
