@@ -63,24 +63,28 @@ void print_tokens(t_token *head)
     }
 }
 
+void	init_minishell (t_shell *shell, char **envp)
+{
+	shell->env = copy_environment(envp);
+	print_vector(shell->env);
+}
 
-int	main(int ac,char **av )
+
+int	main(int ac,char **av, char **envp)
 {
 	char	*input;
 	char	*expanded;
 	t_token	*tokens;
-	// char	**env_v;
+	t_shell	shell;
 
 	if (ac != 1)
 	{
 		printf("Usage: %s\n", av[0]);
 		return (0);
 	}
+	init_minishell(&shell, envp);
 	while (1)
 	{
-		// env_v = set_path_environment();
-		// print_vector(env_v);
-		// free_vector(env_v);
 		input = readline("minishell> ");
 		if (!input)
 		{
@@ -92,21 +96,7 @@ int	main(int ac,char **av )
 		expanded = expand_variables(input);
 		tokens = tokenize(expanded);
 		print_tokens(tokens);
-		/*if (!tokens)
-		{
-			printf("Error: Tokenization failed\n");
-			free(input);
-			free(expanded);
-			continue ;
-		}*/
-
-		t_command_block *command_block = parse_pipeline(tokens);
-		while (command_block)
-		{
-			
-		}
 		execute_builtin(tokens);
-
 		free_tokens(tokens);
 		free(expanded);
 		free(input);

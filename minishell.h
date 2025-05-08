@@ -47,12 +47,20 @@ typedef struct	s_token
 
 }	t_token;
 
-typedef struct s_command_block
+typedef struct	s_command_block
 {
 	t_token	*tokens;
 	struct s_command_block	*next;
-
 }	t_command_block;
+
+typedef	struct	s_shell
+{
+	t_token	*tokens;
+	t_command_block	*commands;
+	char	**env;
+	int		infile_fd;
+	int		outfile_fd;
+}	t_shell;
 
 //TOKEN
 t_token	*new_token(t_token_type type, const char *value, int len);
@@ -76,6 +84,7 @@ char	*expand_variables(const char *input);
 
 // environment functions
 char	**set_path_environment(void);
+char	**copy_environment(char **envp);
 
 // debugging functions
 void	print_vector(char **vec);

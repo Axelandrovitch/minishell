@@ -104,4 +104,36 @@ char	*get_pathname(char *command, char **path_variable)
 	return (NULL);
 }
 
+int	count_environment_vars(char **envp)
+{
+	int	count;
+	
+	count = 0;
+	while (envp[count] != NULL)
+		count++;
+	return (count);
+}
 
+char	**copy_environment(char **envp)
+{
+	int	i;
+	int	len;
+	char	**env;
+	char	*current_var;
+
+	i = 0;
+	len = count_environment_vars(envp);
+	env = malloc(sizeof(char *) * (len + 1));
+	if (!env)
+		exit(EXIT_FAILURE);
+	while (envp[i] != NULL)
+	{
+		current_var = strdup(envp[i]);
+		if (!current_var)
+			exit(EXIT_FAILURE);
+		env[i] = current_var;
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
+}
