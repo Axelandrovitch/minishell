@@ -66,7 +66,7 @@ void print_tokens(t_token *head)
 void	init_minishell (t_shell *shell, char **envp)
 {
 	shell->env = copy_environment(envp);
-	print_vector(shell->env);
+	shell->bin_paths = set_path_environment();
 }
 
 
@@ -95,7 +95,10 @@ int	main(int ac,char **av, char **envp)
 			add_history(input);
 		expanded = expand_variables(input);
 		tokens = tokenize(expanded);
-		print_tokens(tokens);
+		t_command_block	*command_blocks = parse_pipeline(tokens);
+		shell.commands = command_blocks;
+		// print_command_blocks(command_blocks);
+		execute_pipeline(&shell);
 		execute_builtin(tokens);
 		free_tokens(tokens);
 		free(expanded);

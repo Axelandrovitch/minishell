@@ -66,6 +66,8 @@ t_command_block	*parse_pipeline(t_token *tokens)
 	t_token *current_token;
 
 	current_token = tokens;
+	head = NULL;
+	tail = NULL;
 	while (current_token)
 	{
 		current_block = set_command_block(current_token);
@@ -82,4 +84,16 @@ t_command_block	*parse_pipeline(t_token *tokens)
 			current_token = current_token->next;
 	}
 	return (head);
+}
+
+void	print_command_blocks(t_command_block *head_block)
+{
+	int block_number = 1;
+	while (head_block)
+	{
+		printf("command block %d:\n", block_number);
+		print_tokens(head_block->tokens);
+		block_number++;
+		head_block = head_block->next;
+	}
 }

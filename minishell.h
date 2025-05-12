@@ -58,6 +58,7 @@ typedef	struct	s_shell
 	t_token	*tokens;
 	t_command_block	*commands;
 	char	**env;
+	char	**bin_paths;
 	int		infile_fd;
 	int		outfile_fd;
 }	t_shell;
@@ -77,17 +78,21 @@ t_command_block	*set_command_block(t_token *head_token);
 
 t_command_block	*parse_pipeline(t_token *tokens);
 
+void	execute_pipeline(t_shell *shell);
+
 // $
 char	*expand_variables(const char *input);
 
-// 
-
 // environment functions
 char	**set_path_environment(void);
+
 char	**copy_environment(char **envp);
+
+char	*get_pathname(char *command, char **path_variable);
 
 // debugging functions
 void	print_vector(char **vec);
+void	print_command_blocks(t_command_block *head_block);
 
 // memory related functions
 void	free_vector(char **vec);
