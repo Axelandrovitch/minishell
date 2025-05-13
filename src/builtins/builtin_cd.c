@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/13 13:33:24 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:45:38 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static void	print_error(const char **args)
 
 // Actualiza el valor de una variable de entorno existente
 //(como PWD= o OLDPWD=) con un nuevo valor.
-static int	update_env_var(char **env, const char *var_name, const char *value)
+// Tambien se usa en el export
+int	update_env_var(char **env, const char *var_name, const char *value)
 {
 	char	*env_var;
 	int		i;

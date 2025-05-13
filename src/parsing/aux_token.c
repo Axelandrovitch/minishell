@@ -54,7 +54,7 @@ void	free_tokens(t_token *token)
 	}
 }
 
-/*
+
 // Converts the token type to a string for debugging purposes !!!DELETE!!!
 const char *token_type_to_string(t_token_type type)
 {
@@ -75,12 +75,16 @@ const char *token_type_to_string(t_token_type type)
 
 void	print_tokens(t_token *token)
 {
+	int	i = 0;
+
 	while (token)
 	{
-		printf("Type: %s --> %s \n", token_type_to_string(token->type), token->value);
+		printf("TOKEN[%d]\n\tType: %s --> %s \n", i, token_type_to_string(token->type), token->value);
 		token = token->next;
+
+		i++;
 	}
-}*/
+}
 
 // Counts the number of tokens in the linked list
 static int	count_tokens(t_token *tokens)
