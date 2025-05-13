@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:15:45 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/06 16:14:50 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:15:47 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,22 @@ char **copy_env(char **env)
 	return (copy);
 }
 
-void	execute_command(t_token *tokens, char **env)
+// Busca una variable de entorno en el array envp y devuelve un puntero al valor de
+// esa variable.
+char	*get_env_path(const char *key, char **envp)
 {
-	char	**args;
 	int		i;
+	size_t	len;
 
-	args = get_args_from_tokens(tokens);
-	if (!args || !args[0])
-		return ;
+	if (!key || !envp)
+		return (NULL);
 	i = 0;
-	while (env[i])
+	len = ft_strlen(key);
+	while (envp[i])
 	{
-		if (ft_strncmp(env[i], args[0], ft_strlen(args[0])) == 0)
-			break ;
+		if (ft_strncmp(envp[i], key, len) == 0 && envp[i][len] == '=')
+			return (envp[i] + len + 1);
 		i++;
 	}
-	if (env[i])
-	{
-		execve(env[i], args, env);
-		perror("execve");
-	}
-	else
-		printf("Command not found: %s\n", args[0]);
-	free_vector(args);
+	return (NULL);
 }

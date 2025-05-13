@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/06 17:02:09 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:33:24 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,8 @@ static void	print_error(const char **args)
 	ft_putendl_fd(args[1], 2);
 }
 
-static char	*get_env_path(const char *key, char **envp)
-{
-	int		i;
-	size_t	len;
-
-	if (!key || !envp)
-		return (NULL);
-	i = 0;
-	len = ft_strlen(key);
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], key, len) == 0 && envp[i][len] == '=')
-			return (envp[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
-
+// Actualiza el valor de una variable de entorno existente
+//(como PWD= o OLDPWD=) con un nuevo valor.
 static int	update_env_var(char **env, const char *var_name, const char *value)
 {
 	char	*env_var;
@@ -55,7 +39,7 @@ static int	update_env_var(char **env, const char *var_name, const char *value)
 	i = 0;
 	found = 0;
 	while (env[i])
-	{
+	{	
 		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0 && 
 			env[i][ft_strlen(var_name)] == '=')
 		{
@@ -74,6 +58,7 @@ static int	update_env_var(char **env, const char *var_name, const char *value)
 	return (0);
 }
 
+// Actualiza las variables PWD y OLDPWD
 static int	update_pwd_vars(char **env)
 {
 	char	*old_pwd;
@@ -86,11 +71,6 @@ static int	update_pwd_vars(char **env)
 	{
 		// Actualizar OLDPWD con el valor anterior de PWD
 		ret = update_env_var(env, "OLDPWD=", old_pwd);
-		if (ret != 0)
-		{
-			// Si no existe OLDPWD, podríamos añadirla al final del env
-			// (Código para añadir nueva variable omitido por brevedad)
-		}
 	}
 
 	// Obtener el directorio actual después del cambio
@@ -101,11 +81,6 @@ static int	update_pwd_vars(char **env)
 	// Actualizar PWD con el nuevo directorio
 	ret = update_env_var(env, "PWD=", new_pwd);
 	free(new_pwd);
-	if (ret != 0)
-	{
-		// Si no existe PWD, podríamos añadirla al final del env
-		// (Código para añadir nueva variable omitido por brevedad)
-	}
 	return (0);
 }
 
@@ -131,7 +106,7 @@ static int	go_to_path(char **env, const char *target)
 	return (0);
 }
 
-int	builtin_cd(char **args, char **env)
+int	builtin_cd(char **args, char **env) // JUST CAN HAVE 1 ARG
 {
 	char	*home;
 

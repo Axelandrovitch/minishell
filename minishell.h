@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/06 16:15:26 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:34:13 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,14 @@ int		builtin_exit(char **args);
 
 int		builtin_cd(char **args, char **env);
 
-int		builtin_env(char **args);
+int		builtin_env(char **args, char **env);
 int		builtin_export(char **args, char **env);
 
-char **copy_env(char **env);
+char	**copy_env(char **env);
+char	*get_env_path(const char *key, char **envp);
+
 
 int		execute_builtin(t_token *tokens, char **env);
 
-void	execute_command(t_token *tokens, char **env);//Borrar
 
 #endif

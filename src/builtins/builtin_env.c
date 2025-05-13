@@ -14,11 +14,11 @@
 
 //Env export y unset
 
-int	builtin_env(char **env) // BASH ONLY ACCEPT 1 ARGUMENT 
+int	builtin_env(char **args, char **env)
 {
 	int	i;
 	
-	if (env[1])
+	if (args[1])
 	{
 		printf("env: too many arguments\n");
 		return (1);
@@ -42,7 +42,7 @@ int	builtin_export(char **args, char **env) //COMPORBAR SI ESTA BIEN
 	if (!args || !args[0])
 		return (0);
 	if (!args[1])
-		return (builtin_env(env));
+		return (builtin_env(args, env));
 	while (args[i])
 	{
 		equal_sign = ft_strchr(args[i], '=');
