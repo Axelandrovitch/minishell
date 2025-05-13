@@ -9,46 +9,40 @@
 #    Updated: 2025/04/29 17:18:26 by dcampas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+NAME := minishell
 
-NAME = minishell
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
-READLINE = -lreadline
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -fsanitize=address
+READLINE := -lreadline
 
-# libft
-LIBFT_DIR = ./libft
-LIBFT = $(LIBFT_DIR)/libft.a
-INCLUDES = -I$(LIBFT_DIR)
+SRC_DIR := src
+OBJ_DIR := obj
+INC_DIR := inc
+LIBFT_DIR := libft
 
-SRC =	src/main.c\
-		src/parsing/token.c\
-		src/parsing/aux_token.c\
-		src/parsing/parse.c\
-		src/parsing/parser.c\
-		src/environment.c\
-		src/builtins/builtin_simple.c\
-		src/builtins/exec_commands.c
+INCLUDES := -I$(INC_DIR) -I$(LIBFT_DIR)
+LIBFT := $(LIBFT_DIR)/libft.a
 
-OBJ_DIR = obj
-OBJ = $(SRC:.c=.o)
-OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(OBJ)))
+SRC := \
+	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/parsing/token.c \
+	$(SRC_DIR)/parsing/aux_token.c \
+	$(SRC_DIR)/parsing/parse.c \
+	$(SRC_DIR)/parsing/parser.c \
+	$(SRC_DIR)/parsing/exec_commands.c \
+	$(SRC_DIR)/environment.c \
+	$(SRC_DIR)/builtins/builtin_simple.c
 
-all: $(OBJ_DIR) $(LIBFT) $(NAME)
+OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+all: $(NAME)
 
-$(OBJ_DIR)/%.o: src/%.c
+$(NAME): $(LIBFT) $(OBJ)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJ) $(LIBFT) -o $(NAME) $(READLINE)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(OBJ_DIR)/%.o: src/parsing/%.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(OBJ_DIR)/%.o: src/builtins/%.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(NAME): $(OBJ_FILES)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJ_FILES) $(LIBFT) -o $(NAME) $(READLINE)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
