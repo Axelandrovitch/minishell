@@ -47,14 +47,36 @@ static char	*extract_and_expand(const char *input, int *pos)
 
 	i = 0;
 	(*pos)++;
-	while (input[*pos] && (ft_isalnum(input[*pos]) || input[*pos] == '_' || input[i] == '{')) // echo ${PATH}
+	/*if (input[*pos] == '?')
 	{
-		var[i++] = input[*pos];
 		(*pos)++;
+		return (ft_strdup("$?")); //g_exit_status
+	}
+	if (input[*pos] == '$')
+	{
+		(*pos)++;
+		return (ft_strdup("$")); //getpid()
+	}*/
+	if (input[*pos] == '{')
+	{
+		(*pos)++; // saltamos el '{'
+		while (input[*pos] && input[*pos] != '}' && i < 255)
+			var[i++] = input[(*pos)++];
+		if (input[*pos] == '}')
+			(*pos)++;
+	}
+	else
+	{
+		while (input[*pos] && (ft_isalnum(input[*pos]) || input[*pos] == '_'))
+		{
+			var[i++] = input[*pos];
+			(*pos)++;
+		}
 	}
 	var[i] = '\0';
 	if (getenv(var))
 		return (ft_strdup(getenv(var)));
+	//hay que expandir desde la lista enlazada de las variables de entorno que vamos modificando
 	return (ft_strdup(""));
 }
 
@@ -92,7 +114,7 @@ char	*expand_variables(const char *input)
 		}
 		// Si encontramos un $ y no estamos en comillas simples
 		else if (input[i] == '$' && !in_single_q && input[i + 1]
-				&& (ft_isalpha(input[i + 1]) || input[i + 1] == '_'))
+				&& (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
 		{
 			expanded_var = extract_and_expand(input, &i);
 			result = append_str(result, expanded_var);

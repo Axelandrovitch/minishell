@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/13 15:25:40 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:12:16 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ typedef struct	s_token
 
 }	t_token;
 
+typedef struct	s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 //TOKEN
 t_token	*new_token(t_token_type type, const char *value, int len);
 void	free_tokens(t_token *token);
@@ -75,15 +82,10 @@ void	free_vector(char **vec);
 int		builtin_pwd(char **args);
 int		builtin_echo(char **args);
 int		builtin_exit(char **args);
-
-//cd
-int		update_env_var(char **env, const char *var_name, const char *value);
-int		builtin_cd(char **args, char **env);
-
 int		builtin_env(char **args, char **env);
-
-//export
+int		builtin_cd(char **args, char **env);
 int		builtin_export(char **args, char **env);
+int		builtin_unset(char **args, char **env);
 
 char	**copy_env(char **env);
 char	*get_env_path(const char *key, char **envp);

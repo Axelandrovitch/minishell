@@ -30,7 +30,8 @@ SRC =	src/main.c\
 		src/builtins/execute.c \
 		src/builtins/aux_builtins.c \
 		src/builtins/builtin_cd.c \
-		src/builtins/builtin_export.c
+		src/builtins/builtin_export.c \
+		src/builtins/builtin_unset.c \
 
 
 OBJ = $(SRC:.c=.o)

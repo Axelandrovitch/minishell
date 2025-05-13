@@ -45,6 +45,7 @@ FTSTR_DIR		=	$(SRC_DIR)ft_str/ft_split.c \
 					$(SRC_DIR)ft_str/ft_strndup.c \
 					$(SRC_DIR)ft_str/ft_striteri.c \
 					$(SRC_DIR)ft_str/ft_strjoin.c \
+					$(SRC_DIR)ft_str/ft_strjoin_free_s1.c \
 					$(SRC_DIR)ft_str/ft_strlcat.c \
 					$(SRC_DIR)ft_str/ft_strlcpy.c \
 					$(SRC_DIR)ft_str/ft_strlen.c \
@@ -58,7 +59,7 @@ FTSTR_DIR		=	$(SRC_DIR)ft_str/ft_split.c \
 					$(SRC_DIR)ft_str/ft_substr.c \
 					$(SRC_DIR)ft_str/ft_putstr.c \
 					$(SRC_DIR)ft_str/ft_putstr_fd.c \
-
+					
 FTPRINTF_DIR	=	$(SRC_DIR)ft_printf/ft_printf.c \
 					$(SRC_DIR)ft_printf/ft_print_char.c \
 					$(SRC_DIR)ft_printf/ft_print_str.c \
