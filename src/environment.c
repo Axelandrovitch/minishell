@@ -29,6 +29,8 @@ void	free_vector(char **vec)
 	int	i;
 
 	i = 0;
+	if (!vec)
+		return ;
 	while (vec[i])
 	{
 		free(vec[i]);

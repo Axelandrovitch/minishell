@@ -59,6 +59,8 @@ typedef	struct	s_shell
 	t_command_block	*commands;
 	char	**env;
 	char	**bin_paths;
+	char	*input;
+	char	*expanded;
 	int		infile_fd;
 	int		outfile_fd;
 }	t_shell;
@@ -82,6 +84,15 @@ void	execute_pipeline(t_shell *shell);
 
 // $
 char	*expand_variables(const char *input);
+
+
+// free commands
+
+void	free_shell(t_shell	*shell);
+
+void	free_env(t_shell *shell);
+
+void	exit_shell(t_shell	*shell, int exit_code);
 
 // environment functions
 char	**set_path_environment(void);

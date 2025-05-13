@@ -1,0 +1,51 @@
+#include "../../minishell.h"
+
+void	free_command_blocks(t_command_block *command_blocks)
+{
+	t_command_block	*tmp;
+
+	while(command_blocks)
+	{
+		tmp = command_blocks->next;
+		free_tokens(command_blocks->tokens);
+		free(command_blocks);
+		command_blocks = tmp;
+	}
+}
+
+void	free_shell(t_shell	*shell)
+{
+	if (shell->input)
+	{
+		free(shell->input);
+		shell->input = NULL;
+	}
+	if (shell->expanded)
+	{
+		free(shell->expanded);
+		shell->expanded = NULL;
+	}
+	if (shell->tokens)
+	{
+		free_tokens(shell->tokens);
+		shell->tokens = NULL;
+	}
+	if (shell->commands)
+	{
+		free_command_blocks(shell->commands);
+		shell->commands = NULL;
+	}
+}
+
+void	free_env(t_shell *shell)
+{
+	free_vector(shell->env);
+	free_vector(shell->bin_paths);
+}
+
+void	exit_shell(t_shell	*shell, int exit_code)
+{
+	free_shell(shell);
+	free_env(shell);
+	exit(exit_code);
+}

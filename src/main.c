@@ -14,6 +14,7 @@
 #include "../minishell.h"
 #include <stdlib.h>
 
+// Solo para testear
 void print_tokens(t_token *head)
 {
     t_token *current = head;
@@ -65,16 +66,18 @@ void print_tokens(t_token *head)
 
 void	init_minishell (t_shell *shell, char **envp)
 {
+	shell->env = NULL;
+	shell->bin_paths = NULL;
+	shell->commands = NULL;
+	shell->input = NULL;
+	shell->expanded = NULL;
+	shell->tokens = NULL;
 	shell->env = copy_environment(envp);
 	shell->bin_paths = set_path_environment();
 }
 
-
 int	main(int ac,char **av, char **envp)
 {
-	char	*input;
-	char	*expanded;
-	t_token	*tokens;
 	t_shell	shell;
 
 	if (ac != 1)
@@ -85,24 +88,21 @@ int	main(int ac,char **av, char **envp)
 	init_minishell(&shell, envp);
 	while (1)
 	{
-		input = readline("minishell> ");
-		if (!input)
+		shell.input = readline("minishell> ");
+		if (!shell.input)
 		{
 			printf ("exit\n");
 			break ;
 		}
-		if (input && *input)
-			add_history(input);
-		expanded = expand_variables(input);
-		tokens = tokenize(expanded);
-		t_command_block	*command_blocks = parse_pipeline(tokens);
-		shell.commands = command_blocks;
-		// print_command_blocks(command_blocks);
+		if (shell.input && *shell.input)
+			add_history(shell.input);
+		shell.expanded = expand_variables(shell.input);
+		shell.tokens = tokenize(shell.expanded);
+		shell.commands = parse_pipeline(shell.tokens);
 		execute_pipeline(&shell);
-		execute_builtin(tokens);
-		free_tokens(tokens);
-		free(expanded);
-		free(input);
+		execute_builtin(shell.tokens);
+		free_shell(&shell);
 	}
+	free_env(&shell);
 	return (0);
 }

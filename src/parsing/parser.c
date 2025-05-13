@@ -41,6 +41,7 @@ t_command_block	*set_command_block(t_token *head_token)
 	t_token	*command_block_tokens;
 	t_token	*current_token;
 
+	command_block_tokens = NULL;
 	if (!head_token)
 		return (NULL);
 	command_block = malloc(sizeof(t_command_block));
