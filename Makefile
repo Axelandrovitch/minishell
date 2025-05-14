@@ -31,6 +31,7 @@ SRC := \
 	$(SRC_DIR)/parsing/parser.c \
 	$(SRC_DIR)/execution/exec_commands.c \
 	$(SRC_DIR)/execution/free.c \
+	$(SRC_DIR)/execution/handle_redirections.c \
 	$(SRC_DIR)/environment.c \
 	$(SRC_DIR)/builtins/builtin_simple.c
 

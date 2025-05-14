@@ -100,7 +100,7 @@ int	main(int ac,char **av, char **envp)
 		shell.tokens = tokenize(shell.expanded);
 		shell.commands = parse_pipeline(shell.tokens);
 		execute_pipeline(&shell);
-		execute_builtin(shell.tokens);
+		// execute_builtin(shell.tokens);
 		free_shell(&shell);
 	}
 	free_env(&shell);

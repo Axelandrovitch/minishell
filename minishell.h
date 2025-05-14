@@ -19,6 +19,8 @@
 # include <string.h>
 # include <stdbool.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -81,6 +83,8 @@ t_command_block	*set_command_block(t_token *head_token);
 t_command_block	*parse_pipeline(t_token *tokens);
 
 void	execute_pipeline(t_shell *shell);
+
+int	handle_redirections(t_command_block *command_block);
 
 // $
 char	*expand_variables(const char *input);

@@ -92,6 +92,7 @@ void	execute_pipeline(t_shell *shell)
 	int prev_fd = -1;
 	pid_t pid;
 
+	print_command_blocks(current);
 	while (current)
 	{
 		if (current->next && prepare_pipe(fd) == -1)
@@ -105,6 +106,7 @@ void	execute_pipeline(t_shell *shell)
 		}
 		else if (pid == 0)
 		{
+			handle_redirections(current);
 			if (current->next)
 				execute_child(current, prev_fd, fd, shell);
 			else
