@@ -105,7 +105,8 @@ int	main(int ac,char **av, char **envp)
 		printf("command blocks printed\n");
 		// execute_pipeline(&shell);
 		// execute_builtin(shell.tokens);
-		free_shell(&shell);
+		// free_shell(&shell);
+		exit_shell(&shell, 0);
 	}
 	free_env(&shell);
 	return (0);
