@@ -61,6 +61,7 @@ typedef struct	s_command_block
 	t_token	*tokens;
 	t_token	*argv_tokens;
 	t_redir	*redirs;
+	char	**argv;
 	struct s_command_block	*next;
 }	t_command_block;
 
@@ -102,6 +103,7 @@ char	*expand_variables(const char *input);
 // parsing
 
 int	is_redirection(t_token *token);
+void	apply_redirections(t_redir *redir);
 
 // free commands
 

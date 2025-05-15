@@ -103,7 +103,7 @@ int	main(int ac,char **av, char **envp)
 		printf("printing... command blocks\n");
 		print_all_command_blocks(shell.command_blocks);
 		printf("command blocks printed\n");
-		// execute_pipeline(&shell);
+		 execute_pipeline(&shell);
 		// execute_builtin(shell.tokens);
 		// free_shell(&shell);
 		exit_shell(&shell, 0);

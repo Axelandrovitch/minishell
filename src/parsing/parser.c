@@ -166,6 +166,43 @@ t_command_block	*split_tokens_on_pipe(t_token *tokens)
 	return (head);
 }
 
+char	**build_argv_from_tokens(t_token *argv_tokens)
+{
+	char	**argv;
+	t_token	*tmp;
+	int		count;
+	int		i;
+
+	count = 0;
+	tmp = argv_tokens;
+	while (tmp)
+	{
+		if (tmp->type == T_WORD || tmp->type == T_DQUOTE || tmp->type == T_SQUOTE)
+			count++;
+		tmp = tmp->next;
+	}
+	argv = malloc(sizeof(char *) * (count + 1));
+	if (!argv)
+		return NULL;
+	i = 0;
+	while (argv_tokens)
+	{
+		if (argv_tokens->type == T_WORD || argv_tokens->type == T_DQUOTE || argv_tokens->type == T_SQUOTE)
+		{
+			argv[i] = ft_strdup(argv_tokens->value);
+			if (!argv[i])
+			{
+				printf("TODO free all");
+				exit(1);
+			}
+			i++;
+		}
+		argv_tokens = argv_tokens->next;
+	}
+	argv[i] = NULL;
+	return (argv);
+}
+
 void	parse_pipeline(t_shell *shell, t_token *tokens)
 {
 	t_command_block	*head;
@@ -176,6 +213,7 @@ void	parse_pipeline(t_shell *shell, t_token *tokens)
 	while (current)
 	{
 		parse_command_block(current);
+		current->argv = build_argv_from_tokens(current->argv_tokens);
 		current = current->next;
 	}
 	shell->command_blocks = head;

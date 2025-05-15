@@ -73,6 +73,43 @@ void	execute_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
 	exit(EXIT_FAILURE);
 }
 
+void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
+{
+	char	*pathname;
+
+    if (!block->argv || !block->argv[0])
+		exit(1);
+	if (prev_fd != -1)
+	{
+		dup2(prev_fd, STDIN_FILENO);
+		close(prev_fd);
+	}
+	if (fd)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
+    apply_redirections(block->redirs);
+    if (ft_strchr(block->argv[0], '/'))
+        pathname = ft_strdup(block->argv[0]);
+    else
+        pathname = get_pathname(block->argv[0], shell->bin_paths);
+
+    if (!pathname)
+    {
+        ft_putstr_fd("command not found: ", STDERR_FILENO);
+        ft_putendl_fd(block->argv[0], STDERR_FILENO);
+        exit(127);
+    }
+
+    execve(pathname, block->argv, shell->env);
+    perror("execve");
+    exit(EXIT_FAILURE);
+}
+
+
+
 void execute_parent(pid_t pid, int *fd, int *prev_fd)
 {
 	if (*prev_fd != -1)
@@ -84,7 +121,7 @@ void execute_parent(pid_t pid, int *fd, int *prev_fd)
 	}
 	waitpid(pid, NULL, 0);
 }
-
+// testeamos con exec_child
 void	execute_pipeline(t_shell *shell)
 {
 	t_command_block *current = shell->command_blocks;
@@ -107,9 +144,9 @@ void	execute_pipeline(t_shell *shell)
 		{
 			handle_redirections(current);
 			if (current->next)
-				execute_child(current, prev_fd, fd, shell);
+				exec_child(current, prev_fd, fd, shell);
 			else
-				execute_child(current, prev_fd, NULL, shell);
+				exec_child(current, prev_fd, NULL, shell);
 		}
 		else
 		{

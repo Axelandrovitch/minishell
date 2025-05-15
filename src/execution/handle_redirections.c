@@ -26,7 +26,6 @@ static int	handle_fd(enum e_token_type type, char *filename)
 	int	fd;
 
 	fd = -1;
-	printf("DEBUG: handle_fd() called with type = %d, filename = %s\n", type, filename);
 	if (type == T_REDIR_OUT)
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == T_REDIR_APPEND)
@@ -38,9 +37,31 @@ static int	handle_fd(enum e_token_type type, char *filename)
 		printf("Heredoc TODO\n");
 		exit(0);
 	}
-	printf(" fd value before return in handle_fd: %d\n", fd);
 	return (fd);
 }
+
+// Version que corresponde  a la nueva estructura de datos
+void	apply_redirections(t_redir *redir)
+{ 
+	int	fd;
+
+	while (redir)
+	{
+		fd = handle_fd(redir->type, redir->filename);
+		if (fd == -1)
+		{
+			exit(1); // esto se tendria que gestionar en la funcion que da su valor al file descriptor y anadir perror
+		}
+		if (redir->type == T_REDIR_OUT || redir->type == T_REDIR_APPEND)
+				dup2(fd, STDOUT_FILENO);
+		else if (redir->type == T_REDIR_IN || redir->type == T_HEREDOC)
+				dup2(fd, STDIN_FILENO);
+		close(fd);
+		redir = redir->next;
+	}
+}
+
+
 
 int	handle_redirections(t_command_block *command_block)
 {
