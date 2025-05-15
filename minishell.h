@@ -49,16 +49,25 @@ typedef struct	s_token
 
 }	t_token;
 
+typedef struct	s_redir
+{
+	t_token_type	type;
+	char	*filename;
+	struct s_redir	*next;
+}	t_redir;
+
 typedef struct	s_command_block
 {
 	t_token	*tokens;
+	t_token	*argv_tokens;
+	t_redir	*redirs;
 	struct s_command_block	*next;
 }	t_command_block;
 
 typedef	struct	s_shell
 {
 	t_token	*tokens;
-	t_command_block	*commands;
+	t_command_block	*command_blocks;
 	char	**env;
 	char	**bin_paths;
 	char	*input;
@@ -80,7 +89,7 @@ t_token	*tokenize(const char *line);
 
 t_command_block	*set_command_block(t_token *head_token);
 
-t_command_block	*parse_pipeline(t_token *tokens);
+void	parse_pipeline(t_shell *shell, t_token *tokens);
 
 void	execute_pipeline(t_shell *shell);
 
@@ -89,6 +98,10 @@ int	handle_redirections(t_command_block *command_block);
 // $
 char	*expand_variables(const char *input);
 
+
+// parsing
+
+int	is_redirection(t_token *token);
 
 // free commands
 
@@ -108,6 +121,7 @@ char	*get_pathname(char *command, char **path_variable);
 // debugging functions
 void	print_vector(char **vec);
 void	print_command_blocks(t_command_block *head_block);
+void	print_all_command_blocks(t_command_block *head);
 
 // memory related functions
 void	free_vector(char **vec);

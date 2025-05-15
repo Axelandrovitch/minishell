@@ -12,63 +12,64 @@
 
 
 #include "../minishell.h"
+#include <stdio.h>
 #include <stdlib.h>
 
-// Solo para testear
-void print_tokens(t_token *head)
-{
-    t_token *current = head;
-
-    while (current != NULL)
-    {
-        switch (current->type)
-        {
-            case T_WORD:
-                printf("T_WORD       : ");
-                break;
-            case T_PIPE:
-                printf("T_PIPE       : ");
-                break;
-            case T_REDIR_IN:
-                printf("T_REDIR_IN   : ");
-                break;
-            case T_REDIR_OUT:
-                printf("T_REDIR_OUT  : ");
-                break;
-            case T_REDIR_APPEND:
-                printf("T_REDIR_APPEND: ");
-                break;
-            case T_HEREDOC:
-                printf("T_HEREDOC    : ");
-                break;
-            case T_DQUOTE:
-                printf("T_DQUOTE     : ");
-                break;
-            case T_SQUOTE:
-                printf("T_SQUOTE     : ");
-                break;
-            case T_EMPTY:
-                printf("T_EMPTY      : ");
-                break;
-            default:
-                printf("UNKNOWN      : ");
-                break;
-        }
-
-        if (current->value)
-            printf("\"%s\"\n", current->value);
-        else
-            printf("(null)\n");
-
-        current = current->next;
-    }
-}
+// // Solo para testear
+// void print_tokens(t_token *head)
+// {
+//     t_token *current = head;
+//
+//     while (current != NULL)
+//     {
+//         switch (current->type)
+//         {
+//             case T_WORD:
+//                 printf("T_WORD       : ");
+//                 break;
+//             case T_PIPE:
+//                 printf("T_PIPE       : ");
+//                 break;
+//             case T_REDIR_IN:
+//                 printf("T_REDIR_IN   : ");
+//                 break;
+//             case T_REDIR_OUT:
+//                 printf("T_REDIR_OUT  : ");
+//                 break;
+//             case T_REDIR_APPEND:
+//                 printf("T_REDIR_APPEND: ");
+//                 break;
+//             case T_HEREDOC:
+//                 printf("T_HEREDOC    : ");
+//                 break;
+//             case T_DQUOTE:
+//                 printf("T_DQUOTE     : ");
+//                 break;
+//             case T_SQUOTE:
+//                 printf("T_SQUOTE     : ");
+//                 break;
+//             case T_EMPTY:
+//                 printf("T_EMPTY      : ");
+//                 break;
+//             default:
+//                 printf("UNKNOWN      : ");
+//                 break;
+//         }
+//
+//         if (current->value)
+//             printf("\"%s\"\n", current->value);
+//         else
+//             printf("(null)\n");
+//
+//         current = current->next;
+//     }
+// }
 
 void	init_minishell (t_shell *shell, char **envp)
 {
 	shell->env = NULL;
 	shell->bin_paths = NULL;
-	shell->commands = NULL;
+	shell->command_blocks= NULL;
 	shell->input = NULL;
 	shell->expanded = NULL;
 	shell->tokens = NULL;
@@ -98,8 +99,11 @@ int	main(int ac,char **av, char **envp)
 			add_history(shell.input);
 		shell.expanded = expand_variables(shell.input);
 		shell.tokens = tokenize(shell.expanded);
-		shell.commands = parse_pipeline(shell.tokens);
-		execute_pipeline(&shell);
+		parse_pipeline(&shell, shell.tokens);
+		printf("printing... command blocks\n");
+		print_all_command_blocks(shell.command_blocks);
+		printf("command blocks printed\n");
+		// execute_pipeline(&shell);
 		// execute_builtin(shell.tokens);
 		free_shell(&shell);
 	}

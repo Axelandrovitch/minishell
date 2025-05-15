@@ -13,7 +13,7 @@
 #include "../../minishell.h"
 #include <unistd.h>
 
-static int	is_redirection(t_token *token)
+int	is_redirection(t_token *token)
 {
 	if (token->type == T_REDIR_IN || token->type == T_REDIR_APPEND 
 			|| token->type == T_REDIR_OUT || token->type == T_HEREDOC)

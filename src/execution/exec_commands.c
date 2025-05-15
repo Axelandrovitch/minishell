@@ -87,12 +87,11 @@ void execute_parent(pid_t pid, int *fd, int *prev_fd)
 
 void	execute_pipeline(t_shell *shell)
 {
-	t_command_block *current = shell->commands;
+	t_command_block *current = shell->command_blocks;
 	int fd[2];
 	int prev_fd = -1;
 	pid_t pid;
 
-	print_command_blocks(current);
 	while (current)
 	{
 		if (current->next && prepare_pipe(fd) == -1)

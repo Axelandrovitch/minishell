@@ -42,10 +42,10 @@ void	free_shell(t_shell	*shell)
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;
 	}
-	if (shell->commands)
+	if (shell->command_blocks)
 	{
-		free_command_blocks(shell->commands);
-		shell->commands = NULL;
+		free_command_blocks(shell->command_blocks);
+		shell->command_blocks= NULL;
 	}
 }
 
