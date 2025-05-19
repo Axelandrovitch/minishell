@@ -90,8 +90,6 @@ t_token	*tokenize(const char *line);
 
 t_command_block	*set_command_block(t_token *head_token);
 
-void	parse_pipeline(t_shell *shell, t_token *tokens);
-
 void	execute_pipeline(t_shell *shell);
 
 int	handle_redirections(t_command_block *command_block);
@@ -106,6 +104,8 @@ int	check_syntax(t_token *tokens);
 int	is_redirection(t_token *token);
 
 void	apply_redirections(t_redir *redir);
+
+void	parse_pipeline(t_shell *shell, t_token *tokens);
 
 // free commands
 
@@ -128,8 +128,6 @@ char	*get_pathname(char *command, char **path_variable);
 void	print_vector(char **vec);
 void	print_command_blocks(t_command_block *head_block);
 void	print_all_command_blocks(t_command_block *head);
-
-// memory related functions
 
 // builtins
 int		execute_builtin(t_token *tokens);
