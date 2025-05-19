@@ -226,8 +226,6 @@ void	print_command_block(t_command_block *block)
 
 	static int block_num = 1;
 	printf("=== Command Block %d ===\n", block_num++);
-	
-	// Print argv tokens
 	printf("ARGV: ");
 	arg = block->argv_tokens;
 	if (!arg)
@@ -238,8 +236,6 @@ void	print_command_block(t_command_block *block)
 		arg = arg->next;
 	}
 	printf("\n");
-
-	// Print redirections
 	printf("REDIRS:\n");
 	redir = block->redirs;
 	if (!redir)
