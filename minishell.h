@@ -101,8 +101,10 @@ char	*expand_variables(const char *input);
 
 
 // parsing
+int	check_syntax(t_token *tokens);
 
 int	is_redirection(t_token *token);
+
 void	apply_redirections(t_redir *redir);
 
 // free commands

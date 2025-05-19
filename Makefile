@@ -29,6 +29,7 @@ SRC := \
 	$(SRC_DIR)/parsing/aux_token.c \
 	$(SRC_DIR)/parsing/parse.c \
 	$(SRC_DIR)/parsing/parser.c \
+	$(SRC_DIR)/parsing/parser2.c \
 	$(SRC_DIR)/execution/exec_commands.c \
 	$(SRC_DIR)/execution/free.c \
 	$(SRC_DIR)/execution/handle_redirections.c \

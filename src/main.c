@@ -99,14 +99,14 @@ int	main(int ac,char **av, char **envp)
 			add_history(shell.input);
 		shell.expanded = expand_variables(shell.input);
 		shell.tokens = tokenize(shell.expanded);
+		if (check_syntax(shell.tokens))
+			exit_shell(&shell, EXIT_FAILURE);
 		parse_pipeline(&shell, shell.tokens);
-		printf("printing... command blocks\n");
 		print_all_command_blocks(shell.command_blocks);
-		printf("command blocks printed\n");
-		 execute_pipeline(&shell);
+		execute_pipeline(&shell);
 		// execute_builtin(shell.tokens);
 		// free_shell(&shell);
-		exit_shell(&shell, 0);
+		// exit_shell(&shell, 0);
 	}
 	free_env(&shell);
 	return (0);

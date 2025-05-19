@@ -61,8 +61,6 @@ void	apply_redirections(t_redir *redir)
 	}
 }
 
-
-
 int	handle_redirections(t_command_block *command_block)
 {
 	t_token	*token;
@@ -83,9 +81,9 @@ int	handle_redirections(t_command_block *command_block)
 			}
 			if (file_token->type != T_WORD)
 			{
-				ft_putstr_fd("minishell: syntax error near `", 2);
-				ft_putstr_fd(file_token->value, 2);
-				ft_putstr_fd("`\n", 2);
+				ft_putstr_fd("minishell: syntax error near `", STDERR_FILENO);
+				ft_putstr_fd(file_token->value, STDERR_FILENO);
+				ft_putstr_fd("`\n", STDERR_FILENO);
 				return (1);
 			}
 			fd = handle_fd(token->type, file_token->value);
