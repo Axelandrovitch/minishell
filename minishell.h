@@ -109,6 +109,8 @@ void	apply_redirections(t_redir *redir);
 
 // free commands
 
+void	free_vector(char **vec);
+
 void	free_shell(t_shell	*shell);
 
 void	free_env(t_shell *shell);
@@ -128,7 +130,6 @@ void	print_command_blocks(t_command_block *head_block);
 void	print_all_command_blocks(t_command_block *head);
 
 // memory related functions
-void	free_vector(char **vec);
 
 // builtins
 int		execute_builtin(t_token *tokens);

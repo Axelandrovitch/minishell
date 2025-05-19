@@ -35,6 +35,20 @@ int	pipe_error(t_token *token, int index)
 	return (0);
 }
 
+int	redirection_error(t_token *token)
+{
+	if (is_redirection(token))
+	{
+		if (!token->next)
+			return (1);
+		if (token->next->type != T_WORD &&
+				token->next->type != T_SQUOTE &&
+				token->next->type != T_DQUOTE)
+			return (1);
+	}
+	return (0);
+}
+
 int	check_syntax(t_token *tokens)
 {
 	t_token	*current;
@@ -45,6 +59,8 @@ int	check_syntax(t_token *tokens)
 	while (current)
 	{
 		if (pipe_error(current, index))
+			return (print_syntax_error(current));
+		if (redirection_error(current))
 			return (print_syntax_error(current));
 		index++;
 		current = current->next;
