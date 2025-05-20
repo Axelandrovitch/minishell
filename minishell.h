@@ -49,14 +49,13 @@ typedef struct	s_token
 
 }	t_token;
 
-<<<<<<< HEAD
 typedef struct	s_env
 {
 	char			*key;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
-=======
+
 typedef struct	s_redir
 {
 	t_token_type	type;
@@ -84,7 +83,6 @@ typedef	struct	s_shell
 	int		infile_fd;
 	int		outfile_fd;
 }	t_shell;
->>>>>>> fb95366396c9ba71d4fb378e0231f226273c7b5a
 
 //TOKEN
 t_token	*new_token(t_token_type type, const char *value, int len);
