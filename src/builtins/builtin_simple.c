@@ -12,6 +12,58 @@
 
 #include "../../minishell.h"
 
+static int	is_valid_nb(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '+'  || str[i] == '-')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static void	exit_with_error(char *arg)
+{
+	ft_putstr_fd("bash: exit: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	exit(255);
+}
+
+int	builtin_exit(char **args)
+{
+	int		exit_code;
+	long	long_exit_code;
+	int		arg_count;
+
+	printf("exit\n");
+	if (!args[1])
+		exit(0);
+	if (!is_valid_nb(args[1]))
+		exit_with_error(args[1]);
+	arg_count = 0;
+	while (args[arg_count])
+		arg_count++;
+	if (arg_count > 2)
+	{
+		ft_putstr_fd("bash: exit: too many arguments\n", 2);
+		return (1);
+	}
+	long_exit_code = ft_atol(args[1]);
+	exit_code = long_exit_code % 256;
+	if (exit_code < 0)
+		exit_code += 256;
+	exit(exit_code);
+}
+
 int	builtin_pwd(char **args)
 {
 	char	*cwd; 
@@ -26,45 +78,3 @@ int	builtin_pwd(char **args)
 	free(cwd);
 	return (0);
 }
-
-int	builtin_echo(char **args)
-{
-	int	i;
-	int	newline;
-
-	i = 1;
-	newline = 1;
-	while (args[i] && args[i][0] == '-' && args[i] && ft_strncmp(args[i], "-n", 2) == 0)
-	{
-		newline = 0;
-		i++;
-	}
-	while (args[i])
-	{
-		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline)
-		printf("\n");
-	return (0);
-}
-
-int	builtin_exit(char **args)
-{
-	int	exit_code;
-
-	if (args[1])
-	{
-		exit_code = ft_atoi(args[1]);
-		if (exit_code < 0)
-			exit_code = 255;
-	}
-	else
-		exit_code = 0;
-	printf("exit\n");
-	exit(exit_code);
-}
-
-

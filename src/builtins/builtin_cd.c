@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/13 14:45:38 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:56:58 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,10 @@ int	builtin_cd(char **args, char **env) // JUST CAN HAVE 1 ARG
 		if (chdir(home) == -1)
 			return (perror("cd"), 1);
 	}
-	else if (ft_strcmp(args[1], "-") == 0) // Si el argumento es "-", ir a OLDPWD
+	else if (ft_strcmp(args[1], "-") == 0)
 	{
 		if (go_to_path(env, "OLDPWD") != 0)
 			return (1);
-		
 		// Mostrar el directorio actual cuando usamos cd -
 		home = get_env_path("PWD", env);
 		if (home)
@@ -137,8 +136,6 @@ int	builtin_cd(char **args, char **env) // JUST CAN HAVE 1 ARG
 			return (1);
 		}
 	}
-	
-	// Actualizar PWD y OLDPWD después de un cambio exitoso
 	update_pwd_vars(env);
 	return (0);
 }

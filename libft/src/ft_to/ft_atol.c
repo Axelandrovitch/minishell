@@ -1,36 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 16:03:49 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/14 13:00:27 by dcampas-         ###   ########.fr       */
+/*   Created: 2025/05/14 12:55:21 by dcampas-          #+#    #+#             */
+/*   Updated: 2025/05/14 12:57:13 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/libft.h"
 
-int	ft_atoi(const char *s)
+long	ft_atol(const char *str)
 {
+	long	result;
 	int		sign;
-	int		result;
+	int		i;
 
-	sign = 1;
 	result = 0;
-	while (*s == 32 || (*s >= 9 && *s <= 13))
-		s++;
-	if (*s == '+' || *s == '-')
+	sign = 1;
+	i = 0;
+
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		i++;
+
+	if (str[i] == '+' || str[i] == '-')
 	{
-		if (*s == '-')
+		if (str[i] == '-')
 			sign = -1;
-		s++;
+		i++;
 	}
-	while (*s >= '0' && *s <= '9')
+
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		result = result * 10 + (*s - '0');
-		s++;
+		result = result * 10 + (str[i] - '0');
+		i++;
 	}
+
 	return (sign * result);
 }

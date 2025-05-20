@@ -40,7 +40,7 @@ static char	*append_str(char *str, const char *to_append)
 }
 
 // Extraer y exandir la vble de entorno
-static char	*extract_and_expand(const char *input, int *pos)
+static char	*extract_and_expand(const char *input, int *pos, )
 {
 	char	var[256];
 	int		i;

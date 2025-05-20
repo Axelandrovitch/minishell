@@ -6,13 +6,13 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:15:45 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/13 13:15:47 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:58:14 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char **copy_env(char **env)
+/*char **copy_env(char **env)
 {
 	int		i;
 	char	**copy;
@@ -33,7 +33,7 @@ char **copy_env(char **env)
 	}
 	copy[i] = NULL;
 	return (copy);
-}
+}*/
 
 // Busca una variable de entorno en el array envp y devuelve un puntero al valor de
 // esa variable.
