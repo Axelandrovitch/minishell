@@ -32,21 +32,6 @@ int	is_builtin(const char *command)
 	return (0);
 }
 
-/* void	ft_putstr_fd(char *s, int fd)
-{
-	while (*s)
-	{
-		ft_putchar_fd(*s, fd);
-		s++;
-	}
-}
-
-void	ft_putendl_fd(char *s, int fd)
-{
-	ft_putstr_fd(s, fd);
-	write(fd, "\n", 1);
-} */
-
 int prepare_pipe(int *fd)
 {
 	if (pipe(fd) == -1)
@@ -55,42 +40,6 @@ int prepare_pipe(int *fd)
 		return (-1);
 	}
 	return (0);
-}
-
-void	execute_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
-{
-	char	**args;
-	char	*pathname;
-
-	args = get_args_from_tokens(block->tokens);
-	if (!args)
-		exit(1);
-	if (prev_fd != -1)
-	{
-		dup2(prev_fd, STDIN_FILENO);
-		close(prev_fd);
-	}
-	if (fd)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-	}
-	if (ft_strchr(args[0], '/'))
-		pathname = ft_strdup(args[0]);
-	else
-		pathname = get_pathname(args[0], shell->bin_paths);
-	if (!pathname)
-	{
-		ft_putstr_fd("command not found: ", STDERR_FILENO);
-		ft_putendl_fd(args[0], STDERR_FILENO);
-		free_vector(args);
-		exit(127);
-	}
-	execve(pathname, args, shell->env);
-	perror("execve");
-	free_vector(args);
-	exit(EXIT_FAILURE);
 }
 
 void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
@@ -147,7 +96,6 @@ void execute_parent(pid_t pid, int *fd, int *prev_fd)
 	waitpid(pid, NULL, 0);
 }
 
-// testeamos con exec_child
 void	execute_pipeline(t_shell *shell)
 {
 	t_command_block *current = shell->command_blocks;
@@ -157,6 +105,12 @@ void	execute_pipeline(t_shell *shell)
 
 	while (current)
 	{
+		if (!current->next && is_builtin(current->argv[0]))
+		{
+			handle_redirections(current);
+			execute_builtin(current->argv, shell);
+			return;
+		}
 		if (current->next && prepare_pipe(fd) == -1)
 			return;
 
@@ -181,7 +135,7 @@ void	execute_pipeline(t_shell *shell)
 			else
 				execute_parent(pid, NULL, &prev_fd);
 		}
+
 		current = current->next;
 	}
 }
-
