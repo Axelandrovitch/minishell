@@ -12,12 +12,20 @@
 
 #include "../../minishell.h"
 
+static void	exit_with_error(char *arg)
+{
+	ft_putstr_fd("bash: exit: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	exit(2);
+}
+
 static int	is_valid_nb(char *str)
 {
 	int	i;
 
 	i = 0;
-	if (str[i] == '+'  || str[i] == '-')
+	if (str[i] == '+' || str[i] == '-')
 		i++;
 	if (!str[i])
 		return (0);
@@ -30,12 +38,33 @@ static int	is_valid_nb(char *str)
 	return (1);
 }
 
-static void	exit_with_error(char *arg)
+static int	is_long_overflow(const char *str)
 {
-	ft_putstr_fd("bash: exit: ", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd(": numeric argument required\n", 2);
-	exit(255);
+	int		i;
+	int		sign;
+	long	result;
+
+	i = 0;
+	sign = 1;
+	result = 0;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (1);
+		if ((result > LONG_MAX / 10)
+			|| (result == LONG_MAX / 10 && ((sign == 1 && (str[i] - '0') > 7)
+					|| (sign == -1 && (str[i] - '0') > 8))))
+			return (1);
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (0);
 }
 
 int	builtin_exit(char **args)
@@ -47,7 +76,7 @@ int	builtin_exit(char **args)
 	printf("exit\n");
 	if (!args[1])
 		exit(0);
-	if (!is_valid_nb(args[1]))
+	if (!is_valid_nb(args[1]) || is_long_overflow(args[1]))
 		exit_with_error(args[1]);
 	arg_count = 0;
 	while (args[arg_count])
@@ -64,16 +93,16 @@ int	builtin_exit(char **args)
 	exit(exit_code);
 }
 
+// PWD
 int	builtin_pwd(char **args)
 {
-	char	*cwd; 
+	char	*cwd;
 
 	if (args[1])
 		return (printf("pwd: too many arguments\n"), 1);
-	cwd = getcwd(NULL, 0); //Get the current working directory
+	cwd = getcwd(NULL, 0);
 	if (!cwd)
-		return (perror("getcwd"),1);
-
+		return (perror("getcwd"), 1);
 	printf("%s\n", cwd);
 	free(cwd);
 	return (0);

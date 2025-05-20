@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:02:16 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/20 15:52:43 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:49:00 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	print_sorted_env(char **env)
 	int		i;
 	int		j;
 	char	*temp;
-	
+
 	i = 0;
 	while (env[i] && env[i + 1])
 	{
@@ -71,13 +71,13 @@ static int	add_or_update_env(char **env, char *key, char *value)
 	int		i;
 	int		key_len;
 	char	*new_var;
-	
+
 	key_len = ft_strlen(key);
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], key, key_len) == 0 && 
-			(env[i][key_len] == '=' || env[i][key_len] == '\0'))
+		if (ft_strncmp(env[i], key, key_len) == 0
+			&& (env[i][key_len] == '=' || env[i][key_len] == '\0'))
 		{
 			if (value)
 			{
@@ -122,10 +122,14 @@ int	builtin_export(char **args, t_shell *shell)
 			while (args[i][eq_pos] && args[i][eq_pos] != '=')
 				eq_pos++;
 			key = ft_substr(args[i], 0, eq_pos);
+			if (!key)
+				return (1);
 			if (args[i][eq_pos] == '=')
 				value = ft_strdup(args[i] + eq_pos + 1);
 			else
 				value = NULL;
+			if (value == NULL && args[i][eq_pos] == '=')
+				return (1);
 			add_or_update_env(shell->env, key, value);
 			free(key);
 			free(value);

@@ -47,7 +47,7 @@ char	*ft_getenv(t_shell *shell, char *var)
 
 	i = 0;
 	var_len = ft_strlen(var);
-	while(shell->env[i])
+	while (shell->env[i])
 	{
 		if (ft_strncmp(shell->env[i], var, var_len) == 0
 			&& shell->env[i][var_len] == '=')
@@ -136,7 +136,7 @@ char	*expand_variables(const char *input, t_shell *shell)
 		}
 		// Si encontramos un $ y no estamos en comillas simples
 		else if (input[i] == '$' && !in_single_q && input[i + 1]
-				&& (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
+			&& (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
 		{
 			expanded_var = extract_and_expand(input, &i, shell);
 			result = append_str(result, expanded_var);
@@ -149,4 +149,3 @@ char	*expand_variables(const char *input, t_shell *shell)
 	}
 	return (result);
 }
-

@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:46:01 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/20 16:07:29 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:01:24 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,24 @@
 
 int	is_builtin(const char *command)
 {
-	if (!strcmp(command, "exit"))
+	if (!ft_strcmp(command, "exit"))
 		return (1);
-	if (!strcmp(command, "echo"))
+	if (!ft_strcmp(command, "echo"))
 		return (1);
-	if (!strcmp(command, "cd"))
+	if (!ft_strcmp(command, "cd"))
 		return (1);
-	if (!strcmp(command, "pwd"))
+	if (!ft_strcmp(command, "pwd"))
 		return (1);
-	if (!strcmp(command, "export"))
+	if (!ft_strcmp(command, "export"))
 		return (1);
-	if (!strcmp(command, "unset"))
+	if (!ft_strcmp(command, "unset"))
 		return (1);
-	if (!strcmp(command, "env"))
+	if (!ft_strcmp(command, "env"))
 		return (1);
 	return (0);
 }
 
-int prepare_pipe(int *fd)
+int	prepare_pipe(int *fd)
 {
 	if (pipe(fd) == -1)
 	{
@@ -42,11 +42,14 @@ int prepare_pipe(int *fd)
 	return (0);
 }
 
-void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
+void	execute_child(t_command_block *block, int prev_fd,
+						int *fd, t_shell *shell)
 {
+	char	**args;
 	char	*pathname;
 
-    if (!block->argv || !block->argv[0])
+	args = get_args_from_tokens(block->tokens);
+	if (!args)
 		exit(1);
 	if (prev_fd != -1)
 	{
@@ -59,7 +62,41 @@ void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-    apply_redirections(block->redirs);
+	if (ft_strchr(args[0], '/'))
+		pathname = ft_strdup(args[0]);
+	else
+		pathname = get_pathname(args[0], shell->bin_paths);
+	if (!pathname)
+	{
+		ft_putstr_fd("command not found: ", STDERR_FILENO);
+		ft_putendl_fd(args[0], STDERR_FILENO);
+		free_vector(args);
+		exit(127);
+	}
+	execve(pathname, args, shell->env);
+	perror("execve");
+	free_vector(args);
+	exit(EXIT_FAILURE);
+}
+
+void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
+{
+	char	*pathname;
+
+	if (!block->argv || !block->argv[0])
+		exit(1);
+	if (prev_fd != -1)
+	{
+		dup2(prev_fd, STDIN_FILENO);
+		close(prev_fd);
+	}
+	if (fd)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
+	apply_redirections(block->redirs);
 	if (is_builtin(block->argv[0]))
 	{
 		execute_builtin(block->argv, shell);
@@ -69,22 +106,18 @@ void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
 		pathname = ft_strdup(block->argv[0]);
 	else
 		pathname = get_pathname(block->argv[0], shell->bin_paths);
-
 	if (!pathname)
 	{
 		ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
 		ft_putendl_fd(block->argv[0], STDERR_FILENO);
 		exit_shell(shell, 127);
 	}
-
 	execve(pathname, block->argv, shell->env);
 	perror("execve");
 	exit(EXIT_FAILURE);
-	}
+}
 
-
-
-void execute_parent(pid_t pid, int *fd, int *prev_fd)
+void	execute_parent(pid_t pid, int *fd, int *prev_fd)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
@@ -96,24 +129,20 @@ void execute_parent(pid_t pid, int *fd, int *prev_fd)
 	waitpid(pid, NULL, 0);
 }
 
+// testeamos con exec_child
 void	execute_pipeline(t_shell *shell)
 {
-	t_command_block *current = shell->command_blocks;
-	int fd[2];
-	int prev_fd = -1;
-	pid_t pid;
+	t_command_block	*current;
+	int				fd[2];
+	int				prev_fd;
+	pid_t			pid;
 
+	current = shell->command_blocks;
+	prev_fd = -1;
 	while (current)
 	{
-		if (!current->next && is_builtin(current->argv[0]))
-		{
-			handle_redirections(current);
-			execute_builtin(current->argv, shell);
-			return;
-		}
 		if (current->next && prepare_pipe(fd) == -1)
-			return;
-
+			return ;
 		pid = fork();
 		if (pid == -1)
 		{
@@ -135,7 +164,6 @@ void	execute_pipeline(t_shell *shell)
 			else
 				execute_parent(pid, NULL, &prev_fd);
 		}
-
 		current = current->next;
 	}
 }

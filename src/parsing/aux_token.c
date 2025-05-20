@@ -54,9 +54,8 @@ void	free_tokens(t_token *token)
 	}
 }
 
-
 // Converts the token type to a string for debugging purposes !!!DELETE!!!
-const char *token_type_to_string(t_token_type type)
+const char	*token_type_to_string(t_token_type type)
 {
 	switch (type)
 	{
@@ -75,13 +74,14 @@ const char *token_type_to_string(t_token_type type)
 
 void	print_tokens(t_token *token)
 {
-	int	i = 0;
-
+	int	i; 
+	
+	i = 0;
 	while (token)
 	{
-		printf("TOKEN[%d]\n\tType: %s --> %s \n", i, token_type_to_string(token->type), token->value);
+		printf("TOKEN[%d]\n\tType: %s --> %s \n", i,
+			token_type_to_string(token->type), token->value);
 		token = token->next;
-
 		i++;
 	}
 }
@@ -94,11 +94,11 @@ static int	count_tokens(t_token *tokens)
 	count = 0;
 	while (tokens)
 	{
-		if (tokens->type == T_WORD || tokens->type == T_DQUOTE || tokens->type == T_SQUOTE)
+		if (tokens->type == T_WORD || tokens->type == T_DQUOTE
+			|| tokens->type == T_SQUOTE)
 			count++;
 		tokens = tokens->next;
 	}
-	//printf("Count: %d\n", count);
 	return (count);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:57:42 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/20 15:40:51 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:02:54 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 int	is_redirection(t_token *token)
 {
-	if (token->type == T_REDIR_IN || token->type == T_REDIR_APPEND 
-			|| token->type == T_REDIR_OUT || token->type == T_HEREDOC)
+	if (token->type == T_REDIR_IN || token->type == T_REDIR_APPEND
+		|| token->type == T_REDIR_OUT || token->type == T_HEREDOC)
 		return (1);
 	return (0);
 }
@@ -42,7 +42,7 @@ static int	handle_fd(enum e_token_type type, char *filename)
 
 // Version que corresponde  a la nueva estructura de datos
 void	apply_redirections(t_redir *redir)
-{ 
+{
 	int	fd;
 
 	while (redir)
@@ -53,9 +53,9 @@ void	apply_redirections(t_redir *redir)
 			exit(1); // esto se tendria que gestionar en la funcion que da su valor al file descriptor y anadir perror
 		}
 		if (redir->type == T_REDIR_OUT || redir->type == T_REDIR_APPEND)
-				dup2(fd, STDOUT_FILENO);
+			dup2 (fd, STDOUT_FILENO);
 		else if (redir->type == T_REDIR_IN || redir->type == T_HEREDOC)
-				dup2(fd, STDIN_FILENO);
+			dup2 (fd, STDIN_FILENO);
 		close(fd);
 		redir = redir->next;
 	}
@@ -76,7 +76,7 @@ int	handle_redirections(t_command_block *command_block)
 			file_token = token->next;
 			if (!file_token)
 			{
-				ft_putstr_fd("minishell: syntax error near `newline`\n",STDERR_FILENO);
+				ft_putstr_fd ("minishell: syntax error near `newline`\n", STDERR_FILENO);
 				return (1);
 			}
 			if (file_token->type != T_WORD)

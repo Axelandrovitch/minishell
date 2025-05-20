@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:41:00 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/20 15:48:42 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:03:57 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ char	*get_pathname(char *command, char **path_variable)
 int	count_environment_vars(char **envp)
 {
 	int	count;
-	
+
 	count = 0;
 	while (envp[count] != NULL)
 		count++;
@@ -118,8 +118,8 @@ int	count_environment_vars(char **envp)
 
 char	**copy_environment(char **envp)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
 	char	**env;
 	char	*current_var;
 
@@ -139,4 +139,3 @@ char	**copy_environment(char **envp)
 	env[i] = NULL;
 	return (env);
 }
-

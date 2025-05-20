@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:15:42 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/13 20:12:17 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:49:43 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static int	get_env_index(char **env, const char *key)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], key, key_len) == 0 &&
-			(env[i][key_len] == '=' || env[i][key_len] == '\0'))
+		if (ft_strncmp(env[i], key, key_len) == 0
+			&& (env[i][key_len] == '=' || env[i][key_len] == '\0'))
 			return (i);
 		i++;
 	}

@@ -15,7 +15,7 @@
 int	builtin_env(char **args, char **env)
 {
 	int	i;
-	
+
 	if (args[1])
 	{
 		printf("env: too many arguments\n");
@@ -30,14 +30,3 @@ int	builtin_env(char **args, char **env)
 	}
 	return (0);
 }
-
-
-
-/*
-int main(int argc, char **argv, char **envp)
-{
-	(void)argc;
-	(void)argv;
-	return (builtin_env(envp));
-}
-*/

@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:50:09 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/20 15:40:50 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:52:59 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	free_command_blocks(t_command_block *command_blocks)
 {
 	t_command_block	*tmp;
 
-	while(command_blocks)
+	while (command_blocks)
 	{
 		tmp = command_blocks->next;
 		free_tokens(command_blocks->tokens);
@@ -63,7 +63,7 @@ void	free_shell(t_shell	*shell)
 	if (shell->command_blocks)
 	{
 		free_command_blocks(shell->command_blocks);
-		shell->command_blocks= NULL;
+		shell->command_blocks = NULL;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/20 15:24:39 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:51:19 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,17 @@ int	update_env_var(char **env, const char *var_name, const char *value)
 	env_var = ft_strjoin(var_name, value);
 	if (!env_var)
 		return (perror("malloc"), 1);
-	
 	i = 0;
 	found = 0;
 	while (env[i])
-	{	
-		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0 && 
-			env[i][ft_strlen(var_name)] == '=')
+	{
+		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0
+			&& env[i][ft_strlen(var_name)] == '=')
 		{
 			free(env[i]);
 			env[i] = env_var;
 			found = 1;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -66,20 +65,12 @@ static int	update_pwd_vars(char **env)
 	char	*new_pwd;
 	int		ret;
 
-	// Obtener PWD actual antes de cambiar
 	old_pwd = get_env_path("PWD", env);
 	if (old_pwd)
-	{
-		// Actualizar OLDPWD con el valor anterior de PWD
 		ret = update_env_var(env, "OLDPWD=", old_pwd);
-	}
-
-	// Obtener el directorio actual después del cambio
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
 		return (perror("getcwd"), 1);
-
-	// Actualizar PWD con el nuevo directorio
 	ret = update_env_var(env, "PWD=", new_pwd);
 	free(new_pwd);
 	return (0);
@@ -90,15 +81,15 @@ static int	go_to_path(char **env, const char *target)
 	char	*env_path;
 	int		ret;
 
-	env_path = get_env_path(target, env); // Obtiene el valor de la variable de entorno
+	env_path = get_env_path(target, env);
 	if (!env_path)
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(target, 2);
 		ft_putendl_fd(" not set", 2);
-		return (1); // No se encontró el valor de la variable
+		return (1);
 	}
-	ret = chdir(env_path); // Cambiar al directorio especificado
+	ret = chdir(env_path);
 	if (ret == -1)
 	{
 		perror("cd");
@@ -111,7 +102,7 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 {
 	char	*home;
 
-	if (!args[1]) // Si no se pasa argumento, cambiar al directorio HOME
+	if (!args[1])
 	{
 		home = get_env_path("HOME", shell->env);
 		if (!home)
@@ -123,16 +114,15 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 	{
 		if (go_to_path(shell->env, "OLDPWD") != 0)
 			return (1);
-		// Mostrar el directorio actual cuando usamos cd -
 		home = get_env_path("PWD", shell->env);
 		if (home)
 			ft_putendl_fd(home, 1);
 	}
-	else // De lo contrario, cambiar al directorio indicado en args[1]
+	else
 	{
 		if (chdir(args[1]) == -1)
 		{
-			print_error((const char **)args); // Mostrar el error adecuado
+			print_error((const char **)args);
 			return (1);
 		}
 	}

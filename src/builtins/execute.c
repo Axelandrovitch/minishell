@@ -16,7 +16,6 @@ int	execute_builtin(char **argv, t_shell *shell)
 {
 	if (!argv || !argv[0])
 		return (1);
-
 	if (!argv[0])
 		return (printf("Error: No command provided\n"), free_vector(argv), 1);
 	if (strcmp(argv[0], "pwd") == 0)
