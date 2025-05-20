@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:46:01 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/20 16:00:23 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:07:29 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 
 int	is_builtin(const char *command)
 {
-	if (strcmp(command, "exit"))
+	if (!strcmp(command, "exit"))
 		return (1);
-	if (strcmp(command, "echo"))
+	if (!strcmp(command, "echo"))
 		return (1);
-	if (strcmp(command, "cd"))
+	if (!strcmp(command, "cd"))
 		return (1);
-	if (strcmp(command, "pwd"))
+	if (!strcmp(command, "pwd"))
 		return (1);
-	if (strcmp(command, "export"))
+	if (!strcmp(command, "export"))
 		return (1);
-	if (strcmp(command, "unset"))
+	if (!strcmp(command, "unset"))
 		return (1);
-	if (strcmp(command, "env"))
+	if (!strcmp(command, "env"))
 		return (1);
 	return (0);
 }
