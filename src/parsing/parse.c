@@ -49,11 +49,13 @@ char	*ft_getenv(t_shell *shell, char *var)
 	var_len = ft_strlen(var);
 	while(shell->env[i])
 	{
-		if (ft_strncmp(shell->env[i], var, var_len) == 0)
+		if (ft_strncmp(shell->env[i], var, var_len) == 0
+			&& shell->env[i][var_len] == '=')
 		{
-			ret = ft_strdup(shell->env[i]);
+			ret = ft_strdup(shell->env[i] + var_len + 1);
 			if (!ret)
 				exit_shell(shell, 1);
+			return (ret);
 		}
 		i++;
 	}
@@ -97,7 +99,6 @@ static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 	var[i] = '\0';
 	if (ft_getenv(shell, var))
 		return (ft_strdup(ft_getenv(shell, var)));
-	//hay que expandir desde la lista enlazada de las variables de entorno que vamos modificando
 	return (ft_strdup(""));
 }
 
