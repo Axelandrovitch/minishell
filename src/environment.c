@@ -6,7 +6,7 @@
 /*   By: ahetru <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:41:00 by ahetru            #+#    #+#             */
-/*   Updated: 2025/04/29 13:41:01 by ahetru           ###   ########.fr       */
+/*   Updated: 2025/05/20 13:20:20 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	free_vector(char **vec)
 	int	i;
 
 	i = 0;
+	if (!vec)
+		return ;
 	while (vec[i])
 	{
 		free(vec[i]);
@@ -58,26 +60,83 @@ static void	form_bin_path(char **envp_vec)
 	}
 }
 
-char	**set_path_environment(char **envp)
+char	**set_path_environment(void)
+{
+	const char	*envp;
+	char		**envp_vec;
+
+	envp = getenv("PATH");
+	if (!envp)
+	{
+		printf("No environment found\n");
+		exit(1);
+	}
+	envp_vec = ft_split(envp + 5, ':');
+	if (!envp_vec)
+	{
+		printf("Memory allocation failed\n");
+		exit (1);
+	}
+	form_bin_path(envp_vec);
+	return (envp_vec);
+}
+
+char	*get_pathname(char *command, char **path_variable)
 {
 	size_t	i;
-	char	**envp_vec;
+	int		fd;
+	char	*pathname;
 
 	i = 0;
-	while (envp[i])
+	fd = 0;
+	pathname = NULL;
+	if (!path_variable || !command)
+		exit(1);
+	while (path_variable[i])
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			envp_vec = ft_split(envp[i] + 5, ':');
-			if (!envp_vec)
-			{
-				printf("Memory allocation failed\n");
-				exit (1);
-			}
-			form_bin_path(envp_vec);
-			return (envp_vec);
-		}
+		pathname = ft_strjoin(path_variable[i], command);
+		if (!pathname)
+			exit(EXIT_FAILURE);
+		fd = access(pathname, X_OK);
+		if (fd != -1)
+			return (pathname);
+		free(pathname);
 		i++;
 	}
 	return (NULL);
 }
+
+int	count_environment_vars(char **envp)
+{
+	int	count;
+	
+	count = 0;
+	while (envp[count] != NULL)
+		count++;
+	return (count);
+}
+
+char	**copy_environment(char **envp)
+{
+	int	i;
+	int	len;
+	char	**env;
+	char	*current_var;
+
+	i = 0;
+	len = count_environment_vars(envp);
+	env = malloc(sizeof(char *) * (len + 1));
+	if (!env)
+		exit(EXIT_FAILURE);
+	while (envp[i] != NULL)
+	{
+		current_var = strdup(envp[i]);
+		if (!current_var)
+			exit(EXIT_FAILURE);
+		env[i] = current_var;
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
+}
+>>>>>>> fb95366396c9ba71d4fb378e0231f226273c7b5a

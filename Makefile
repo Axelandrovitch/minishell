@@ -6,49 +6,53 @@
 #    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/04/29 17:18:26 by dcampas-         ###   ########.fr        #
+#    Updated: 2025/05/20 13:17:34 by dcampas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+NAME := minishell
 
-NAME = minishell
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
-READLINE = -lreadline
+CC := cc
+CFLAGS := -Wall -Wextra -Werror -g
+READLINE := -lreadline
 
-#libft
-LIBFT_DIR = ./libft
-LIBFT = $(LIBFT_DIR)/libft.a
-INCLUDES = -I$(LIBFT_DIR)
+SRC_DIR := src
+OBJ_DIR := obj
+INC_DIR := inc
+LIBFT_DIR := libft
 
-SRC =	src/main.c\
-		src/parsing/token.c\
-		src/parsing/aux_token.c\
-		src/parsing/parse.c \
-		src/environment.c\
-		src/builtins/builtin_simple.c\
-		src/builtins/builtin_env.c\
-		src/builtins/execute.c \
-		src/builtins/aux_builtins.c \
-		src/builtins/builtin_cd.c \
-		src/builtins/builtin_export.c \
-		src/builtins/builtin_echo.c \
-		src/builtins/builtin_unset.c \
+INCLUDES := -I$(INC_DIR) -I$(LIBFT_DIR)
+LIBFT := $(LIBFT_DIR)/libft.a
 
+SRC := \
+	$(SRC_DIR)/main.c \
+	$(SRC_DIR)/parsing/token.c \
+	$(SRC_DIR)/parsing/aux_token.c \
+	$(SRC_DIR)/parsing/parse.c \
+	$(SRC_DIR)/parsing/parser.c \
+	$(SRC_DIR)/parsing/parser2.c \
+	$(SRC_DIR)/execution/exec_commands.c \
+	$(SRC_DIR)/execution/free.c \
+	$(SRC_DIR)/execution/handle_redirections.c \
+	$(SRC_DIR)/environment.c \
+	$(SRC_DIR)/builtins/builtin_simple.c
 
-OBJ = $(SRC:.c=.o)
+OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
+all: $(NAME)
 
-all: $(LIBFT) $(NAME)
+$(NAME): $(LIBFT) $(OBJ)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJ) $(LIBFT) -o $(NAME) $(READLINE)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJ) $(LIBFT) -o $(NAME) $(READLINE)
-
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
-	rm -f $(OBJ)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
@@ -57,3 +61,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+>>>>>>> fb95366396c9ba71d4fb378e0231f226273c7b5a
