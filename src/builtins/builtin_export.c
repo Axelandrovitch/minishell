@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:02:16 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/13 18:44:13 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:52:43 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static int	add_or_update_env(char **env, char *key, char *value)
 	return (0);
 }
 
-int	builtin_export(char **args, char **env)
+int	builtin_export(char **args, t_shell *shell)
 {
 	int		i;
 	int		eq_pos;
@@ -110,7 +110,7 @@ int	builtin_export(char **args, char **env)
 	char	*value;
 
 	if (!args[1])
-		return (print_sorted_env(env));
+		return (print_sorted_env(shell->env));
 	i = 1;
 	while (args[i])
 	{
@@ -126,7 +126,7 @@ int	builtin_export(char **args, char **env)
 				value = ft_strdup(args[i] + eq_pos + 1);
 			else
 				value = NULL;
-			add_or_update_env(env, key, value);
+			add_or_update_env(shell->env, key, value);
 			free(key);
 			free(value);
 		}

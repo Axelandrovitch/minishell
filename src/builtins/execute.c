@@ -12,40 +12,32 @@
 
 #include "../../minishell.h"
 
-int	execute_builtin(t_token *tokens, char **env)
+int	execute_builtin(char **argv, t_shell *shell)
 {
-	char **args;
-
-	if (!tokens)
+	if (!argv || !argv[0])
 		return (1);
-	args = get_args_from_tokens(tokens);
-	if (!args || !args[0])
-		return (free_vector(args), 1);
 
-	//printf("DEBUG: %s\n", tokens[0].value);
-
-	if (!args[0])
-		return (printf("Error: No command provided\n"), free_vector(args), 1);
-	if (strcmp(args[0], "pwd") == 0)
-		builtin_pwd(args);
-	else if (ft_strcmp(args[0], "echo") == 0)
-		builtin_echo(args);
-	else if (ft_strcmp(args[0], "exit") == 0)
-		builtin_exit(args);
-	else if (ft_strcmp(args[0], "env") == 0)
-		builtin_env(args, env);
-	else if (ft_strcmp(args[0], "export") == 0)
-		builtin_export(args, env);
-
-	/*else if (ft_strcmp(args[0], "unset") == 0)
-		builtin_unset(args, env);*/
-	else if (ft_strcmp(args[0], "cd") == 0)
-		builtin_cd(args, env);
-	else
+	if (!argv[0])
+		return (printf("Error: No command provided\n"), free_vector(argv), 1);
+	if (strcmp(argv[0], "pwd") == 0)
+		builtin_pwd(argv);
+	else if (ft_strcmp(argv[0], "echo") == 0)
+		builtin_echo(argv);
+	else if (ft_strcmp(argv[0], "exit") == 0)
+		builtin_exit(argv);
+	else if (ft_strcmp(argv[0], "env") == 0)
+		builtin_env(argv, shell->env);
+	else if (ft_strcmp(argv[0], "export") == 0)
+		builtin_export(argv, shell);
+	else if (ft_strcmp(argv[0], "unset") == 0)
+		builtin_unset(argv, shell->env);
+	else if (ft_strcmp(argv[0], "cd") == 0)
+		builtin_cd(argv, shell);
+	/*else
 	{
-		free_vector(args);
+		free_vector(argv);
 		return (1);
 	}
-	free_vector(args);
-	return (0);
+	free_vector(argv);*/
+	return (1);
 }

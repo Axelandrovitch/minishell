@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahetru <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:41:00 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/20 13:20:20 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:48:42 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,4 +139,4 @@ char	**copy_environment(char **envp)
 	env[i] = NULL;
 	return (env);
 }
->>>>>>> fb95366396c9ba71d4fb378e0231f226273c7b5a
+

@@ -6,34 +6,11 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:15:45 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/14 12:58:14 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:52:28 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-/*char **copy_env(char **env)
-{
-	int		i;
-	char	**copy;
-
-	i = 0;
-	while (env[i])
-		i++;
-	copy = malloc(sizeof(char *) * (i + 1));
-	if (!copy)
-		return (NULL);
-	i = 0;
-	while (env[i])
-	{
-		copy[i] = ft_strdup(env[i]);
-		if (!copy[i])
-			return (NULL);
-		i++;
-	}
-	copy[i] = NULL;
-	return (copy);
-}*/
 
 // Busca una variable de entorno en el array envp y devuelve un puntero al valor de
 // esa variable.

@@ -39,8 +39,29 @@ static char	*append_str(char *str, const char *to_append)
 	return (new);
 }
 
+char	*ft_getenv(t_shell *shell, char *var)
+{
+	int		i;
+	int		var_len;
+	char	*ret;
+
+	i = 0;
+	var_len = ft_strlen(var);
+	while(shell->env[i])
+	{
+		if (ft_strncmp(shell->env[i], var, var_len) == 0)
+		{
+			ret = ft_strdup(shell->env[i]);
+			if (!ret)
+				exit_shell(shell, 1);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
 // Extraer y exandir la vble de entorno
-static char	*extract_and_expand(const char *input, int *pos, )
+static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 {
 	char	var[256];
 	int		i;
@@ -74,8 +95,8 @@ static char	*extract_and_expand(const char *input, int *pos, )
 		}
 	}
 	var[i] = '\0';
-	if (getenv(var))
-		return (ft_strdup(getenv(var)));
+	if (ft_getenv(shell, var))
+		return (ft_strdup(ft_getenv(shell, var)));
 	//hay que expandir desde la lista enlazada de las variables de entorno que vamos modificando
 	return (ft_strdup(""));
 }
@@ -90,7 +111,7 @@ static void	update_quote_state(char c, int *in_single_q, int *in_double_q)
 }
 
 // Expande variables de entorno como $USER o $HOME
-char	*expand_variables(const char *input)
+char	*expand_variables(const char *input, t_shell *shell)
 {
 	char	*result;
 	char	*expanded_var;
@@ -116,7 +137,7 @@ char	*expand_variables(const char *input)
 		else if (input[i] == '$' && !in_single_q && input[i + 1]
 				&& (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
 		{
-			expanded_var = extract_and_expand(input, &i);
+			expanded_var = extract_and_expand(input, &i, shell);
 			result = append_str(result, expanded_var);
 			free(expanded_var);
 		}

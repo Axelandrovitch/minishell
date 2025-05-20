@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahetru <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:46:01 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/14 12:50:03 by ahetru           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:00:23 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_builtin(const char *command)
 	return (0);
 }
 
-void	ft_putstr_fd(char *s, int fd)
+/* void	ft_putstr_fd(char *s, int fd)
 {
 	while (*s)
 	{
@@ -45,7 +45,7 @@ void	ft_putendl_fd(char *s, int fd)
 {
 	ft_putstr_fd(s, fd);
 	write(fd, "\n", 1);
-}
+} */
 
 int prepare_pipe(int *fd)
 {
@@ -112,23 +112,26 @@ void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
 	}
     apply_redirections(block->redirs);
 	if (is_builtin(block->argv[0]))
-		execute_builtin(block->argv);
-    if (ft_strchr(block->argv[0], '/'))
-        pathname = ft_strdup(block->argv[0]);
-    else
-        pathname = get_pathname(block->argv[0], shell->bin_paths);
+	{
+		execute_builtin(block->argv, shell);
+		exit(0);
+	}
+	if (ft_strchr(block->argv[0], '/'))
+		pathname = ft_strdup(block->argv[0]);
+	else
+		pathname = get_pathname(block->argv[0], shell->bin_paths);
 
-    if (!pathname)
-    {
-        ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
-        ft_putendl_fd(block->argv[0], STDERR_FILENO);
+	if (!pathname)
+	{
+		ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
+		ft_putendl_fd(block->argv[0], STDERR_FILENO);
 		exit_shell(shell, 127);
-    }
+	}
 
-    execve(pathname, block->argv, shell->env);
-    perror("execve");
-    exit(EXIT_FAILURE);
-}
+	execve(pathname, block->argv, shell->env);
+	perror("execve");
+	exit(EXIT_FAILURE);
+	}
 
 
 

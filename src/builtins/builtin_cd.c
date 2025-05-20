@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/14 15:56:58 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:24:39 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,13 @@ static int	go_to_path(char **env, const char *target)
 	return (0);
 }
 
-int	builtin_cd(char **args, char **env) // JUST CAN HAVE 1 ARG
+int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 {
 	char	*home;
 
 	if (!args[1]) // Si no se pasa argumento, cambiar al directorio HOME
 	{
-		home = get_env_path("HOME", env);
+		home = get_env_path("HOME", shell->env);
 		if (!home)
 			return (ft_putstr_fd("cd: HOME not set\n", 2), 1);
 		if (chdir(home) == -1)
@@ -121,10 +121,10 @@ int	builtin_cd(char **args, char **env) // JUST CAN HAVE 1 ARG
 	}
 	else if (ft_strcmp(args[1], "-") == 0)
 	{
-		if (go_to_path(env, "OLDPWD") != 0)
+		if (go_to_path(shell->env, "OLDPWD") != 0)
 			return (1);
 		// Mostrar el directorio actual cuando usamos cd -
-		home = get_env_path("PWD", env);
+		home = get_env_path("PWD", shell->env);
 		if (home)
 			ft_putendl_fd(home, 1);
 	}
@@ -136,6 +136,6 @@ int	builtin_cd(char **args, char **env) // JUST CAN HAVE 1 ARG
 			return (1);
 		}
 	}
-	update_pwd_vars(env);
+	update_pwd_vars(shell->env);
 	return (0);
 }

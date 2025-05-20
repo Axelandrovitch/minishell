@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/13 20:12:16 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:56:08 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,29 @@ typedef struct	s_env
 typedef struct	s_redir
 {
 	t_token_type	type;
-	char	*filename;
+	char			*filename;
 	struct s_redir	*next;
 }	t_redir;
 
 typedef struct	s_command_block
 {
-	t_token	*tokens;
-	t_token	*argv_tokens;
-	t_redir	*redirs;
-	char	**argv;
+	t_token					*tokens;
+	t_token					*argv_tokens;
+	t_redir					*redirs;
+	char					**argv;
 	struct s_command_block	*next;
 }	t_command_block;
 
 typedef	struct	s_shell
 {
-	t_token	*tokens;
+	t_token			*tokens;
 	t_command_block	*command_blocks;
-	char	**env;
-	char	**bin_paths;
-	char	*input;
-	char	*expanded;
-	int		infile_fd;
-	int		outfile_fd;
+	char			**env;
+	char			**bin_paths;
+	char			*input;
+	char			*expanded;
+	int				infile_fd;
+	int				outfile_fd;
 }	t_shell;
 
 //TOKEN
@@ -99,16 +99,16 @@ t_command_block	*set_command_block(t_token *head_token);
 
 void	execute_pipeline(t_shell *shell);
 
-int	handle_redirections(t_command_block *command_block);
+int		handle_redirections(t_command_block *command_block);
 
 // $
-char	*expand_variables(const char *input);
+char	*expand_variables(const char *input, t_shell *shell);
 
 
 // parsing
-int	check_syntax(t_token *tokens);
+int		check_syntax(t_token *tokens);
 
-int	is_redirection(t_token *token);
+int		is_redirection(t_token *token);
 
 void	apply_redirections(t_redir *redir);
 
@@ -141,15 +141,13 @@ int		builtin_pwd(char **args);
 int		builtin_echo(char **args);
 int		builtin_exit(char **args);
 int		builtin_env(char **args, char **env);
-int		builtin_cd(char **args, char **env);
-int		builtin_export(char **args, char **env);
+int		builtin_cd(char **args, t_shell *shell);
+int		builtin_export(char **args, t_shell *shell);
 int		builtin_unset(char **args, char **env);
 
-char	**copy_env(char **env);
 char	*get_env_path(const char *key, char **envp);
 
-
-int		execute_builtin(t_token *tokens, char **env);
-
+//int		execute_builtin(t_token *tokens, char **env);
+int	execute_builtin(char **argv, t_shell *shell);
 
 #endif

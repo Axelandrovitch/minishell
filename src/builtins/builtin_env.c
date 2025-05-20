@@ -12,8 +12,6 @@
 
 #include "../../minishell.h"
 
-//Env export y unset
-
 int	builtin_env(char **args, char **env)
 {
 	int	i;
@@ -28,7 +26,7 @@ int	builtin_env(char **args, char **env)
 	{
 		if (ft_strchr(env[i], '='))
 			printf("%s\n", env[i]);
-		i++;	
+		i++;
 	}
 	return (0);
 }

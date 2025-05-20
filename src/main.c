@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/20 13:13:00 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:48:26 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	main(int ac,char **av, char **envp)
 		}
 		if (shell.input && *shell.input)
 			add_history(shell.input);
-		shell.expanded = expand_variables(shell.input);
+		shell.expanded = expand_variables(shell.input, &shell);
 		shell.tokens = tokenize(shell.expanded);
 		if (check_syntax(shell.tokens))
 			exit_shell(&shell, EXIT_FAILURE);
