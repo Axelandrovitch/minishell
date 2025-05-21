@@ -100,7 +100,7 @@ int	main(int ac,char **av, char **envp)
 		shell.expanded = expand_variables(shell.input, &shell);
 		shell.tokens = tokenize(shell.expanded);
 		if (check_syntax(shell.tokens))
-			exit_shell(&shell, EXIT_FAILURE);
+			continue ;
 		parse_pipeline(&shell, shell.tokens);
 		print_all_command_blocks(shell.command_blocks);
 		execute_pipeline(&shell);
