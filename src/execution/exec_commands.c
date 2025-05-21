@@ -129,45 +129,11 @@ void	execute_parent(pid_t pid, int *fd, int *prev_fd)
 	waitpid(pid, NULL, 0);
 }
 
-// testeamos con exec_child
-// void	execute_pipeline(t_shell *shell)
-// {
-// 	t_command_block	*current;
-// 	int				fd[2];
-// 	int				prev_fd;
-// 	pid_t			pid;
-//
-// 	current = shell->command_blocks;
-// 	prev_fd = -1;
-// 	while (current)
-// 	{
-// 		if (current->next && prepare_pipe(fd) == -1)
-// 			return ;
-// 		pid = fork();
-// 		if (pid == -1)
-// 		{
-// 			perror("fork");
-// 			return;
-// 		}
-// 		else if (pid == 0)
-// 		{
-// 			handle_redirections(current);
-// 			if (current->next)
-// 				exec_child(current, prev_fd, fd, shell);
-// 			else
-// 				exec_child(current, prev_fd, NULL, shell);
-// 		}
-// 		else
-// 		{
-// 			if (current->next)
-// 				execute_parent(pid, fd, &prev_fd);
-// 			else
-// 				execute_parent(pid, NULL, &prev_fd);
-// 		}
-// 		current = current->next;
-// 	}
-// }
-//
+int	single_command_block(t_command_block *command_block)
+{
+	return (command_block && !command_block->next);
+}
+
 void	execute_pipeline(t_shell *shell)
 {
 	t_command_block *current = shell->command_blocks;
@@ -177,7 +143,7 @@ void	execute_pipeline(t_shell *shell)
 
 	while (current)
 	{
-		if (!current->next && is_builtin(current->argv[0]))
+		if (single_command_block(current) && is_builtin(current->argv[0]))
 		{
 			handle_redirections(current);
 			execute_builtin(current->argv, shell);
