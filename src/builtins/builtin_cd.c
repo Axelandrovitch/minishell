@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/20 18:51:19 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:21:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,14 @@ static int	update_pwd_vars(char **env)
 {
 	char	*old_pwd;
 	char	*new_pwd;
-	int		ret;
 
 	old_pwd = get_env_path("PWD", env);
 	if (old_pwd)
-		ret = update_env_var(env, "OLDPWD=", old_pwd);
+		update_env_var(env, "OLDPWD=", old_pwd);
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
 		return (perror("getcwd"), 1);
-	ret = update_env_var(env, "PWD=", new_pwd);
+	update_env_var(env, "PWD=", new_pwd);
 	free(new_pwd);
 	return (0);
 }
