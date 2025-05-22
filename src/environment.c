@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:41:00 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/20 19:03:57 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:24:39 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,27 @@ char	**copy_environment(char **envp)
 	}
 	env[i] = NULL;
 	return (env);
+}
+
+char	*ft_getenv(t_shell *shell, char *var)
+{
+	int		i;
+	int		var_len;
+	char	*ret;
+
+	i = 0;
+	var_len = ft_strlen(var);
+	while (shell->env[i])
+	{
+		if (ft_strncmp(shell->env[i], var, var_len) == 0
+			&& shell->env[i][var_len] == '=')
+		{
+			ret = ft_strdup(shell->env[i] + var_len + 1);
+			if (!ret)
+				exit_shell(shell, 1);
+			return (ret);
+		}
+		i++;
+	}
+	return (NULL);
 }

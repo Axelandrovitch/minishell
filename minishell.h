@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/20 17:29:24 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:24:33 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef	struct	s_shell
 t_token	*new_token(t_token_type type, const char *value, int len);
 void	free_tokens(t_token *token);
 int		skip_spaces(const char *line, int i);
-void	print_tokens(t_token *token);
+
 
 
 char	**get_args_from_tokens(t_token *tokens);
@@ -132,6 +132,18 @@ char	**copy_environment(char **envp);
 
 char	*get_pathname(char *command, char **path_variable);
 
+char	*ft_getenv(t_shell *shell, char *var);
+
+int	find_env_var(char **env, char *key);
+
+int	update_env_var(char **env, char *var_name, char *value);
+
+int	add_env_var(char ***env, char *key, char *value);
+
+int	add_or_update_env(char ***env, char *key, char *value);
+
+
+
 // debugging functions
 void	print_vector(char **vec);
 void	print_command_blocks(t_command_block *head_block);
@@ -146,9 +158,10 @@ int		builtin_cd(char **args, t_shell *shell);
 int		builtin_export(char **args, t_shell *shell);
 int		builtin_unset(char **args, char **env);
 
-char	*get_env_path(const char *key, char **envp);
+// sort
+void	sort_env_copy(char **env);
 
 //int		execute_builtin(t_token *tokens, char **env);
-int	execute_builtin(char **argv, t_shell *shell);
+int		execute_builtin(char **argv, t_shell *shell);
 
 #endif

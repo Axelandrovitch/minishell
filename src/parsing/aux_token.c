@@ -54,38 +54,6 @@ void	free_tokens(t_token *token)
 	}
 }
 
-// Converts the token type to a string for debugging purposes !!!DELETE!!!
-const char	*token_type_to_string(t_token_type type)
-{
-	switch (type)
-	{
-		case T_WORD:		return ("T_WORD");
-		case T_PIPE:		return ("T_PIPE");
-		case T_REDIR_IN:	return ("T_REDIR_IN");
-		case T_REDIR_OUT:	return ("T_REDIR_OUT");
-		case T_REDIR_APPEND:return ("T_REDIR_APPEND");
-		case T_HEREDOC:		return ("T_HEREDOC");
-		case T_DQUOTE:		return ("T_DQUOTE");
-		case T_SQUOTE:		return ("T_SQUOTE");
-		case T_EMPTY:		return ("T_EMPTY");
-		default:			return ("UNKNOWN");
-	}
-}
-
-void	print_tokens(t_token *token)
-{
-	int	i; 
-	
-	i = 0;
-	while (token)
-	{
-		printf("TOKEN[%d]\n\tType: %s --> %s \n", i,
-			token_type_to_string(token->type), token->value);
-		token = token->next;
-		i++;
-	}
-}
-
 // Counts the number of tokens in the linked list
 static int	count_tokens(t_token *tokens)
 {
