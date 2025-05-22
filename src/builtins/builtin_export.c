@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:02:16 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 14:32:44 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:39:40 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,12 @@ int	builtin_export(char **args, t_shell *shell)
 				value = NULL;
 			if (value == NULL && args[i][eq_pos] == '=')
 				return (1);
-			if (update_env_var(shell->env, key, value))
-				add_or_update_env(&shell->env, key, value);
+			add_or_update_env(&shell->env, key, value);
+			{
+				free(key);
+				free(value);
+				return (1);
+			}
 			free(key);
 			free(value);
 		}

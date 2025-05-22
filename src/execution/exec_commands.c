@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:46:01 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/22 14:24:46 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:05:58 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,12 @@ void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
 		close(fd[1]);
 	}
 	apply_redirections(block->redirs);
-	if (is_builtin(block->argv[0]))
-	{
-		execute_builtin(block->argv, shell);
-		exit(0);
-	}
+	// if (is_builtin(block->argv[0]))
+	// {
+	// 	printf("BUILT INS\n");
+	// 	execute_builtin(block->argv, shell);
+	// 	exit(0);
+	// }
 	if (ft_strchr(block->argv[0], '/'))
 		pathname = ft_strdup(block->argv[0]);
 	else
@@ -141,6 +142,12 @@ void	execute_pipeline(t_shell *shell)
 	prev_fd = -1;
 	while (current)
 	{
+		if (!current->next && is_builtin(current->argv[0]))
+		{
+			handle_redirections(current);
+			execute_builtin(current->argv, shell);
+			return;
+		}
 		if (current->next && prepare_pipe(fd) == -1)
 			return ;
 		pid = fork();

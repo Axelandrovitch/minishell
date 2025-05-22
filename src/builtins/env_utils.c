@@ -6,12 +6,13 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:42:06 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 14:39:08 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:40:04 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+// Cuenta el número de variables de entorno en el vector env
 int	find_env_var(char **env, char *key)
 {
 	int	i;
@@ -26,12 +27,11 @@ int	find_env_var(char **env, char *key)
 			return (i);
 		i++;
 	}
-	return (1);
+	return (-1);
 }
 
 // Actualiza el valor de una variable de entorno existente
-//(como PWD= o OLDPWD=) con un nuevo valor.
-// Tambien se usa en el export
+// Se usa en el export y cd
 int	update_env_var(char **env, char *var_name, char *value)
 {
 	char	*env_var;
@@ -67,6 +67,8 @@ int	update_env_var(char **env, char *var_name, char *value)
 	free(env_var);
 	return (1);
 }
+
+// Añade una nueva variable de entorno al vector env
 
 int	add_env_var(char ***env, char *key, char *value)
 {
@@ -110,6 +112,7 @@ int	add_env_var(char ***env, char *key, char *value)
 	return (0);
 }
 
+// Añade o actualiza una variable de entorno en el vector env
 int	add_or_update_env(char ***env, char *key, char *value)
 {
 	int	pos;
@@ -123,7 +126,7 @@ int	add_or_update_env(char ***env, char *key, char *value)
 		return (add_env_var(env, key, value));
 }
 
-// 
+// Ordena el vector de variables de entorno alfabéticamente
 void	sort_env_copy(char **env)
 {
 	int		i;
