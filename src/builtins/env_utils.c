@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:42:06 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 16:40:04 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:40:51 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ int	add_env_var(char ***env, char *key, char *value)
 	char	**new_env;
 	int		i;
 
-	//size = count_environment_vars(*env);
-	size = 3;
+	size = count_environment_vars(*env);
 	new_env = malloc(sizeof(char *) * (size + 2));
 	if (!new_env)
 		return (1);

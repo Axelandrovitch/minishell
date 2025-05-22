@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 16:47:56 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:41:44 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,17 +130,20 @@ char	**set_path_environment(void);
 
 char	**copy_environment(char **envp);
 
+int	count_environment_vars(char **envp);
+
 char	*get_pathname(char *command, char **path_variable);
 
 char	*ft_getenv(t_shell *shell, char *var);
 
-int	find_env_var(char **env, char *key);
+// env_utils
+int		find_env_var(char **env, char *key);
 
-int	update_env_var(char **env, char *var_name, char *value);
+int		update_env_var(char **env, char *var_name, char *value);
 
-int	add_env_var(char ***env, char *key, char *value);
+int		add_env_var(char ***env, char *key, char *value);
 
-int	add_or_update_env(char ***env, char *key, char *value);
+int		add_or_update_env(char ***env, char *key, char *value);
 
 
 

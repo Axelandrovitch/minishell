@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 16:50:14 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:20:18 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 {
 	char	*home;
 
-	printf("Estamos en CD\n");
 	if (!args[1])
 	{
 		home = ft_getenv(shell, "HOME");
