@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 17:20:18 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:50:40 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	print_error(const char **args)
 }
 
 // Actualiza las variables PWD y OLDPWD
-static int	update_pwd_vars(t_shell *shell)
+static int	update_pwd_vars(t_shell *shell) //ACUTALIZAR OLDPWD
 {
 	char	*old_pwd;
 	char	*new_pwd;

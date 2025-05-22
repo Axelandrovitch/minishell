@@ -110,6 +110,8 @@ char	*expand_variables(const char *input, t_shell *shell)
 		{
 			update_quote_state(input[i], &in_single_q, &in_double_q);
 			result = append_char(result, input[i++]);
+			if (!result)
+				return (NULL);
 		}
 		// Si encontramos un $ y no estamos en comillas simples
 		else if (input[i] == '$' && !in_single_q && input[i + 1]
@@ -117,6 +119,11 @@ char	*expand_variables(const char *input, t_shell *shell)
 		{
 			expanded_var = extract_and_expand(input, &i, shell);
 			result = append_str(result, expanded_var);
+			if (!result)
+			{
+				free(expanded_var);
+				return (NULL);
+			}
 			free(expanded_var);
 		}
 		else

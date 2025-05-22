@@ -67,7 +67,7 @@ static int	is_long_overflow(const char *str)
 	return (0);
 }
 
-int	builtin_exit(char **args)
+int	builtin_exit(char **args, t_shell *shell)
 {
 	int		exit_code;
 	long	long_exit_code;
@@ -90,7 +90,8 @@ int	builtin_exit(char **args)
 	exit_code = long_exit_code % 256;
 	if (exit_code < 0)
 		exit_code += 256;
-	exit(exit_code);
+	exit_shell(shell, exit_code);
+	return (0);
 }
 
 // PWD

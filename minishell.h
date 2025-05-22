@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 17:41:44 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:06:30 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void	print_all_command_blocks(t_command_block *head);
 // builtins
 int		builtin_pwd(char **args);
 int		builtin_echo(char **args);
-int		builtin_exit(char **args);
+int		builtin_exit(char **args, t_shell *shell);
 int		builtin_env(char **args, char **env);
 int		builtin_cd(char **args, t_shell *shell);
 int		builtin_export(char **args, t_shell *shell);

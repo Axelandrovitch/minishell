@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:50:09 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/22 14:24:45 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:04:38 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ void	free_shell(t_shell	*shell)
 void	free_env(t_shell *shell)
 {
 	free_vector(shell->env);
+	shell->env = NULL;
 	free_vector(shell->bin_paths);
+	shell->bin_paths = NULL;
 }
 
 void	exit_shell(t_shell	*shell, int exit_code)
