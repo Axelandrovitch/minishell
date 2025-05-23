@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:42:06 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 17:40:51 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:43:25 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	update_env_var(char **env, char *var_name, char *value)
 		i++;
 	}
 	free(env_var);
-	return (1);
+	return (0);
 }
 
 // Añade una nueva variable de entorno al vector env
