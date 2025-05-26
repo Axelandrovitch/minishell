@@ -81,8 +81,6 @@ typedef	struct	s_shell
 	char			**bin_paths;
 	char			*input;
 	char			*expanded;
-	int				infile_fd;
-	int				outfile_fd;
 }	t_shell;
 
 //TOKEN

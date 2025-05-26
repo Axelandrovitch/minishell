@@ -104,9 +104,7 @@ int	main(int ac,char **av, char **envp)
 		parse_pipeline(&shell, shell.tokens);
 		// print_all_command_blocks(shell.command_blocks);
 		execute_pipeline(&shell);
-		// free_shell(&shell);
 	}
-	rl_clear_history();
-	free_env(&shell);
+	exit_shell(&shell, 0);
 	return (0);
 }
