@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/20 15:48:26 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:19:16 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,11 @@ int	main(int ac,char **av, char **envp)
 		if (check_syntax(shell.tokens))
 			continue ;
 		parse_pipeline(&shell, shell.tokens);
-		print_all_command_blocks(shell.command_blocks);
+		// print_all_command_blocks(shell.command_blocks);
 		execute_pipeline(&shell);
-		// execute_builtin(shell.tokens);
 		// free_shell(&shell);
-		// exit_shell(&shell, 0);
 	}
+	rl_clear_history();
 	free_env(&shell);
 	return (0);
 }

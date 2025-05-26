@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahetru <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:15:38 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/06 15:15:39 by ahetru           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:24:28 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,18 @@ t_token	*token_dup_and_add_back(t_token **block_head, t_token *to_add)
 	return (new_tok);
 }
 
-
 t_token	*token_add_back(t_token **block_head, t_token *to_add)
 {
 	t_token	*new_tok;
 	t_token	*temp_tok;
 
-	new_tok = malloc(sizeof(t_token));
+	if (!to_add)
+		return (NULL);
+
+	new_tok = new_token(to_add->type, to_add->value, ft_strlen(to_add->value));
 	if (!new_tok)
 		return (NULL);
-	new_tok->type =to_add->type;
-	new_tok->value = ft_strdup(to_add->value);
-	new_tok->next = NULL;
+
 	if (*block_head == NULL)
 		*block_head = new_tok;
 	else
@@ -130,7 +130,11 @@ t_command_block	*create_command_block(t_token *head_token)
 	while (current_token && current_token->type != T_PIPE)
 	{
 		if (!token_dup_and_add_back(&command_block_tokens, current_token))
+		{
+			free_tokens(command_block_tokens);
+			free(command_block);
 			return (NULL);
+		}
 		current_token = current_token->next;
 	}
 	command_block->tokens = command_block_tokens;

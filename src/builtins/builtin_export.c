@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:02:16 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/20 18:49:00 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:39:40 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,67 +38,19 @@ static int	is_valid_identifier(const char *str)
 static int	print_sorted_env(char **env)
 {
 	int		i;
-	int		j;
-	char	*temp;
+	char	**sorted_env;
 
+	sorted_env = copy_environment(env);
+	if (!sorted_env)
+		return (1);
+	sort_env_copy(sorted_env);
 	i = 0;
-	while (env[i] && env[i + 1])
-	{
-		j = i + 1;
-		while (env[j])
-		{
-			if (ft_strcmp(env[i], env[j]) > 0)
-			{
-				temp = env[i];
-				env[i] = env[j];
-				env[j] = temp;
-			}
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	while (env[i])
+	while (sorted_env[i])
 	{
 		printf("declare -x %s\n", env[i]);
 		i++;
 	}
-	return (0);
-}
-
-static int	add_or_update_env(char **env, char *key, char *value)
-{
-	int		i;
-	int		key_len;
-	char	*new_var;
-
-	key_len = ft_strlen(key);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], key, key_len) == 0
-			&& (env[i][key_len] == '=' || env[i][key_len] == '\0'))
-		{
-			if (value)
-			{
-				new_var = ft_strjoin(key, "=");
-				free(env[i]);
-				env[i] = ft_strjoin(new_var, value);
-				free(new_var);
-			}
-			return (0);
-		}
-		i++;
-	}
-	if (value)
-	{
-		new_var = ft_strjoin(key, "=");
-		env[i] = ft_strjoin(new_var, value);
-		free(new_var);
-	}
-	else
-		env[i] = ft_strdup(key);
-	env[i + 1] = NULL;
+	free_vector(sorted_env);
 	return (0);
 }
 
@@ -130,7 +82,12 @@ int	builtin_export(char **args, t_shell *shell)
 				value = NULL;
 			if (value == NULL && args[i][eq_pos] == '=')
 				return (1);
-			add_or_update_env(shell->env, key, value);
+			add_or_update_env(&shell->env, key, value);
+			{
+				free(key);
+				free(value);
+				return (1);
+			}
 			free(key);
 			free(value);
 		}

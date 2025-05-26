@@ -39,29 +39,6 @@ static char	*append_str(char *str, const char *to_append)
 	return (new);
 }
 
-char	*ft_getenv(t_shell *shell, char *var)
-{
-	int		i;
-	int		var_len;
-	char	*ret;
-
-	i = 0;
-	var_len = ft_strlen(var);
-	while (shell->env[i])
-	{
-		if (ft_strncmp(shell->env[i], var, var_len) == 0
-			&& shell->env[i][var_len] == '=')
-		{
-			ret = ft_strdup(shell->env[i] + var_len + 1);
-			if (!ret)
-				exit_shell(shell, 1);
-			return (ret);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
 // Extraer y exandir la vble de entorno
 static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 {
@@ -133,6 +110,8 @@ char	*expand_variables(const char *input, t_shell *shell)
 		{
 			update_quote_state(input[i], &in_single_q, &in_double_q);
 			result = append_char(result, input[i++]);
+			if (!result)
+				return (NULL);
 		}
 		// Si encontramos un $ y no estamos en comillas simples
 		else if (input[i] == '$' && !in_single_q && input[i + 1]
@@ -140,6 +119,11 @@ char	*expand_variables(const char *input, t_shell *shell)
 		{
 			expanded_var = extract_and_expand(input, &i, shell);
 			result = append_str(result, expanded_var);
+			if (!result)
+			{
+				free(expanded_var);
+				return (NULL);
+			}
 			free(expanded_var);
 		}
 		else
