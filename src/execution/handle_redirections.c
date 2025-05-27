@@ -33,7 +33,7 @@ static int	handle_fd(enum e_token_type type, char *filename)
 		fd = open(filename, O_RDONLY);
 	else if (type == T_HEREDOC)
 	{
-		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		fd = handle_heredoc(filename);
 	}
 	if (fd < 0)
 	{

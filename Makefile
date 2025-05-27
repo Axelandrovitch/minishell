@@ -33,6 +33,7 @@ SRC := \
 	$(SRC_DIR)/execution/exec_commands.c \
 	$(SRC_DIR)/execution/free.c \
 	$(SRC_DIR)/execution/handle_redirections.c \
+	$(SRC_DIR)/execution/handle_heredoc.c \
 	$(SRC_DIR)/environment.c \
 	$(SRC_DIR)/builtins/builtin_simple.c \
 	$(SRC_DIR)/builtins/builtin_cd.c \

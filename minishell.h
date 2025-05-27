@@ -101,6 +101,8 @@ void	execute_pipeline(t_shell *shell);
 
 int		handle_redirections(t_command_block *command_block);
 
+int		handle_heredoc(char *delimeter);
+
 // $
 char	*expand_variables(const char *input, t_shell *shell);
 
