@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/27 17:14:09 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:49:59 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,43 +108,28 @@ char	*expand_variables(const char *input, t_shell *shell);
 
 // parsing
 int		check_syntax(t_token *tokens);
-
 int		is_redirection(t_token *token);
-
 void	apply_redirections(t_redir *redir);
-
 void	parse_pipeline(t_shell *shell, t_token *tokens);
 
 // free commands
-
 void	free_vector(char **vec);
-
 void	free_shell(t_shell	*shell);
-
 void	free_env(t_shell *shell);
-
 void	exit_shell(t_shell	*shell, int exit_code);
 
 // environment functions
 char	**set_path_environment(void);
-
 char	**copy_environment(char **envp);
-
-int	count_environment_vars(char **envp);
-
+int		count_environment_vars(char **envp);
 char	*get_pathname(char *command, char **path_variable);
-
 char	*ft_getenv(t_shell *shell, char *var);
 
 // env_utils
 int		find_env_var(char **env, char *key);
-
 int		update_env_var(char **env, char *var_name, char *value);
-
 int		add_env_var(char ***env, char *key, char *value);
-
 int		add_or_update_env(char ***env, char *key, char *value);
-
 
 
 // debugging functions
@@ -164,8 +149,22 @@ int		builtin_unset(char **args, char **env);
 // sort
 void	sort_env_copy(char **env);
 
-//int		execute_builtin(t_token *tokens, char **env);
 int		execute_builtin(char **argv, t_shell *shell);
+
+// signals	
+void	handle_sigint(int sig);
+void	handle_sigint_child(int sig);
+void	handle_sigquit_child(int sig);
+void	setup_interactive_signals(void);
+
+void	setup_child_signals(void);
+void	setup_execution_signals(void);
+void	ignore_signals(void);
+void	restore_signals(void);
+int		handle_eof(char *input);
+
+void	process_signals(void);
+int		check_and_handle_signals(char *input);
 
 
 #endif
