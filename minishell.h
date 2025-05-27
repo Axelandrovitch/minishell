@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/23 12:40:18 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:14:09 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-
 # include <readline/readline.h>
 # include <readline/history.h>
-
+# include <signal.h>
 # include "libft/inc/libft.h"
+
+extern int	g_signal_received; // Variable global para manejar señales
 
 typedef enum	e_token_type
 {
@@ -89,7 +90,6 @@ typedef	struct	s_shell
 t_token	*new_token(t_token_type type, const char *value, int len);
 void	free_tokens(t_token *token);
 int		skip_spaces(const char *line, int i);
-
 
 
 char	**get_args_from_tokens(t_token *tokens);
