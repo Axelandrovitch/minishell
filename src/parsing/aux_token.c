@@ -25,6 +25,8 @@ t_token	*new_token(t_token_type type, const char *value, int len)
 {
 	t_token	*new_token;
 
+	if (!value)
+		return (NULL);
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 		return (NULL);
