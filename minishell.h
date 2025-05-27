@@ -61,6 +61,7 @@ typedef struct	s_redir
 {
 	t_token_type	type;
 	char			*filename;
+	int				fd;
 	struct s_redir	*next;
 }	t_redir;
 

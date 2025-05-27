@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <unistd.h>
 
 int	print_syntax_error(t_token *token)
 {
@@ -37,7 +36,7 @@ int	pipe_error(t_token *token, int index)
 
 int	redirection_error(t_token *token)
 {
-	if (is_redirection(token))
+	if (is_redirection(token) && token->type != T_HEREDOC)
 	{
 		if (!token->next)
 			return (1);

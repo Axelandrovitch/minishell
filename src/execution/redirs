@@ -1,0 +1,12 @@
+handle_redirections.c:	token = command_block->tokens;
+exec_commands.c:	args = get_args_from_tokens(block->tokens);
+exec_commands.c:	if (!block->argv || !block->argv[0])
+exec_commands.c:	apply_redirections(block->redirs);
+exec_commands.c:	// if (is_builtin(block->argv[0]))
+exec_commands.c:	// 	execute_builtin(block->argv, shell);
+exec_commands.c:	if (ft_strchr(block->argv[0], '/'))
+exec_commands.c:		pathname = ft_strdup(block->argv[0]);
+exec_commands.c:		pathname = get_pathname(block->argv[0], shell->bin_paths);
+exec_commands.c:		ft_putendl_fd(block->argv[0], STDERR_FILENO);
+exec_commands.c:	execve(pathname, block->argv, shell->env);
+exec_commands.c:	return (command_block && !command_block->next);
