@@ -42,8 +42,6 @@ static t_token	*handle_quotes(const char *line, int *i, char quote_type)
 		else
 			token = new_token(T_SQUOTE, line + start, len);
 	}
-	if (!token)
-		return (NULL);
 	if (line[*i] == quote_type)
 		(*i)++;
 	return (token);
@@ -65,7 +63,6 @@ static t_token	*handle_redir(const char *line, int *i)
 {
 	t_token	*token;
 
-	//no se salga de los límites de la cadena
 	if (line[*i] == '\0')
 		return (NULL);
 	if (line[*i] == '<' && line[*i + 1] != '\0' && line[*i + 1] == '<')
@@ -93,21 +90,35 @@ static t_token	*handle_redir(const char *line, int *i)
 	return (token);
 }
 
-// Handles word tokens (words, commands, etc.)
-static t_token	*handle_word(const char *line, int *i)
+static t_token	*handle_word_or_assignment(const char *line, int *i)
 {
-	int	len;
-	int	start;
+	char	buffer[1024];
+	int		j;
+	char	quote;
 
-	start = *i;
-	len = 0;
-	while (line[*i] && line[*i] != ' ' && line[*i] != '\t' && line[*i] != '|'
-		&& line[*i] != '<' && line[*i] != '>' && line[*i] != '"' && line[*i] != '\'')
+	j = 0;
+	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
+		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
 	{
-		(*i)++;
-		len++;
+		if (line[*i] == '"' || line[*i] == '\'')
+		{
+			quote = line[(*i)++];
+			while (line[*i] && line[*i] != quote)
+			{
+				//if (j >= 1023)
+				//	return (fprintf(stderr, "Error: token demasiado largo\n"), NULL);
+				buffer[j++] = line[(*i)++];
+			}
+			if (line[*i] == quote)
+				(*i)++;
+		}
+		else
+			buffer[j++] = line[(*i)++];
+		if (j >= 1024)
+			return (fprintf(stderr, "Error: token demasiado largo\n"), NULL);
 	}
-	return (new_token(T_WORD, line + start, len));
+	buffer[j] = '\0';
+	return (new_token(T_WORD, buffer, j));
 }
 
 // Tokenizes the input line into a linked list of tokens
@@ -136,7 +147,7 @@ t_token	*tokenize(const char *line)
 		else if (line[i] == '<' || line[i] == '>')
 			new_tok = handle_redir(line, &i);
 		else
-			new_tok = handle_word(line, &i);
+			new_tok = handle_word_or_assignment(line, &i);
 		if (!new_tok)
 			return (free_tokens(head), NULL);
 		if (!head)
