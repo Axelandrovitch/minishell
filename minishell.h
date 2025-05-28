@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/27 17:49:59 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/28 13:52:28 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef	struct	s_shell
 	char			*expanded;
 	int				infile_fd;
 	int				outfile_fd;
+	int				last_exit_status;
 }	t_shell;
 
 //TOKEN

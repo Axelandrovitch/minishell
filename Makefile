@@ -6,13 +6,13 @@
 #    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/05/27 17:50:01 by dcampas-         ###   ########.fr        #
+#    Updated: 2025/05/28 12:39:32 by dcampas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS := -Wall -Wextra -Werror -g
 READLINE := -lreadline
 
 SRC_DIR := src

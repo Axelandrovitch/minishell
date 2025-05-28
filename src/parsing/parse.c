@@ -47,19 +47,15 @@ static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 
 	i = 0;
 	(*pos)++;
-	/*if (input[*pos] == '?')
+	shell->last_exit_status = 0;
+	if (input[*pos] == '?')
 	{
 		(*pos)++;
-		return (ft_strdup("$?")); //g_exit_status
+		return (ft_itoa(shell->last_exit_status)); //TODO
 	}
-	if (input[*pos] == '$')
-	{
-		(*pos)++;
-		return (ft_strdup("$")); //getpid()
-	}*/
 	if (input[*pos] == '{')
 	{
-		(*pos)++; // saltamos el '{'
+		(*pos)++;
 		while (input[*pos] && input[*pos] != '}' && i < 255)
 			var[i++] = input[(*pos)++];
 		if (input[*pos] == '}')

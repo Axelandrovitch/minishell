@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:56:14 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/28 11:26:05 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:28:25 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	setup_execution_signals(void)
 	signal(SIGQUIT, handle_sigquit_child);
 }
 
-// Ignorar todas las señales (útil durante parsing crítico)
+// Ignorar todas las señales
 void	ignore_signals(void)
 {
 	signal(SIGINT, SIG_IGN);

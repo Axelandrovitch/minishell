@@ -8,7 +8,7 @@ OBJ_DIR			= obj/
 
 # Compielr and Flags
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g $(INC) -g -fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror -g $(INC) -g
 RM				= rm -f
 AR				= ar rcs
 

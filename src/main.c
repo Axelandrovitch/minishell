@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/27 17:49:44 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/28 13:57:46 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@
 //     }
 // }
 
-void	init_minishell(t_shell *shell, char **envp)
+static void	init_minishell(t_shell *shell, char **envp)
 {
 	shell->env = NULL;
 	shell->bin_paths = NULL;
@@ -83,6 +83,12 @@ static int	process_input_line(t_shell *shell)
 	if (!shell->input)
 	{
 		printf("exit\n");
+		return (1);
+	}
+	if (check_and_handle_signals(shell->input))
+	{
+		free(shell->input);
+		shell->input = NULL;
 		return (1);
 	}
 	if (g_signal_received == SIGINT)
@@ -119,6 +125,7 @@ int	main(int ac, char **av, char **envp)
 		printf("Usage: %s\n", av[0]);
 		return (0);
 	}
+	shell.last_exit_status = 0;
 	init_minishell(&shell, envp);
 	setup_interactive_signals();
 	while (1)
