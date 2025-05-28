@@ -6,13 +6,13 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:23:19 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/27 17:23:26 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:25:56 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// Variable global para manejar señales recibidas (declarar en un .c, no en header)
+// Variable global para manejar señales recibidas
 int	g_signal_received = 0;
 
 // Handler para SIGINT (Ctrl+C) en el shell principal
