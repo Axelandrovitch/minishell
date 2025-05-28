@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/28 14:17:38 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:21:16 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void	execute_command_pipeline(t_shell *shell)
 	shell->tokens = tokenize(shell->expanded);
 	if (check_syntax(shell->tokens))
 	{
-		continue ;
+		return ;//TODO
 	}
 	parse_pipeline(shell, shell->tokens);
 	print_all_command_blocks(shell->command_blocks);

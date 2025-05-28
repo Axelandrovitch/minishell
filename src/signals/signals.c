@@ -6,45 +6,62 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:23:19 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/28 12:28:23 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:25:55 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// Variable global para manejar señales recibidas
-int	g_signal_received = 0;
+// Estado global de señales
+int g_received_signal = 0;
 
-// Handler para SIGINT (Ctrl+C) en el shell principal
-void	handle_sigint(int sig)
+int is_command_running(void)
 {
-	(void)sig;
-	g_signal_received = SIGINT;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (g_received_signal == SIGINT)
+	{
+		g_received_signal = 0;
+		return (1);
+	}
+	return (0);
 }
 
-// Handler para SIGINT durante ejecución de comandos
-void	handle_sigint_child(int sig)
+//Maneja la señal SIGINT (Ctrl+C) en el shell interactivo
+void handle_interactive_ctrl_c(int signal_num)
 {
-	(void)sig;
-	g_signal_received = SIGINT;
+	ignore_signals();
+	(void)signal_num;
+	g_received_signal = SIGINT;
 	write(STDOUT_FILENO, "\n", 1);
+	if (!is_command_running())
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	restore_signals();
 }
 
-// Handler para SIGQUIT (Ctrl+\) durante ejecución de comandos
-void	handle_sigquit_child(int sig)
+//Maneja SIGINT (Ctrl+C) para procesos hijo
+void handle_child_ctrl_c(int signal_num)
 {
-	(void)sig;
-	g_signal_received = SIGQUIT;
+	(void)signal_num;
+	g_received_signal = SIGINT;
+}
+
+
+//Maneja SIGQUIT (Ctrl+\) para procesos hijo
+
+void handle_child_ctrl_backslash(int signal_num)
+{
+	(void)signal_num;
+	g_received_signal = SIGQUIT;
 	write(STDOUT_FILENO, "Quit: 3\n", 8);
 }
 
-// Configurar señales para el shell principal (modo interactivo)
-void	setup_interactive_signals(void)
+
+//Configura los manejadores de señales para el modo interactivo
+void setup_interactive_mode_signals(void)
 {
-	signal(SIGINT, handle_sigint);
+	signal(SIGINT, handle_interactive_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 }
