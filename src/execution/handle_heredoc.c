@@ -23,8 +23,14 @@ char	*generate_tmp_file(void)
 	pid_str = ft_itoa(getpid());
 	counter_str = ft_itoa(heredoc_counter++);
 	filename = ft_strjoin("minish-ft_thd", pid_str);
+	if (!filename)
+		return (NULL);
 	filename = ft_strjoin_free_s1(filename, "-");
+	if (!filename)
+		return (NULL);
 	filename = ft_strjoin_free_s1(filename,counter_str);
+	if (!filename)
+		return (NULL);
 	full_path = ft_strjoin("/tmp/", filename);
 	//improve malloc error handling
 	free(pid_str);
@@ -43,7 +49,6 @@ int	handle_heredoc(char *delimeter)
 	if (!tmpfile)
 		return  (-1);
 	fd = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC | 0600);
-	//why trunc ?
 	if (fd == -1)
 	{
 		perror("open");
