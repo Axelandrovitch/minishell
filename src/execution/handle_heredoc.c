@@ -42,7 +42,7 @@ int	handle_heredoc(char *delimeter)
 	tmpfile = generate_tmp_file();
 	if (!tmpfile)
 		return  (-1);
-	fd = open(tmpfile, O_WRONLY, O_CREAT, O_TRUNC, 0600);
+	fd = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC | 0600);
 	//why trunc ?
 	if (fd == -1)
 	{

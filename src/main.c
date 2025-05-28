@@ -12,8 +12,6 @@
 
 
 #include "../minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 // // Solo para testear
 // void print_tokens(t_token *head)
