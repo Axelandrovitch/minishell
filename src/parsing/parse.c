@@ -47,7 +47,6 @@ static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 
 	i = 0;
 	(*pos)++;
-	shell->last_exit_status = 0;
 	if (input[*pos] == '?')
 	{
 		(*pos)++;
@@ -111,7 +110,8 @@ char	*expand_variables(const char *input, t_shell *shell)
 		}
 		// Si encontramos un $ y no estamos en comillas simples
 		else if (input[i] == '$' && !in_single_q && input[i + 1]
-			&& (ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
+			&& (ft_isalnum(input[i + 1]) || input[i + 1] == '_' ||
+				input[i + 1] == '?' || input[i + 1] == '{'))
 		{
 			expanded_var = extract_and_expand(input, &i, shell);
 			result = append_str(result, expanded_var);

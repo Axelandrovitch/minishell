@@ -105,8 +105,6 @@ static t_token	*handle_word_or_assignment(const char *line, int *i)
 			quote = line[(*i)++];
 			while (line[*i] && line[*i] != quote)
 			{
-				//if (j >= 1023)
-				//	return (fprintf(stderr, "Error: token demasiado largo\n"), NULL);
 				buffer[j++] = line[(*i)++];
 			}
 			if (line[*i] == quote)
