@@ -63,7 +63,7 @@ static t_token	*handle_redir(const char *line, int *i)
 {
 	t_token	*token;
 
-	if (line[*i] == '\0')
+	if (line[*i] == '\0')//Maybe quit this
 		return (NULL);
 	if (line[*i] == '<' && line[*i + 1] != '\0' && line[*i + 1] == '<')
 	{
@@ -156,3 +156,4 @@ t_token	*tokenize(const char *line)
 	}
 	return (head);
 }
+

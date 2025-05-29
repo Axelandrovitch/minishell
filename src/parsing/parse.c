@@ -129,3 +129,4 @@ char	*expand_variables(const char *input, t_shell *shell)
 	}
 	return (result);
 }
+
