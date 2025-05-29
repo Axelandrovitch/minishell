@@ -51,7 +51,7 @@ static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 	if (input[*pos] == '?')
 	{
 		(*pos)++;
-		return (ft_itoa(shell->last_exit_status)); //TODO
+		return (ft_itoa(shell->last_exit_status));
 	}
 	if (input[*pos] == '{')
 	{

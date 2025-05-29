@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:46:01 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/22 17:05:58 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:03:35 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
 	exit(EXIT_FAILURE);
 }
 
-void	execute_parent(pid_t pid, int *fd, int *prev_fd)
+void	execute_parent(pid_t pid, int *fd, int *prev_fd, int *last_status)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
@@ -127,7 +127,7 @@ void	execute_parent(pid_t pid, int *fd, int *prev_fd)
 		close(fd[1]);
 		*prev_fd = fd[0];
 	}
-	waitpid(pid, NULL, 0);
+	wait_and_get_status(pid, last_status);
 }
 
 // testeamos con exec_child
@@ -158,19 +158,23 @@ void	execute_pipeline(t_shell *shell)
 		}
 		else if (pid == 0)
 		{
+			setup_child_signals();
 			handle_redirections(current);
 			if (current->next)
 				exec_child(current, prev_fd, fd, shell);
 			else
 				exec_child(current, prev_fd, NULL, shell);
 		}
+
 		else
 		{
+			
 			if (current->next)
-				execute_parent(pid, fd, &prev_fd);
+				execute_parent(pid, fd, &prev_fd, &shell->last_exit_status);
 			else
-				execute_parent(pid, NULL, &prev_fd);
+				execute_parent(pid, NULL, &prev_fd, &shell->last_exit_status);
 		}
+		printf ("Last exit status: %d\n", shell->last_exit_status);
 		current = current->next;
 	}
 }

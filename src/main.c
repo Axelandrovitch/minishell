@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/28 13:57:46 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:30:32 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ static int	process_input_line(t_shell *shell)
 		printf("exit\n");
 		return (1);
 	}
-	if (check_and_handle_signals(shell->input))
+/* 	if (check_and_handle_signals(shell->input))
 	{
 		free(shell->input);
 		shell->input = NULL;
 		return (1);
-	}
+	} */
 	if (g_signal_received == SIGINT)
 	{
 		g_signal_received = 0;
@@ -108,8 +108,7 @@ static void	execute_command_pipeline(t_shell *shell)
 	shell->tokens = tokenize(shell->expanded);
 	if (check_syntax(shell->tokens))
 	{
-		free_shell(shell);
-		exit_shell(shell, EXIT_FAILURE);
+		return ;//TODO
 	}
 	parse_pipeline(shell, shell->tokens);
 	print_all_command_blocks(shell->command_blocks);
@@ -125,7 +124,9 @@ int	main(int ac, char **av, char **envp)
 		printf("Usage: %s\n", av[0]);
 		return (0);
 	}
+
 	shell.last_exit_status = 0;
+	//reset_term();
 	init_minishell(&shell, envp);
 	setup_interactive_signals();
 	while (1)

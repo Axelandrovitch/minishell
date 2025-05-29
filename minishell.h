@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/28 13:52:28 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:29:00 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <readline/history.h>
 # include <signal.h>
 # include "libft/inc/libft.h"
+# include <termios.h>
 
 extern int	g_signal_received; // Variable global para manejar señales
 
@@ -168,4 +169,7 @@ void	process_signals(void);
 int		check_and_handle_signals(char *input);
 
 
+
+void	wait_and_get_status(pid_t pid, int *last_status);
+void	reset_term(void);
 #endif
