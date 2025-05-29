@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 15:29:00 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:30:20 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct	s_redir
 {
 	t_token_type	type;
 	char			*filename;
+	int				fd;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -83,8 +84,6 @@ typedef	struct	s_shell
 	char			**bin_paths;
 	char			*input;
 	char			*expanded;
-	int				infile_fd;
-	int				outfile_fd;
 	int				last_exit_status;
 }	t_shell;
 
@@ -103,6 +102,8 @@ t_command_block	*set_command_block(t_token *head_token);
 void	execute_pipeline(t_shell *shell);
 
 int		handle_redirections(t_command_block *command_block);
+
+int		handle_heredoc(char *delimeter);
 
 // $
 char	*expand_variables(const char *input, t_shell *shell);
@@ -167,7 +168,6 @@ int		handle_eof(char *input);
 
 void	process_signals(void);
 int		check_and_handle_signals(char *input);
-
 
 
 void	wait_and_get_status(pid_t pid, int *last_status);

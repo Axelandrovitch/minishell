@@ -6,12 +6,13 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:46:01 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/29 16:03:35 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:35:40 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <string.h>
+#include <unistd.h>
 
 int	is_builtin(const char *command)
 {
@@ -97,12 +98,11 @@ void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
 		close(fd[1]);
 	}
 	apply_redirections(block->redirs);
-	// if (is_builtin(block->argv[0]))
-	// {
-	// 	printf("BUILT INS\n");
-	// 	execute_builtin(block->argv, shell);
-	// 	exit(0);
-	// }
+	if (is_builtin(block->argv[0]))
+	{
+		execute_builtin(block->argv, shell);
+		exit(0);
+	}
 	if (ft_strchr(block->argv[0], '/'))
 		pathname = ft_strdup(block->argv[0]);
 	else
@@ -111,10 +111,10 @@ void	exec_child(t_command_block *block, int prev_fd, int *fd, t_shell *shell)
 	{
 		ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
 		ft_putendl_fd(block->argv[0], STDERR_FILENO);
-		exit_shell(shell, 127);
+		exit_shell(shell, 127); // Do we need to free shell or just exit ?
 	}
 	execve(pathname, block->argv, shell->env);
-	perror("execve");
+	perror("minishell");
 	exit(EXIT_FAILURE);
 }
 
@@ -130,26 +130,34 @@ void	execute_parent(pid_t pid, int *fd, int *prev_fd, int *last_status)
 	wait_and_get_status(pid, last_status);
 }
 
-// testeamos con exec_child
+int	single_command_block(t_command_block *command_block)
+{
+	return (command_block && !command_block->next);
+}
+
 void	execute_pipeline(t_shell *shell)
 {
-	t_command_block	*current;
-	int				fd[2];
-	int				prev_fd;
-	pid_t			pid;
+	t_command_block *current = shell->command_blocks;
+	int fd[2];
+	int prev_fd = -1;
+	pid_t pid;
 
-	current = shell->command_blocks;
-	prev_fd = -1;
 	while (current)
 	{
-		if (!current->next && is_builtin(current->argv[0]))
+		if (single_command_block(current) && is_builtin(current->argv[0]))
 		{
-			handle_redirections(current);
+			int	stdin_copy = dup(STDIN_FILENO);
+			int	stdout_copy= dup(STDOUT_FILENO);
+			apply_redirections(current->redirs);
 			execute_builtin(current->argv, shell);
+			dup2(stdin_copy, STDIN_FILENO);
+			dup2(stdout_copy, STDOUT_FILENO);
+			close(stdin_copy);
+			close(stdout_copy);
 			return;
 		}
 		if (current->next && prepare_pipe(fd) == -1)
-			return ;
+			return;
 		pid = fork();
 		if (pid == -1)
 		{
@@ -159,7 +167,7 @@ void	execute_pipeline(t_shell *shell)
 		else if (pid == 0)
 		{
 			setup_child_signals();
-			handle_redirections(current);
+			apply_redirections(current->redirs);
 			if (current->next)
 				exec_child(current, prev_fd, fd, shell);
 			else
@@ -174,7 +182,7 @@ void	execute_pipeline(t_shell *shell)
 			else
 				execute_parent(pid, NULL, &prev_fd, &shell->last_exit_status);
 		}
-		printf ("Last exit status: %d\n", shell->last_exit_status);
 		current = current->next;
 	}
 }
+

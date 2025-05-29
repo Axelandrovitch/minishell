@@ -6,14 +6,12 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 15:30:32 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:30:51 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 // // Solo para testear
 // void print_tokens(t_token *head)
@@ -145,7 +143,6 @@ int	main(int ac, char **av, char **envp)
 			shell.input = NULL;
 		}
 	}
-	rl_clear_history();
-	free_env(&shell);
+	exit_shell(&shell, 0);
 	return (0);
 }

@@ -6,11 +6,14 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:23:19 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 15:47:35 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:32:37 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+// Estado global de señales
+int g_received_signal = 0;
 
 // Variable global para manejar señales recibidas
 int	g_signal_received = 0;
