@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 16:30:20 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:49:02 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,13 @@ int		builtin_echo(char **args);
 int		builtin_exit(char **args, t_shell *shell);
 int		builtin_env(char **args, char **env);
 int		builtin_cd(char **args, t_shell *shell);
-int		builtin_export(char **args, t_shell *shell);
 int		builtin_unset(char **args, char **env);
+int		builtin_export(char **args, t_shell *shell);
+// export utils
+void	print_invalid_export(char *arg);
+int		is_valid_identifier_export(const char *str);
+int		should_print_var(char *env_var);
+int		print_filtered_env(char **sorted_env);
 
 // sort
 void	sort_env_copy(char **env);
@@ -156,20 +161,8 @@ int		execute_builtin(char **argv, t_shell *shell);
 
 // signals	
 void	handle_sigint(int sig);
-void	handle_sigint_child(int sig);
-void	handle_sigquit_child(int sig);
 void	setup_interactive_signals(void);
-
 void	setup_child_signals(void);
-void	setup_execution_signals(void);
 void	ignore_signals(void);
-void	restore_signals(void);
-int		handle_eof(char *input);
-
-void	process_signals(void);
-int		check_and_handle_signals(char *input);
-
-
 void	wait_and_get_status(pid_t pid, int *last_status);
-void	reset_term(void);
 #endif

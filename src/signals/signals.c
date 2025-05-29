@@ -6,23 +6,19 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:23:19 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 16:32:37 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:57:49 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// Estado global de señales
-int g_received_signal = 0;
-
 // Variable global para manejar señales recibidas
 int	g_signal_received = 0;
 
-
 void	wait_and_get_status(pid_t pid, int *last_status)
 {
-	int status;
-	int sig;
+	int	status;
+	int	sig;
 
 	ignore_signals();
 	waitpid(pid, &status, 0);
@@ -64,6 +60,7 @@ void	setup_child_signals(void)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
+
 void	ignore_signals(void)
 {
 	signal(SIGINT, SIG_IGN);

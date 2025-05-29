@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:46:01 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/29 16:35:40 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:00:06 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ void	execute_pipeline(t_shell *shell)
 			else
 				execute_parent(pid, NULL, &prev_fd, &shell->last_exit_status);
 		}
+		printf("last exit status: %d\n", shell->last_exit_status);
 		current = current->next;
 	}
 }

@@ -32,11 +32,5 @@ int	execute_builtin(char **argv, t_shell *shell)
 		builtin_unset(argv, shell->env);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		builtin_cd(argv, shell);
-	/*else
-	{
-		free_vector(argv);
-		return (1);
-	}
-	free_vector(argv);*/
 	return (1);
 }

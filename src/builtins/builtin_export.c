@@ -6,92 +6,95 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:02:16 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 16:39:40 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:50:43 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	print_invalid(char *arg)
-{
-	ft_putstr_fd("export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-}
-
-static int	is_valid_identifier(const char *str)
-{
-	int	i;
-
-	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
-		return (0);
-	i = 0;
-	while (str[i] && str[i] != '=')
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 static int	print_sorted_env(char **env)
 {
-	int		i;
 	char	**sorted_env;
+	int		result;
 
 	sorted_env = copy_environment(env);
 	if (!sorted_env)
 		return (1);
 	sort_env_copy(sorted_env);
-	i = 0;
-	while (sorted_env[i])
-	{
-		printf("declare -x %s\n", env[i]);
-		i++;
-	}
+	result = print_filtered_env(sorted_env);
 	free_vector(sorted_env);
+	return (result);
+}
+
+static int	find_equals_position(char *str)
+{
+	int	pos;
+
+	pos = 0;
+	while (str[pos] && str[pos] != '=')
+		pos++;
+	return (pos);
+}
+
+static int	extract_key_value(char *arg, char **key, char **value)
+{
+	int	eq_pos;
+
+	eq_pos = find_equals_position(arg);
+	*key = ft_substr(arg, 0, eq_pos);
+	if (!*key)
+		return (1);
+	if (arg[eq_pos] == '=')
+	{
+		*value = ft_strdup(arg + eq_pos + 1);
+		if (!*value)
+		{
+			free(*key);
+			return (1);
+		}
+	}
+	else
+		*value = NULL;
+	return (0);
+}
+
+static int	process_single_arg(char *arg, t_shell *shell)
+{
+	char	*key;
+	char	*value;
+
+	if (!is_valid_identifier_export(arg))
+	{
+		print_invalid_export(arg);
+		return (0);
+	}
+	if (extract_key_value(arg, &key, &value))
+		return (1);
+	if (add_or_update_env(&shell->env, key, value))
+	{
+		free(key);
+		free(value);
+		return (1);
+	}
+	free(key);
+	free(value);
 	return (0);
 }
 
 int	builtin_export(char **args, t_shell *shell)
 {
-	int		i;
-	int		eq_pos;
-	char	*key;
-	char	*value;
+	int	i;
+	int	error;
 
 	if (!args[1])
 		return (print_sorted_env(shell->env));
 	i = 1;
+	error = 0;
 	while (args[i])
 	{
-		if (!is_valid_identifier(args[i]))
-			print_invalid(args[i]);
-		else
-		{
-			eq_pos = 0;
-			while (args[i][eq_pos] && args[i][eq_pos] != '=')
-				eq_pos++;
-			key = ft_substr(args[i], 0, eq_pos);
-			if (!key)
-				return (1);
-			if (args[i][eq_pos] == '=')
-				value = ft_strdup(args[i] + eq_pos + 1);
-			else
-				value = NULL;
-			if (value == NULL && args[i][eq_pos] == '=')
-				return (1);
-			add_or_update_env(&shell->env, key, value);
-			{
-				free(key);
-				free(value);
-				return (1);
-			}
-			free(key);
-			free(value);
-		}
+		if (process_single_arg(args[i], shell))
+			error = 1;
 		i++;
 	}
-	return (0);
+	return (error);
 }
