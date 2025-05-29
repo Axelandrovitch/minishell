@@ -101,7 +101,7 @@ void	parse_command_block(t_command_block *command_block)
 	while(token)
 	{
 		next = token->next;
-		if (is_redirection(token) && next && next->type == T_WORD)
+		if (is_redirection(token) && next)
 		{
 			redir_add_back(&command_block->redirs, token->type, next->value);
 			token = next->next;

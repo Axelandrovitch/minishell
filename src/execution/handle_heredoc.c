@@ -12,75 +12,193 @@
 
 # include "../../minishell.h"
 
-char	*generate_tmp_file(void)
+static int	should_expand_heredoc(const char *delimiter)
 {
-	static int	heredoc_counter = 0;
-	char		*pid_str;
-	char		*counter_str;
-	char		*filename;
-	char		*full_path;
+	int	i;
 
-	pid_str = ft_itoa(getpid());
-	counter_str = ft_itoa(heredoc_counter++);
-	filename = ft_strjoin("minish-ft_thd", pid_str);
-	if (!filename)
-		return (NULL);
-	filename = ft_strjoin_free_s1(filename, "-");
-	if (!filename)
-		return (NULL);
-	filename = ft_strjoin_free_s1(filename,counter_str);
-	if (!filename)
-		return (NULL);
-	full_path = ft_strjoin("/tmp/", filename);
-	//improve malloc error handling
-	free(pid_str);
-	free(counter_str);
-	free(filename);
-	return (full_path);
+	i = 0;
+	while (delimiter[i])
+	{
+		if (delimiter[i] == '\'' || delimiter[i] == '"')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-int	handle_heredoc(char *delimeter)
+static char	*remove_quotes_from_delimiter(const char *delimiter)
 {
-	char	*line;
-	char	*tmpfile;
-	int		fd;
+	char	*result;
+	int		i;
+	int		j;
 
-	tmpfile = generate_tmp_file();
-	if (!tmpfile)
-		return  (-1);
-	fd = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC | 0600);
-	if (fd == -1)
+	result = malloc(ft_strlen(delimiter) + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (delimiter[i])
 	{
-		perror("open");
-		free(tmpfile);
-		return (-1);
+		if (delimiter[i] != '\'' && delimiter[i] != '"')
+			result[j++] = delimiter[i];
+		i++;
 	}
-	while (1)
+	result[j] = '\0';
+	return (result);
+}
+
+static char	*get_env_value(const char *var_name, t_shell *shell)
+{
+	int	i;
+
+	if (!var_name || !shell || !shell->env)
+		return (NULL);
+	i = 0;
+	while (shell->env[i])
 	{
-		line = readline("heredoc> ");
-		if (!line)
-			break ;
-		if (ft_strcmp(line, delimeter) == 0)
+		if (ft_strncmp(shell->env[i], var_name, ft_strlen(var_name)) == 0
+			&& shell->env[i][ft_strlen(var_name)] == '=')
+			return (&shell->env[i][ft_strlen(var_name) + 1]);
+		i++;
+	}
+	return (NULL);
+}
+
+static char	*extract_and_expand_var(const char *start, int *i, t_shell *shell)
+{
+	char	*var_name;
+	char	*var_value;
+	int		var_len;
+	int		k;
+
+	(*i)++;
+	var_len = 0;
+	while (start[1 + var_len] && (ft_isalnum(start[1 + var_len]) || start[1 + var_len] == '_'))
+		var_len++;
+	var_name = malloc(var_len + 1);
+	if (!var_name)
+		return (NULL);
+	k = 0;
+	while (k < var_len)
+	{
+		var_name[k] = start[1 + k];
+		k++;
+	}
+	var_name[var_len] = '\0';
+	var_value = get_env_value(var_name, shell);
+	free(var_name);
+	*i += var_len - 1;
+	return (var_value ? ft_strdup(var_value) : ft_strdup(""));
+}
+
+static char	*expand_heredoc_variables(const char *line, t_shell *shell)
+{
+	char	*result;
+	char	*temp;
+	int		i;
+	int		j;
+
+	if (!line)
+		return (NULL);
+	result = malloc(ft_strlen(line) * 2 + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (line[i])
+	{
+		if (line[i] == '$' && line[i + 1] && (ft_isalnum(line[i + 1]) || line[i + 1] == '_'))
 		{
-			free(line);
-			break ;
+			temp = extract_and_expand_var(&line[i], &i, shell);
+			if (temp)
+			{
+				ft_strncpy(&result[j], temp, ft_strlen(temp));
+				j += ft_strlen(temp);
+				free(temp);
+			}
 		}
 		else
-			ft_putstr_fd(line, fd);
-		ft_putstr_fd("\n", fd);
-		free(line);
+			result[j++] = line[i++];
 	}
-	close(fd);
-	fd = open(tmpfile, O_RDONLY);
-	if (fd == -1)
+	result[j] = '\0';
+	return (result);
+}
+
+static void	write_line_to_fd(int fd, char *line, int expand, t_shell *shell)
+{
+	char	*expanded_line;
+
+	if (expand)
 	{
-		perror("open");
-		unlink(tmpfile);
-		free(tmpfile);
+		expanded_line = expand_heredoc_variables(line, shell);
+		if (expanded_line)
+		{
+			write(fd, expanded_line, ft_strlen(expanded_line));
+			free(expanded_line);
+		}
+	}
+	else
+		write(fd, line, ft_strlen(line));
+	write(fd, "\n", 1);
+}
+
+int handle_heredoc(const char *delimiter, t_shell *shell)
+{
+	int		pipe_fd[2];
+	pid_t	pid;
+	int		status;
+	char	*clean_delim;
+	int		expand;
+
+	if (pipe(pipe_fd) < 0)
+		return (-1);
+	clean_delim = remove_quotes_from_delimiter(delimiter);
+	if (!clean_delim)
+		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
+
+	expand = should_expand_heredoc(delimiter);
+	pid = fork();
+	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		close(pipe_fd[0]);
+
+		while (1)
+		{
+			char *line = readline("> ");
+			if (!line)
+				break;
+			if (ft_strcmp(line, clean_delim) == 0)
+			{
+				free(line);
+				break;
+			}
+			write_line_to_fd(pipe_fd[1], line, expand, shell);
+			free(line);
+		}
+		close(pipe_fd[1]);
+		free(clean_delim);
+		exit(0);
+	}
+	else if (pid > 0)
+	{
+		close(pipe_fd[1]);
+		waitpid(pid, &status, 0);
+		free(clean_delim);
+
+		if (WIFSIGNALED(status))
+		{
+			close(pipe_fd[0]);
+			return (-1);
+		}
+		return pipe_fd[0];
+	}
+	else
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		free(clean_delim);
 		return (-1);
 	}
-	unlink(tmpfile);
-	free(tmpfile);
-	return (fd);
 }
 
