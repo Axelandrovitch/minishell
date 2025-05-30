@@ -30,7 +30,7 @@ static int	is_valid_n_option(char *arg)
 	return (1);
 }
 
-int	builtin_echo(char **args)
+int	builtin_echo(char **args, t_shell *shell)
 {
 	int	i;
 	int	newline;
@@ -44,7 +44,11 @@ int	builtin_echo(char **args)
 	}
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		if (printf("%s", args[i]) == -1)
+		{
+			shell->last_exit_status = 1;
+			return (1);
+		}
 		if (args[i + 1])
 			printf(" ");
 		i++;

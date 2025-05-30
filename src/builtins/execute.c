@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:17:35 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/30 11:17:35 by marvin           ###   ########.fr       */
+/*   Updated: 2025/05/30 17:53:37 by ahetru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	execute_builtin(char **argv, t_shell *shell)
 	if (strcmp(argv[0], "pwd") == 0)
 		builtin_pwd(argv);
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		builtin_echo(argv);
+		builtin_echo(argv, shell);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		builtin_exit(argv, shell);
 	else if (ft_strcmp(argv[0], "env") == 0)

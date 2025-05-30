@@ -142,7 +142,7 @@ void	print_all_command_blocks(t_command_block *head);
 
 // builtins
 int		builtin_pwd(char **args);
-int		builtin_echo(char **args);
+int		builtin_echo(char **args, t_shell *shell);
 int		builtin_exit(char **args, t_shell *shell);
 int		builtin_env(char **args, char **env);
 int		builtin_cd(char **args, t_shell *shell);
