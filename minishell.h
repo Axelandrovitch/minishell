@@ -141,7 +141,7 @@ void	print_command_blocks(t_command_block *head_block);
 void	print_all_command_blocks(t_command_block *head);
 
 // builtins
-int		builtin_pwd(char **args);
+int		builtin_pwd(char **args, t_shell *shell);
 int		builtin_echo(char **args, t_shell *shell);
 int		builtin_exit(char **args, t_shell *shell);
 int		builtin_env(char **args, char **env);
