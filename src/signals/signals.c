@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <readline/readline.h>
 
 // Variable global para manejar señales recibidas
 int	g_signal_received = 0;
@@ -34,17 +35,26 @@ void	handle_sigint_child(int sig)
 	write(STDOUT_FILENO, "\n", 1);
 }
 
+void	handle_sigquit(int sig)
+{
+	(void)sig;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 // Handler para SIGQUIT (Ctrl+\) durante ejecución de comandos
 void	handle_sigquit_child(int sig)
 {
 	(void)sig;
 	g_signal_received = SIGQUIT;
-	write(STDOUT_FILENO, "Quit: 3\n", 8);
+	rl_redisplay();
+	// write(STDOUT_FILENO, "Quit: 3\n", 8);
 }
 
 // Configurar señales para el shell principal (modo interactivo)
 void	setup_interactive_signals(void)
 {
 	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, handle_sigquit);
 }
