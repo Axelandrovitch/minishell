@@ -12,14 +12,16 @@
 
 #include "../../minishell.h"
 
-static int	print_sorted_env(char **env)
+static int	print_sorted_env( t_shell *shell)
 {
 	char	**sorted_env;
 	int		result;
 
-	sorted_env = copy_environment(env);
+	sorted_env = copy_environment(shell->env);
 	if (!sorted_env)
-		return (1);
+	{
+		exit_shell(shell, EXIT_FAILURE);
+	}
 	sort_env_copy(sorted_env);
 	result = print_filtered_env(sorted_env);
 	free_vector(sorted_env);
@@ -65,6 +67,7 @@ static int	process_single_arg(char *arg, t_shell *shell)
 
 	if (!is_valid_identifier_export(arg))
 	{
+		shell->last_exit_status = 1;
 		print_invalid_export(arg);
 		return (0);
 	}
@@ -87,7 +90,7 @@ int	builtin_export(char **args, t_shell *shell)
 	int	error;
 
 	if (!args[1])
-		return (print_sorted_env(shell->env));
+		return (print_sorted_env(shell));
 	i = 1;
 	error = 0;
 	while (args[i])
