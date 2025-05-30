@@ -31,7 +31,7 @@ int	find_env_var(char **env, char *key)
 }
 
 // Actualiza el valor de una variable de entorno existente
-// Se usa en el export y cd
+// cd
 int	update_env_var(char **env, char *var_name, char *value)
 {
 	char	*env_var;
@@ -69,7 +69,6 @@ int	update_env_var(char **env, char *var_name, char *value)
 }
 
 // Añade una nueva variable de entorno al vector env
-
 int	add_env_var(char ***env, char *key, char *value)
 {
 	int		size;
@@ -121,7 +120,7 @@ int	add_or_update_env(char ***env, char *key, char *value)
 	pos = find_env_var(*env, key);
 	if (pos >= 0)
 		return (update_env_var(*env, key, value));
-	else
+	else	
 		return (add_env_var(env, key, value));
 }
 

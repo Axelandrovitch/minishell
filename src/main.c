@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 19:14:31 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:09:24 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	execute_command_pipeline(t_shell *shell)
 	execute_pipeline(shell);
 }
 
-/* void	ft_setenv(t_shell *shell, const char *key, const char *value)
+void	ft_setenv(t_shell *shell, const char *key, const char *value)
 {
 	char	*env_var;
 
@@ -77,7 +77,7 @@ static void	execute_command_pipeline(t_shell *shell)
 		return ;
 	add_or_update_env(&shell->env, env_var, NULL);
 	free(env_var);
-} */
+}
 
 void	update_shlvl(t_shell *shell)
 {
@@ -89,7 +89,7 @@ void	update_shlvl(t_shell *shell)
 	shlvl_str = ft_getenv(shell, "SHLVL");
 	if (!shlvl_str)
 	{
-		update_env_var(shell->env, "SHLVL", "1");
+		ft_setenv(shell, "SHLVL", "1");
 		return ;
 	}
 	shlvl = ft_atoi(shlvl_str);
@@ -105,11 +105,9 @@ void	update_shlvl(t_shell *shell)
 	new_value = ft_itoa(shlvl);
 
 	builtin_unset(args, shell->env);
-	update_env_var(shell->env, "SHLVL", new_value);
+	ft_setenv(shell, "SHLVL", new_value);
 	free(new_value);
 }
-
-
 
 int	main(int ac, char **av, char **envp)
 {
@@ -142,6 +140,6 @@ int	main(int ac, char **av, char **envp)
 		}
 	}
 	rl_clear_history();
-	free_env(&shell);
+	exit_shell(&shell, 0);
 	return (0);
 }
