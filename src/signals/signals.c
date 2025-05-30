@@ -12,7 +12,6 @@
 
 #include "../../minishell.h"
 
-// Variable global para manejar señales recibidas
 int	g_signal_received = 0;
 
 void	wait_and_get_status(pid_t pid, int *last_status)

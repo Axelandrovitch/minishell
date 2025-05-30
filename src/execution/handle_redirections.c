@@ -20,7 +20,7 @@ int	is_redirection(t_token *token)
 	return (0);
 }
 
-static int	handle_fd(enum e_token_type type, char *filename)
+static int	handle_fd(enum e_token_type type, char *filename, t_shell *shell)
 {
 	int	fd;
 
@@ -33,7 +33,7 @@ static int	handle_fd(enum e_token_type type, char *filename)
 		fd = open(filename, O_RDONLY);
 	else if (type == T_HEREDOC)
 	{
-		fd = handle_heredoc(filename);
+		fd = handle_heredoc(filename, shell);
 	}
 	if (fd < 0)
 	{
@@ -43,13 +43,13 @@ static int	handle_fd(enum e_token_type type, char *filename)
 	return (fd);
 }
 
-void	apply_redirections(t_redir *redir)
+void	apply_redirections(t_redir *redir, t_shell *shell)
 {
 	int	fd;
 
 	while (redir)
 	{
-		fd = handle_fd(redir->type, redir->filename);
+		fd = handle_fd(redir->type, redir->filename, shell);
 		if (fd == -1)
 		{
 			exit(1); // esto se tendria que gestionar en la funcion que da su valor al file descriptor y anadir perror
