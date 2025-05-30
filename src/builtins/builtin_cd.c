@@ -73,7 +73,11 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 	char	*current_dir;
 
 	if (args[2])
+	{
+
+		shell->last_exit_status = 1;
 		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
+	}
 	current_dir = getcwd(NULL, 0);
 	if (!args[1])
 	{
@@ -81,12 +85,14 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 		if (!home)
 		{
 			free(current_dir);
+			shell->last_exit_status = 1;
 			return (ft_putstr_fd("cd: HOME not set\n", 2), 1);
 		}
 		if (chdir(home) == -1)
 		{
 			free(home);
 			free(current_dir);
+			shell->last_exit_status = 1;
 			return (perror("cd"), 1);
 		}
 		free(home);
@@ -96,6 +102,7 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 		if (go_to_path(shell, "OLDPWD") != 0)
 		{
 			free(current_dir);
+			shell->last_exit_status = 1;
 			return (1);
 		}
 		home = ft_getenv(shell, "PWD");
@@ -110,11 +117,13 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 		if (chdir(args[1]) == -1)
 		{
 			print_error((const char **)args);
+			shell->last_exit_status = 1;
 			free (current_dir);
 			return (1);
 		}
 	}
 	update_pwd_vars(shell, current_dir);
 	free(current_dir);
+	shell->last_exit_status = 0;
 	return (0);
 }
