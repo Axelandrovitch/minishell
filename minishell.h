@@ -103,7 +103,7 @@ void	execute_pipeline(t_shell *shell);
 
 int		handle_redirections(t_command_block *command_block);
 
-int		handle_heredoc(char *delimeter);
+int		handle_heredoc(const char *delimeter, t_shell *shell);
 
 // $
 char	*expand_variables(const char *input, t_shell *shell);
@@ -112,7 +112,7 @@ char	*expand_variables(const char *input, t_shell *shell);
 // parsing
 int		check_syntax(t_token *tokens);
 int		is_redirection(t_token *token);
-void	apply_redirections(t_redir *redir);
+void	apply_redirections(t_redir *redir, t_shell *shell);
 void	parse_pipeline(t_shell *shell, t_token *tokens);
 
 // free commands
