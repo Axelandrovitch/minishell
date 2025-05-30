@@ -25,7 +25,7 @@ int	execute_builtin(char **argv, t_shell *shell)
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		builtin_exit(argv, shell);
 	else if (ft_strcmp(argv[0], "env") == 0)
-		builtin_env(argv, shell->env);
+		builtin_env(argv, shell);
 	else if (ft_strcmp(argv[0], "export") == 0)
 		builtin_export(argv, shell);
 	else if (ft_strcmp(argv[0], "unset") == 0)

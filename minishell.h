@@ -144,7 +144,7 @@ void	print_all_command_blocks(t_command_block *head);
 int		builtin_pwd(char **args, t_shell *shell);
 int		builtin_echo(char **args, t_shell *shell);
 int		builtin_exit(char **args, t_shell *shell);
-int		builtin_env(char **args, char **env);
+int		builtin_env(char **args, t_shell *shell);
 int		builtin_cd(char **args, t_shell *shell);
 int		builtin_unset(char **args, char **env);
 int		builtin_export(char **args, t_shell *shell);
