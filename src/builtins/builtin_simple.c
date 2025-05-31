@@ -96,27 +96,6 @@ int	builtin_exit(char **args, t_shell *shell)
 	return (0);
 }
 
-// PWD
-// int	builtin_pwd(char **args, t_shell *shell)
-// {
-// 	char	*cwd;
-//
-// 	if (args[1])
-// 	{
-// 		shell->last_exit_status = 1;
-// 		return (printf("pwd: too many arguments\n"), 1);
-// 	}
-// 	cwd = getcwd(NULL, 0);
-// 	if (!cwd)
-// 	{
-// 		shell->last_exit_status = 1;
-// 		return (perror("getcwd"), 1);
-// 	}
-// 	printf("%s\n", cwd);
-// 	free(cwd);
-// 	return (0);
-// }
-
 int	builtin_pwd(char **args, t_shell *shell)
 {
 	char	*cwd;
@@ -138,7 +117,6 @@ int	builtin_pwd(char **args, t_shell *shell)
 			perror("pwd: getcwd failed and no $PWD fallback");
 			return (1);
 		}
-		// ft_getenv fait une copie, donc pas besoin de free ici
 		printf("%s\n", cwd);
 		free(cwd);
 		return (0);
