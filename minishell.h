@@ -147,7 +147,7 @@ int		builtin_echo(char **args, t_shell *shell);
 int		builtin_exit(char **args, t_shell *shell);
 int		builtin_env(char **args, t_shell *shell);
 int		builtin_cd(char **args, t_shell *shell);
-int		builtin_unset(char **args, char **env);
+int		builtin_unset(char **args, t_shell *shell);
 int		builtin_export(char **args, t_shell *shell);
 // export utils
 void	print_invalid_export(char *arg);

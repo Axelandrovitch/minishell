@@ -29,7 +29,7 @@ int	execute_builtin(char **argv, t_shell *shell)
 	else if (ft_strcmp(argv[0], "export") == 0)
 		builtin_export(argv, shell);
 	else if (ft_strcmp(argv[0], "unset") == 0)
-		builtin_unset(argv, shell->env);
+		builtin_unset(argv, shell);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		builtin_cd(argv, shell);
 	return (1);
