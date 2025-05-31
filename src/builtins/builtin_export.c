@@ -60,6 +60,29 @@ static int	extract_key_value(char *arg, char **key, char **value)
 	return (0);
 }
 
+void update_bin_paths(t_shell *shell)
+{
+	char *path_value;
+
+	path_value = ft_getenv(shell, "PATH");
+	if (shell->bin_paths)
+		free_vector(shell->bin_paths);
+	if (path_value)
+	{
+		shell->bin_paths = ft_split(path_value, ':');
+		free(path_value);
+		if (!shell->bin_paths)
+			exit_shell(shell, 1);
+		form_bin_path(shell->bin_paths);  
+	}
+	else
+	{
+		shell->bin_paths = NULL;
+	}
+}
+
+
+
 static int	process_single_arg(char *arg, t_shell *shell)
 {
 	char	*key;
@@ -79,6 +102,8 @@ static int	process_single_arg(char *arg, t_shell *shell)
 		free(value);
 		return (1);
 	}
+	if (ft_strcmp(key, "PATH") == 0)
+		update_bin_paths(shell);
 	free(key);
 	free(value);
 	return (0);
@@ -99,5 +124,9 @@ int	builtin_export(char **args, t_shell *shell)
 			error = 1;
 		i++;
 	}
+	if (error)
+		shell->last_exit_status = 1;
+	else
+		shell->last_exit_status = 0;
 	return (error);
 }

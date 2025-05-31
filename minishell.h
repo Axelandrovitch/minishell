@@ -127,6 +127,7 @@ char	**copy_environment(char **envp);
 int		count_environment_vars(char **envp);
 char	*get_pathname(char *command, char **path_variable);
 char	*ft_getenv(t_shell *shell, char *var);
+void	form_bin_path(char **envp_vec);
 
 // env_utils
 int		find_env_var(char **env, char *key);

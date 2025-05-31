@@ -39,7 +39,7 @@ void	free_vector(char **vec)
 	free(vec);
 }
 
-static void	form_bin_path(char **envp_vec)
+void	form_bin_path(char **envp_vec)
 {
 	char	*full_path;
 	int		i;
