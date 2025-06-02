@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <unistd.h>
 
 int	is_builtin(const char *command)
 {
@@ -53,6 +54,21 @@ void	update_parent_state(pid_t pid, int *fd, int *prev_fd, bool has_next, t_shel
 	wait_and_get_status(pid, &shell->last_exit_status);
 }
 
+void	print_command_not_found(char *command)
+{
+	char	*message;
+	char	*message_endl;
+	int		len;
+
+	message = ft_strjoin("minishell: command not found: ", command);
+	message_endl = ft_strjoin(message, "\n");
+	len = ft_strlen(message_endl);
+	write(STDERR_FILENO, message_endl, len);
+	free(message);
+	free(message_endl);
+}
+
+
 void	exec_external_command(char **argv, t_shell *shell)
 {
 	char	*path;
@@ -64,8 +80,7 @@ void	exec_external_command(char **argv, t_shell *shell)
 		path = get_pathname(argv[0], shell->bin_paths);
 	if (path == NULL)
 	{
-		ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
-		ft_putendl_fd(argv[0], STDERR_FILENO);
+		print_command_not_found(argv[0]);
 		exit_shell(shell, 127);
 	}
 	execve(path, argv, shell->env);
@@ -92,7 +107,8 @@ void	execute_child_process(t_command_block *cmd, int prev_fd, int *fd, t_shell *
 	if (is_builtin(cmd->argv[0]))
 	{
 		execute_builtin(cmd->argv, shell);
-		exit(0);
+		exit(0);// mieux gerer l exit des builtin, en partie gere depuis execute_builtin
+				// potentiellement changer la gestion de last exit status dans les executions des builtins
 	}
 	exec_external_command(cmd->argv, shell);
 }
