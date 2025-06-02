@@ -42,7 +42,7 @@ int	prepare_pipe(int *fd)
 	return (0);
 }
 
-void	update_parent_state(pid_t pid, int *fd, int *prev_fd, bool has_next, t_shell *shell)
+void	update_parent_state(int *fd, int *prev_fd, bool has_next)
 {
 	if (*prev_fd != -1)
 		close(*prev_fd);
@@ -51,7 +51,6 @@ void	update_parent_state(pid_t pid, int *fd, int *prev_fd, bool has_next, t_shel
 		close(fd[1]);
 		*prev_fd = fd[0];
 	}
-	wait_and_get_status(pid, &shell->last_exit_status);
 }
 
 void	print_command_not_found(char *command)
@@ -152,18 +151,64 @@ void	execute_child_wrapper(t_command_block *cmd, int prev_fd, int *fd, t_shell *
 		execute_child_process(cmd, prev_fd, NULL, shell);
 }
 
-void	update_parent_wrapper(pid_t pid, int *fd, int *prev_fd, t_command_block *next, t_shell *shell)
+void	update_parent_wrapper(int *fd, int *prev_fd, t_command_block *next)
 {
 	if (next != NULL)
-		update_parent_state(pid, fd, prev_fd, 1, shell);
+		update_parent_state(fd, prev_fd, 1);
 	else
-		update_parent_state(pid, NULL, prev_fd, 0, shell);
+		update_parent_state(NULL, prev_fd, 0);
 }
+//
+// void	exec_commands(t_command_block *cmd, int prev_fd, t_shell *shell)
+// {
+// 	int		fd[2];
+// 	pid_t	pid;
+//
+// 	while (cmd)
+// 	{
+// 		if (cmd->next)
+// 		{
+// 			if (prepare_pipe(fd) == -1)
+// 				return ;
+// 		}
+// 		pid = fork();
+// 		if (pid < 0)
+// 		{
+// 			perror("fork");
+// 			return ;
+// 		}
+// 		if (pid == 0)
+// 			execute_child_wrapper(cmd, prev_fd, fd, shell);
+// 		else
+// 			update_parent_wrapper(pid, fd, &prev_fd, cmd->next, shell);
+// 		cmd = cmd->next;
+// 	}
+// }
+//
+// void	exec_commands_in_parellel(t_command_block *cmd, int prev_fd, t_shell *shell)
+// {
+// 	int		fd[2];
+// 	pid_t	current_pid;
+// 	pid_t	pids[1024];
+// 	int		i;
+//
+// 	i = 0;
+// 	while(cmd)
+// 	{
+// 		if (cmd->next)
+// 		{
+// 			if (prepare_pipe(fd) == -1)
+//
+// 		}
+// 	}
+// }
 
 void	exec_commands(t_command_block *cmd, int prev_fd, t_shell *shell)
 {
 	int		fd[2];
 	pid_t	pid;
+	pid_t	pids[1024];
+	int		i = 0;
 
 	while (cmd)
 	{
@@ -179,11 +224,22 @@ void	exec_commands(t_command_block *cmd, int prev_fd, t_shell *shell)
 			return ;
 		}
 		if (pid == 0)
-			execute_child_wrapper(cmd, prev_fd, fd, shell);
+			execute_child_wrapper(cmd, prev_fd, cmd->next ? fd : NULL, shell);
 		else
-			update_parent_wrapper(pid, fd, &prev_fd, cmd->next, shell);
+		{
+			pids[i++] = pid;
+			if (prev_fd != -1)
+				close(prev_fd);
+			if (cmd->next)
+			{
+				close(fd[1]);
+				prev_fd = fd[0];
+			}
+		}
 		cmd = cmd->next;
 	}
+	for (int j = 0; j < i; j++)
+		wait_and_get_status(pids[j], &shell->last_exit_status);
 }
 
 void	execute_pipeline(t_shell *shell)
