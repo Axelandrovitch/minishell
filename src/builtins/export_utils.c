@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:44:30 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/03 16:24:05 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:56:44 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int	print_filtered_env(char **sorted_env)
 	return (0);
 }
 
-void update_bin_paths(t_shell *shell)
+void	update_bin_paths(t_shell *shell)
 {
-	char *path_value;
+	char	*path_value;
 
 	path_value = ft_getenv(shell, "PATH");
 	if (shell->bin_paths)

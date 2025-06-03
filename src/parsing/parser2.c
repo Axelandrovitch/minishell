@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:28:26 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/22 14:24:41 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:59:23 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	redirection_error(t_token *token)
 	{
 		if (!token->next)
 			return (1);
-		if (token->next->type != T_WORD &&
-				token->next->type != T_SQUOTE &&
-				token->next->type != T_DQUOTE)
+		if (token->next->type != T_WORD
+			&& token->next->type != T_SQUOTE
+			&& token->next->type != T_DQUOTE)
 			return (1);
 	}
 	return (0);

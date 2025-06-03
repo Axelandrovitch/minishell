@@ -103,10 +103,8 @@ int	builtin_pwd(char **args, t_shell *shell)
 	if (args[1])
 	{
 		shell->last_exit_status = 1;
-		ft_putstr_fd("pwd: too many arguments\n", 2);
-		return (1);
+		return (ft_putstr_fd("pwd: too many arguments\n", 2), 1);
 	}
-
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
@@ -126,4 +124,3 @@ int	builtin_pwd(char **args, t_shell *shell)
 	shell->last_exit_status = 0;
 	return (shell->last_exit_status);
 }
-

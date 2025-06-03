@@ -100,7 +100,6 @@ char	*expand_variables(const char *input, t_shell *shell)
 		return (NULL);
 	while (input[i])
 	{
-		// Si encontramos una comilla
 		if (input[i] == '\'' || input[i] == '\"')
 		{
 			update_quote_state(input[i], &in_single_q, &in_double_q);
@@ -108,10 +107,9 @@ char	*expand_variables(const char *input, t_shell *shell)
 			if (!result)
 				return (NULL);
 		}
-		// Si encontramos un $ y no estamos en comillas simples
 		else if (input[i] == '$' && !in_single_q && input[i + 1]
-			&& (ft_isalnum(input[i + 1]) || input[i + 1] == '_' ||
-				input[i + 1] == '?' || input[i + 1] == '{'))
+			&& (ft_isalnum(input[i + 1]) || input[i + 1] == '_'
+				|| input[i + 1] == '?' || input[i + 1] == '{'))
 		{
 			expanded_var = extract_and_expand(input, &i, shell);
 			result = append_str(result, expanded_var);
@@ -129,4 +127,3 @@ char	*expand_variables(const char *input, t_shell *shell)
 	}
 	return (result);
 }
-
