@@ -60,7 +60,6 @@ static void	execute_command_pipeline(t_shell *shell)
 		return ;
 	}
 	parse_pipeline(shell, shell->tokens);
-	print_all_command_blocks(shell->command_blocks);
 	execute_pipeline(shell);
 }
 

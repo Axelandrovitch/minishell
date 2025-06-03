@@ -99,8 +99,6 @@ t_token	*tokenize(const char *line);
 
 t_command_block	*set_command_block(t_token *head_token);
 
-void	execute_pipeline(t_shell *shell);
-
 int		handle_redirections(t_command_block *command_block);
 
 int		handle_heredoc(const char *delimeter, t_shell *shell);
@@ -108,6 +106,16 @@ int		handle_heredoc(const char *delimeter, t_shell *shell);
 // $
 char	*expand_variables(const char *input, t_shell *shell);
 
+
+//execution
+void	execute_pipeline(t_shell *shell);
+int		execute_builtin(char **argv, t_shell *shell);
+int		pipe_and_execute(t_command_block *cmd, int prev_fd, int *fd, t_shell *shell);
+void	execute_single_builtin(t_command_block *cmd, t_shell *shell);
+bool	is_single_builtin(t_command_block *cmd);
+int		prepare_pipe(int *fd);
+void	print_command_not_found(const char *command);
+int		is_builtin(const char *command);
 
 // parsing
 int		check_syntax(t_token *tokens);
@@ -158,7 +166,6 @@ int		print_filtered_env(char **sorted_env);
 // sort
 void	sort_env_copy(char **env);
 
-int		execute_builtin(char **argv, t_shell *shell);
 
 // signals	
 void	handle_sigint(int sig);

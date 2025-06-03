@@ -56,5 +56,5 @@ int	builtin_echo(char **args, t_shell *shell)
 	if (newline)
 		printf("\n");
 	shell->last_exit_status = 0;
-	return (0);
+	return (shell->last_exit_status);
 }

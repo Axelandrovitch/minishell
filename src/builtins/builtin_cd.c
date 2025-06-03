@@ -125,5 +125,5 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 	update_pwd_vars(shell, current_dir);
 	free(current_dir);
 	shell->last_exit_status = 0;
-	return (0);
+	return (shell->last_exit_status);
 }

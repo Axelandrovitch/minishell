@@ -128,5 +128,5 @@ int	builtin_export(char **args, t_shell *shell)
 		shell->last_exit_status = 1;
 	else
 		shell->last_exit_status = 0;
-	return (error);
+	return (shell->last_exit_status);
 }

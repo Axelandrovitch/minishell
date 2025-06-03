@@ -30,5 +30,5 @@ int	builtin_env(char **args, t_shell *shell)
 		i++;
 	}
 	shell->last_exit_status = 0;
-	return (0);
+	return (shell->last_exit_status);
 }

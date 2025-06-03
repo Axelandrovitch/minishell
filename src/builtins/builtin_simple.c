@@ -93,7 +93,7 @@ int	builtin_exit(char **args, t_shell *shell)
 	if (exit_code < 0)
 		exit_code += 256;
 	exit_shell(shell, exit_code);
-	return (0);
+	return (exit_code);
 }
 
 int	builtin_pwd(char **args, t_shell *shell)
@@ -124,6 +124,6 @@ int	builtin_pwd(char **args, t_shell *shell)
 	printf("%s\n", cwd);
 	free(cwd);
 	shell->last_exit_status = 0;
-	return (0);
+	return (shell->last_exit_status);
 }
 
