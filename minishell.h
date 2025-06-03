@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 17:49:02 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:21:25 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ void	print_invalid_export(char *arg);
 int		is_valid_identifier_export(const char *str);
 int		should_print_var(char *env_var);
 int		print_filtered_env(char **sorted_env);
+void	update_bin_paths(t_shell *shell);
 
 // sort
 void	sort_env_copy(char **env);

@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:44:30 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 17:54:38 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:24:05 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,25 @@ int	print_filtered_env(char **sorted_env)
 		i++;
 	}
 	return (0);
+}
+
+void update_bin_paths(t_shell *shell)
+{
+	char *path_value;
+
+	path_value = ft_getenv(shell, "PATH");
+	if (shell->bin_paths)
+		free_vector(shell->bin_paths);
+	if (path_value)
+	{
+		shell->bin_paths = ft_split(path_value, ':');
+		free(path_value);
+		if (!shell->bin_paths)
+			exit_shell(shell, 1);
+		form_bin_path(shell->bin_paths);
+	}
+	else
+	{
+		shell->bin_paths = NULL;
+	}
 }

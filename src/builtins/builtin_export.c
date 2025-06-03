@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:02:16 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/29 17:50:43 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:23:20 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,29 +60,6 @@ static int	extract_key_value(char *arg, char **key, char **value)
 	return (0);
 }
 
-void update_bin_paths(t_shell *shell)
-{
-	char *path_value;
-
-	path_value = ft_getenv(shell, "PATH");
-	if (shell->bin_paths)
-		free_vector(shell->bin_paths);
-	if (path_value)
-	{
-		shell->bin_paths = ft_split(path_value, ':');
-		free(path_value);
-		if (!shell->bin_paths)
-			exit_shell(shell, 1);
-		form_bin_path(shell->bin_paths);  
-	}
-	else
-	{
-		shell->bin_paths = NULL;
-	}
-}
-
-
-
 static int	process_single_arg(char *arg, t_shell *shell)
 {
 	char	*key;
@@ -92,7 +69,7 @@ static int	process_single_arg(char *arg, t_shell *shell)
 	{
 		shell->last_exit_status = 1;
 		print_invalid_export(arg);
-		return (0);
+		return (1);
 	}
 	if (extract_key_value(arg, &key, &value))
 		return (1);
