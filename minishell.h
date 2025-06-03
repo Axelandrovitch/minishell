@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/03 16:21:25 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:58:36 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 extern int	g_signal_received;
 
-typedef enum	e_token_type
+typedef enum e_token_type
 {
 	T_WORD,			// "palabra"
 	T_PIPE,			// "|"
@@ -41,10 +41,9 @@ typedef enum	e_token_type
 	T_DQUOTE,		// "comi dobles"
 	T_SQUOTE,		// 'comi simples'
 	T_EMPTY
-
 }	t_token_type;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
@@ -52,14 +51,14 @@ typedef struct	s_token
 
 }	t_token;
 
-typedef struct	s_env
+typedef struct s_env
 {
 	char			*key;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
 
-typedef struct	s_redir
+typedef struct s_redir
 {
 	t_token_type	type;
 	char			*filename;
@@ -67,7 +66,7 @@ typedef struct	s_redir
 	struct s_redir	*next;
 }	t_redir;
 
-typedef struct	s_command_block
+typedef struct s_command_block
 {
 	t_token					*tokens;
 	t_token					*argv_tokens;
@@ -76,7 +75,7 @@ typedef struct	s_command_block
 	struct s_command_block	*next;
 }	t_command_block;
 
-typedef	struct	s_shell
+typedef struct s_shell
 {
 	t_token			*tokens;
 	t_command_block	*command_blocks;
@@ -88,92 +87,89 @@ typedef	struct	s_shell
 }	t_shell;
 
 //TOKEN
-t_token	*new_token(t_token_type type, const char *value, int len);
-void	free_tokens(t_token *token);
-int		skip_spaces(const char *line, int i);
+t_token			*new_token(t_token_type type, const char *value, int len);
+void			free_tokens(t_token *token);
+int				skip_spaces(const char *line, int i);
 
+char			**get_args_from_tokens(t_token *tokens);
 
-char	**get_args_from_tokens(t_token *tokens);
-
-t_token	*tokenize(const char *line);
+t_token			*tokenize(const char *line);
 
 t_command_block	*set_command_block(t_token *head_token);
 
-int		handle_redirections(t_command_block *command_block);
+int				handle_redirections(t_command_block *command_block);
 
-int		handle_heredoc(const char *delimeter, t_shell *shell);
+int				handle_heredoc(const char *delimeter, t_shell *shell);
 
 // $
-char	*expand_variables(const char *input, t_shell *shell);
-
+char			*expand_variables(const char *input, t_shell *shell);
 
 //execution
-void	execute_pipeline(t_shell *shell);
-int		execute_builtin(char **argv, t_shell *shell);
-int		pipe_and_execute(t_command_block *cmd, int prev_fd, int *fd, t_shell *shell);
-void	execute_single_builtin(t_command_block *cmd, t_shell *shell);
-bool	is_single_builtin(t_command_block *cmd);
-int		prepare_pipe(int *fd);
-void	print_command_not_found(const char *command);
-int		is_builtin(const char *command);
-int 	prepare_heredocs(t_command_block *cmd, t_shell *shell);
+void			execute_pipeline(t_shell *shell);
+int				execute_builtin(char **argv, t_shell *shell);
+int				pipe_and_execute(t_command_block *cmd, int prev_fd,
+					int *fd, t_shell *shell);
+void			execute_single_builtin(t_command_block *cmd, t_shell *shell);
+bool			is_single_builtin(t_command_block *cmd);
+int				prepare_pipe(int *fd);
+void			print_command_not_found(const char *command);
+int				is_builtin(const char *command);
+int				prepare_heredocs(t_command_block *cmd, t_shell *shell);
 
 // parsing
-int		check_syntax(t_token *tokens);
-int		is_redirection(t_token *token);
-void	apply_redirections(t_redir *redir);
-void	parse_pipeline(t_shell *shell, t_token *tokens);
+int				check_syntax(t_token *tokens);
+int				is_redirection(t_token *token);
+void			apply_redirections(t_redir *redir);
+void			parse_pipeline(t_shell *shell, t_token *tokens);
 
 // free commands
-void	free_vector(char **vec);
-void	free_shell(t_shell	*shell);
-void	free_env(t_shell *shell);
-void	exit_shell(t_shell	*shell, int exit_code);
+void			free_vector(char **vec);
+void			free_shell(t_shell	*shell);
+void			free_env(t_shell *shell);
+void			exit_shell(t_shell	*shell, int exit_code);
 
 // environment functions
-char	**set_path_environment(void);
-char	**copy_environment(char **envp);
-int		count_environment_vars(char **envp);
-char	*get_pathname(char *command, char **path_variable);
-char	*ft_getenv(t_shell *shell, char *var);
-void	form_bin_path(char **envp_vec);
+char			**set_path_environment(void);
+char			**copy_environment(char **envp);
+int				count_environment_vars(char **envp);
+char			*get_pathname(char *command, char **path_variable);
+char			*ft_getenv(t_shell *shell, char *var);
+void			form_bin_path(char **envp_vec);
 
 // env_utils
-int		find_env_var(char **env, char *key);
-int		update_env_var(char **env, char *var_name, char *value);
-int		add_env_var(char ***env, char *key, char *value);
-int		add_or_update_env(char ***env, char *key, char *value);
-
+int				find_env_var(char **env, char *key);
+int				update_env_var(char **env, char *var_name, char *value);
+int				add_env_var(char ***env, char *key, char *value);
+int				add_or_update_env(char ***env, char *key, char *value);
 
 // debugging functions
-void	print_vector(char **vec);
-void	print_command_blocks(t_command_block *head_block);
-void	print_all_command_blocks(t_command_block *head);
+void			print_vector(char **vec);
+void			print_command_blocks(t_command_block *head_block);
+void			print_all_command_blocks(t_command_block *head);
 
 // builtins
-int		builtin_pwd(char **args, t_shell *shell);
-int		builtin_echo(char **args, t_shell *shell);
-int		builtin_exit(char **args, t_shell *shell);
-int		builtin_env(char **args, t_shell *shell);
-int		builtin_cd(char **args, t_shell *shell);
-int		builtin_unset(char **args, t_shell *shell);
-int		builtin_export(char **args, t_shell *shell);
+int				builtin_pwd(char **args, t_shell *shell);
+int				builtin_echo(char **args, t_shell *shell);
+int				builtin_exit(char **args, t_shell *shell);
+int				builtin_env(char **args, t_shell *shell);
+int				builtin_cd(char **args, t_shell *shell);
+int				builtin_unset(char **args, t_shell *shell);
+int				builtin_export(char **args, t_shell *shell);
 
 // export utils
-void	print_invalid_export(char *arg);
-int		is_valid_identifier_export(const char *str);
-int		should_print_var(char *env_var);
-int		print_filtered_env(char **sorted_env);
-void	update_bin_paths(t_shell *shell);
+void			print_invalid_export(char *arg);
+int				is_valid_identifier_export(const char *str);
+int				should_print_var(char *env_var);
+int				print_filtered_env(char **sorted_env);
+void			update_bin_paths(t_shell *shell);
 
 // sort
-void	sort_env_copy(char **env);
+void			sort_env_copy(char **env);
 
-
-// signals	
-void	handle_sigint(int sig);
-void	setup_interactive_signals(void);
-void	setup_child_signals(void);
-void	ignore_signals(void);
-void	wait_and_get_status(pid_t pid, int *last_status);
+// signals
+void			handle_sigint(int sig);
+void			setup_interactive_signals(void);
+void			setup_child_signals(void);
+void			ignore_signals(void);
+void			wait_and_get_status(pid_t pid, int *last_status);
 #endif
