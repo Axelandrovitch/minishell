@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:02:16 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/03 16:23:20 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:36:59 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,14 @@ static int	process_single_arg(char *arg, t_shell *shell)
 	char	*key;
 	char	*value;
 
+	/*if (ft_strnstr(arg, "+=", ft_strlen(arg)))
+	{
+		shell->last_exit_status = 1;
+		ft_putstr_fd("export: '", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': += not supported\n", 2);
+		return (1);
+	} */
 	if (!is_valid_identifier_export(arg))
 	{
 		shell->last_exit_status = 1;
