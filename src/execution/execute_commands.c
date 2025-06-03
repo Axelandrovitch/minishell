@@ -46,7 +46,7 @@ void	exec_child_process(t_command_block *cmd, int p_fd, int *fd, t_shell *sh)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	apply_redirections(cmd->redirs, sh);
+	apply_redirections(cmd->redirs);
 	if (!cmd->argv || !cmd->argv[0])
 		exit(1);
 	if (is_builtin(cmd->argv[0]))
@@ -65,7 +65,7 @@ void	execute_single_builtin(t_command_block *cmd, t_shell *shell)
 
 	stdin_copy = dup(STDIN_FILENO);
 	stdout_copy = dup(STDOUT_FILENO);
-	apply_redirections(cmd->redirs, shell);
+	apply_redirections(cmd->redirs);
 	status = execute_builtin(cmd->argv, shell);
 	dup2(stdin_copy, STDIN_FILENO);
 	dup2(stdout_copy, STDOUT_FILENO);

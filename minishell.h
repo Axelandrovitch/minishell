@@ -28,7 +28,7 @@
 # include "libft/inc/libft.h"
 # include <termios.h>
 
-extern int	g_signal_received; // Variable global para manejar señales
+extern int	g_signal_received;
 
 typedef enum	e_token_type
 {
@@ -63,7 +63,7 @@ typedef struct	s_redir
 {
 	t_token_type	type;
 	char			*filename;
-	int				fd;
+	int				heredoc_fd;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -116,11 +116,12 @@ bool	is_single_builtin(t_command_block *cmd);
 int		prepare_pipe(int *fd);
 void	print_command_not_found(const char *command);
 int		is_builtin(const char *command);
+int 	prepare_heredocs(t_command_block *cmd, t_shell *shell);
 
 // parsing
 int		check_syntax(t_token *tokens);
 int		is_redirection(t_token *token);
-void	apply_redirections(t_redir *redir, t_shell *shell);
+void	apply_redirections(t_redir *redir);
 void	parse_pipeline(t_shell *shell, t_token *tokens);
 
 // free commands
@@ -157,6 +158,7 @@ int		builtin_env(char **args, t_shell *shell);
 int		builtin_cd(char **args, t_shell *shell);
 int		builtin_unset(char **args, t_shell *shell);
 int		builtin_export(char **args, t_shell *shell);
+
 // export utils
 void	print_invalid_export(char *arg);
 int		is_valid_identifier_export(const char *str);

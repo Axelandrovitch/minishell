@@ -58,6 +58,8 @@ void	execute_pipeline(t_shell *shell)
 
 	cmd = shell->command_blocks;
 	prev_fd = -1;
+	if (prepare_heredocs(cmd, shell) == -1)
+		exit_shell(shell, EXIT_FAILURE);
 	if (is_single_builtin(cmd))
 	{
 		execute_single_builtin(cmd, shell);
