@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:13:49 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 14:25:11 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:56:41 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	is_valid_n_option(char *arg)
 	return (1);
 }
 
-int	builtin_echo(char **args)
+int	builtin_echo(char **args, t_shell *shell)
 {
 	int	i;
 	int	newline;
@@ -44,12 +44,17 @@ int	builtin_echo(char **args)
 	}
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		if (printf("%s", args[i]) == -1)
+		{
+			shell->last_exit_status = 1;
+			return (1);
+		}
 		if (args[i + 1])
 			printf(" ");
 		i++;
 	}
 	if (newline)
 		printf("\n");
-	return (0);
+	shell->last_exit_status = 0;
+	return (shell->last_exit_status);
 }

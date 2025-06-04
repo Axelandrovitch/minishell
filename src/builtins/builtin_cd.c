@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/23 12:44:52 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:57:13 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 
 	if (args[2])
 	{
-
 		shell->last_exit_status = 1;
 		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	}
@@ -125,5 +124,5 @@ int	builtin_cd(char **args, t_shell *shell) // JUST CAN HAVE 1 ARG
 	update_pwd_vars(shell, current_dir);
 	free(current_dir);
 	shell->last_exit_status = 0;
-	return (0);
+	return (shell->last_exit_status);
 }

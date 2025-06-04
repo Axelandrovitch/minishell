@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:15:38 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/27 16:11:19 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:04:22 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*token_dup_and_add_back(t_token **block_head, t_token *to_add)
 	new_tok = malloc(sizeof(t_token));
 	if (!new_tok)
 		return (NULL);
-	new_tok->type =to_add->type;
+	new_tok->type = to_add->type;
 	new_tok->value = ft_strdup(to_add->value);
 	new_tok->next = NULL;
 	if (*block_head == NULL)
@@ -42,11 +42,9 @@ t_token	*token_add_back(t_token **block_head, t_token *to_add)
 
 	if (!to_add)
 		return (NULL);
-
 	new_tok = new_token(to_add->type, to_add->value, ft_strlen(to_add->value));
 	if (!new_tok)
 		return (NULL);
-
 	if (*block_head == NULL)
 		*block_head = new_tok;
 	else
@@ -59,7 +57,8 @@ t_token	*token_add_back(t_token **block_head, t_token *to_add)
 	return (new_tok);
 }
 
-t_redir	*redir_add_back(t_redir	**head, enum e_token_type type, const char *filename)
+t_redir	*redir_add_back(t_redir	**head, enum e_token_type type
+						, const char *filename)
 {
 	t_redir	*current;
 	t_redir	*to_add;
@@ -92,13 +91,13 @@ t_redir	*redir_add_back(t_redir	**head, enum e_token_type type, const char *file
 
 void	parse_command_block(t_command_block *command_block)
 {
-	t_token	*	token;
-	t_token	*	next;
-	
+	t_token	*token;
+	t_token	*next;
+
 	token = command_block->tokens;
 	command_block->argv_tokens = NULL;
-	command_block->redirs= NULL;
-	while(token)
+	command_block->redirs = NULL;
+	while (token)
 	{
 		next = token->next;
 		if (is_redirection(token) && next)
@@ -117,8 +116,8 @@ void	parse_command_block(t_command_block *command_block)
 t_command_block	*create_command_block(t_token *head_token)
 {
 	t_command_block	*command_block;
-	t_token	*command_block_tokens;
-	t_token	*current_token;
+	t_token			*command_block_tokens;
+	t_token			*current_token;
 
 	command_block_tokens = NULL;
 	if (!head_token)
@@ -144,10 +143,10 @@ t_command_block	*create_command_block(t_token *head_token)
 
 t_command_block	*split_tokens_on_pipe(t_token *tokens)
 {
-	t_command_block *head;
-	t_command_block *tail;
-	t_command_block *current_block;
-	t_token *current_token;
+	t_command_block	*head;
+	t_command_block	*tail;
+	t_command_block	*current_block;
+	t_token 		*current_token;
 
 	current_token = tokens;
 	head = NULL;
@@ -227,7 +226,7 @@ void	print_command_block(t_command_block *block)
 {
 	t_token	*arg;
 	t_redir	*redir;
-
+	
 	static int block_num = 1;
 	printf("=== Command Block %d ===\n", block_num++);
 	printf("ARGV: ");

@@ -6,7 +6,7 @@
 #    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/05/29 17:53:45 by dcampas-         ###   ########.fr        #
+#    Updated: 2025/06/03 16:17:02 by dcampas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,9 @@ SRC := \
 	$(SRC_DIR)/parsing/parse.c \
 	$(SRC_DIR)/parsing/parser.c \
 	$(SRC_DIR)/parsing/parser2.c \
-	$(SRC_DIR)/execution/exec_commands.c \
+	$(SRC_DIR)/execution/execute_pipeline.c \
+	$(SRC_DIR)/execution/execute_commands.c \
+	$(SRC_DIR)/execution/execution_utils.c \
 	$(SRC_DIR)/execution/free.c \
 	$(SRC_DIR)/execution/handle_redirections.c \
 	$(SRC_DIR)/execution/handle_heredoc.c \

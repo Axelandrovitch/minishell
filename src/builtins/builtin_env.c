@@ -12,21 +12,23 @@
 
 #include "../../minishell.h"
 
-int	builtin_env(char **args, char **env)
+int	builtin_env(char **args, t_shell *shell)
 {
 	int	i;
 
 	if (args[1])
 	{
+		shell->last_exit_status = 1;
 		printf("env: too many arguments\n");
 		return (1);
 	}
 	i = 0;
-	while (env[i])
+	while (shell->env[i])
 	{
-		if (ft_strchr(env[i], '='))
-			printf("%s\n", env[i]);
+		if (ft_strchr(shell->env[i], '='))
+			printf("%s\n", shell->env[i]);
 		i++;
 	}
-	return (0);
+	shell->last_exit_status = 0;
+	return (shell->last_exit_status);
 }

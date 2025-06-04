@@ -39,7 +39,7 @@ void	free_vector(char **vec)
 	free(vec);
 }
 
-static void	form_bin_path(char **envp_vec)
+void	form_bin_path(char **envp_vec)
 {
 	char	*full_path;
 	int		i;
@@ -127,12 +127,13 @@ char	**copy_environment(char **envp)
 	len = count_environment_vars(envp);
 	env = malloc(sizeof(char *) * (len + 1));
 	if (!env)
-		exit(EXIT_FAILURE);
+		return (NULL);
 	while (envp[i] != NULL)
 	{
 		current_var = strdup(envp[i]);
+		//free previous strings
 		if (!current_var)
-			exit(EXIT_FAILURE);
+			return (NULL);
 		env[i] = current_var;
 		i++;
 	}

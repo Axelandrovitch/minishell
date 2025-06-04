@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:15:42 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/05/22 14:25:01 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:56:38 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,13 @@ static int	remove_env_var(char **env, int index)
 }
 
 // Procesa los argumentos y llama a las funciones auxiliares.
-int	builtin_unset(char **args, char **env)
+int	builtin_unset(char **args, t_shell *shell)
 {
 	int	i;
 	int	index;
 	int	status;
 
-	if (!args || !args[1] || !env)
+	if (!args || !args[1] || !shell->env)
 		return (0);
 	i = 1;
 	status = 0;
@@ -94,11 +94,12 @@ int	builtin_unset(char **args, char **env)
 		}
 		else
 		{
-			index = get_env_index(env, args[i]);
+			index = get_env_index(shell->env, args[i]);
 			if (index >= 0)
-				remove_env_var(env, index);
+				remove_env_var(shell->env, index);
 		}
 		i++;
 	}
+	shell->last_exit_status = status;
 	return (status);
 }

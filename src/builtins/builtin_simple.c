@@ -12,12 +12,13 @@
 
 #include "../../minishell.h"
 
-static void	exit_with_error(char *arg)
+static void	exit_with_error(char *arg, t_shell *shell)
 {
+	shell->last_exit_status = 2;
 	ft_putstr_fd("bash: exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
-	exit(2);
+	exit(shell->last_exit_status);
 }
 
 static int	is_valid_nb(char *str)
@@ -77,12 +78,13 @@ int	builtin_exit(char **args, t_shell *shell)
 	if (!args[1])
 		exit(0);
 	if (!is_valid_nb(args[1]) || is_long_overflow(args[1]))
-		exit_with_error(args[1]);
+		exit_with_error(args[1], shell);
 	arg_count = 0;
 	while (args[arg_count])
 		arg_count++;
 	if (arg_count > 2)
 	{
+		shell->last_exit_status = 1;
 		ft_putstr_fd("bash: exit: too many arguments\n", 2);
 		return (1);
 	}
@@ -91,20 +93,34 @@ int	builtin_exit(char **args, t_shell *shell)
 	if (exit_code < 0)
 		exit_code += 256;
 	exit_shell(shell, exit_code);
-	return (0);
+	return (exit_code);
 }
 
-// PWD
-int	builtin_pwd(char **args)
+int	builtin_pwd(char **args, t_shell *shell)
 {
 	char	*cwd;
 
 	if (args[1])
-		return (printf("pwd: too many arguments\n"), 1);
+	{
+		shell->last_exit_status = 1;
+		return (ft_putstr_fd("pwd: too many arguments\n", 2), 1);
+	}
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-		return (perror("getcwd"), 1);
+	{
+		cwd = ft_getenv(shell, "PWD");
+		if (!cwd)
+		{
+			shell->last_exit_status = 1;
+			perror("pwd: getcwd failed and no $PWD fallback");
+			return (1);
+		}
+		printf("%s\n", cwd);
+		free(cwd);
+		return (0);
+	}
 	printf("%s\n", cwd);
 	free(cwd);
-	return (0);
+	shell->last_exit_status = 0;
+	return (shell->last_exit_status);
 }
