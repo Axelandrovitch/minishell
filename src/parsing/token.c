@@ -12,34 +12,86 @@
 
 #include "../../minishell.h"
 
+// static t_token	*handle_quotes(const char *line, int *i, char quote_type)
+// {
+// 	int		start;
+// 	int		len;
+// 	t_token	*token;
+//
+// 	len = 0;
+// 	(*i)++;
+// 	start = *i;
+// 	while (line[*i] && line[*i] != quote_type)
+// 	{
+// 		if (line[*i] == '\\' && line[*i + 1] != '\0'
+// 			&& (line[*i + 1] == quote_type || line[*i + 1] == '\\'))
+// 			(*i)++;
+// 		(*i)++;
+// 	}
+// 	if (line[*i] != quote_type)
+// 		return (fprintf(stderr, "Error: Unclosed quote\n"), NULL);
+// 	len = *i - start;
+// 	if (len == 0)
+// 		token = new_token(T_EMPTY, "", 0);
+// 	else
+// 	{
+// 		if (quote_type == '"')
+// 			token = new_token(T_DQUOTE, line + start, len);
+// 		else
+// 			token = new_token(T_SQUOTE, line + start, len);
+// 	}
+// 	if (line[*i] == quote_type)
+// 		(*i)++;
+// 	return (token);
+// }
+//
+static int	is_separator(char c)
+{
+	return (c == ' ' || c == '>' || c == '<' || c == '|');
+}
+
+static int	is_quote_type(char c, char type)
+{
+	return (c == type);
+}
+
 static t_token	*handle_quotes(const char *line, int *i, char quote_type)
 {
-	int		start;
-	int		len;
+	char	buffer[1024];
 	t_token	*token;
+	int		j;
+	int		quote_count;
 
-	len = 0;
-	(*i)++;
-	start = *i;
+	j = 0;
+	quote_count = 0;
 	while (line[*i] && line[*i] != quote_type)
 	{
 		if (line[*i] == '\\' && line[*i + 1] != '\0'
 			&& (line[*i + 1] == quote_type || line[*i + 1] == '\\'))
 			(*i)++;
+		buffer[j++] = line[(*i)++];
+	}
+	while (line[*i] && !is_separator(line[*i]))
+	{
+		if (line[*i] == '\\' && line[*i + 1] != '\0'
+			&& (line[*i + 1] == quote_type || line[*i + 1] == '\\'))
+			(*i)++;
+		if (is_quote_type(line[*i], quote_type))
+			quote_count++;
+		if (!is_quote_type(line[*i], quote_type))
+			buffer[j++] = line[(*i)];
 		(*i)++;
 	}
-	if (line[*i] != quote_type)
-		return (fprintf(stderr, "Error: Unclosed quote\n"), NULL);
-	len = *i - start;
-	if (len == 0)
-		token = new_token(T_EMPTY, "", 0);
-	else
+	buffer[j] = '\0';
+	if (quote_count < 2)
 	{
-		if (quote_type == '"')
-			token = new_token(T_DQUOTE, line + start, len);
-		else
-			token = new_token(T_SQUOTE, line + start, len);
+		write(STDERR_FILENO, "Error: Unclosed quote\n", 22);
+		return (NULL);
 	}
+	if (quote_type == '"')
+		token = new_token(T_DQUOTE, buffer, j);
+	else
+		token = new_token(T_SQUOTE, buffer, j);
 	if (line[*i] == quote_type)
 		(*i)++;
 	return (token);

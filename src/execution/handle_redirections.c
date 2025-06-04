@@ -26,11 +26,11 @@ static int	handle_fd(t_redir *redir)
 
 	fd = -1;
 	if (redir->type == T_REDIR_OUT)
-		fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(redir->operand->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (redir->type == T_REDIR_APPEND)
-		fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		fd = open(redir->operand->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (redir->type == T_REDIR_IN)
-		fd = open(redir->filename, O_RDONLY);
+		fd = open(redir->operand->value, O_RDONLY);
 	else if (redir->type == T_HEREDOC)
 	{
 		fd = redir->heredoc_fd;

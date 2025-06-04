@@ -61,7 +61,8 @@ typedef struct s_env
 typedef struct s_redir
 {
 	t_token_type	type;
-	char			*filename;
+	// char			*filename;
+	t_token			*operand;
 	int				heredoc_fd;
 	struct s_redir	*next;
 }	t_redir;
@@ -99,7 +100,7 @@ t_command_block	*set_command_block(t_token *head_token);
 
 int				handle_redirections(t_command_block *command_block);
 
-int				handle_heredoc(const char *delimeter, t_shell *shell);
+int				handle_heredoc(t_token *operand, t_shell *shell);
 
 // $
 char			*expand_variables(const char *input, t_shell *shell);

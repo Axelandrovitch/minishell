@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
+//
 // static int	should_expand_heredoc(const char *delimiter)
 // {
 // 	int	i;
@@ -202,36 +202,39 @@
 // 		return (-1);
 // 	}
 // }
+//
 
-static int	has_quotes(const char *str)
-{
-	while (*str)
-	{
-		if (*str == '\'' || *str == '"')
-			return (1);
-		str++;
-	}
-	return (0);
-}
 
-static char	*remove_quotes(const char *str)
-{
-	char	*res;
-	int		i = 0;
-	int		j = 0;
-
-	res = malloc(ft_strlen(str) + 1);
-	if (!res)
-		return (NULL);
-	while (str[i])
-	{
-		if (str[i] != '\'' && str[i] != '"')
-			res[j++] = str[i];
-		i++;
-	}
-	res[j] = '\0';
-	return (res);
-}
+//SECOND BLOCK
+// static int	has_quotes(const char *str)
+// {
+// 	while (*str)
+// 	{
+// 		if (*str == '\'' || *str == '"')
+// 			return (1);
+// 		str++;
+// 	}
+// 	return (0);
+// }
+//
+// static char	*remove_quotes(const char *str)
+// {
+// 	char	*res;
+// 	int		i = 0;
+// 	int		j = 0;
+//
+// 	res = malloc(ft_strlen(str) + 1);
+// 	if (!res)
+// 		return (NULL);
+// 	while (str[i])
+// 	{
+// 		if (str[i] != '\'' && str[i] != '"')
+// 			res[j++] = str[i];
+// 		i++;
+// 	}
+// 	res[j] = '\0';
+// 	return (res);
+// }
 
 static void	write_line_to_fd(int fd, char *line, int expand, t_shell *shell)
 {
@@ -251,21 +254,16 @@ static void	write_line_to_fd(int fd, char *line, int expand, t_shell *shell)
 	write(fd, "\n", 1);
 }
 
-int	handle_heredoc(const char *delimiter, t_shell *shell)
+int	handle_heredoc(t_token *operand, t_shell *shell)
 {
 	int		pipe_fd[2];
 	pid_t	pid;
 	int		status;
-	char	*clean_delim;
 	int		expand;
 
 	if (pipe(pipe_fd) < 0)
 		return (-1);
-	clean_delim = remove_quotes(delimiter);
-	if (!clean_delim)
-		return (close(pipe_fd[0]), close(pipe_fd[1]), -1);
-
-	expand = !has_quotes(delimiter);
+	expand = operand->type == !T_SQUOTE && operand->type != T_DQUOTE;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -277,7 +275,7 @@ int	handle_heredoc(const char *delimiter, t_shell *shell)
 			char *line = readline("> ");
 			if (!line)
 				break;
-			if (ft_strcmp(line, clean_delim) == 0)
+			if (ft_strcmp(line, operand->value) == 0)
 			{
 				free(line);
 				break;
@@ -286,15 +284,12 @@ int	handle_heredoc(const char *delimiter, t_shell *shell)
 			free(line);
 		}
 		close(pipe_fd[1]);
-		free(clean_delim);
 		exit(0);
 	}
 	else if (pid > 0)
 	{
 		close(pipe_fd[1]);
 		waitpid(pid, &status, 0);
-		free(clean_delim);
-
 		if (WIFSIGNALED(status))
 		{
 			close(pipe_fd[0]);
@@ -306,7 +301,6 @@ int	handle_heredoc(const char *delimiter, t_shell *shell)
 	{
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		free(clean_delim);
 		return (-1);
 	}
 }
@@ -322,7 +316,7 @@ int prepare_heredocs(t_command_block *cmd, t_shell *shell)
 		{
 			if (redir->type == T_HEREDOC)
 			{
-				int fd = handle_heredoc(redir->filename, shell);
+				int fd = handle_heredoc(redir->operand, shell);
 				if (fd < 0)
 					return (-1);
 				redir->heredoc_fd = fd;

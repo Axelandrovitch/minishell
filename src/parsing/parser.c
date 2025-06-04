@@ -12,17 +12,33 @@
 
 #include "../../minishell.h"
 
+t_token	*token_dup(t_token	*token)
+{
+	t_token	*dup;
+
+	dup = malloc(sizeof(t_token));
+	if (!dup)
+		return (NULL);
+	dup->type = token->type;
+	dup->value = ft_strdup(token->value);
+	if (!dup->value)
+		return (NULL);
+	dup->next = NULL;
+	return (dup);
+}
+
 t_token	*token_dup_and_add_back(t_token **block_head, t_token *to_add)
 {
 	t_token	*new_tok;
 	t_token	*temp_tok;
 
-	new_tok = malloc(sizeof(t_token));
-	if (!new_tok)
-		return (NULL);
-	new_tok->type = to_add->type;
-	new_tok->value = ft_strdup(to_add->value);
-	new_tok->next = NULL;
+	// new_tok = malloc(sizeof(t_token));
+	// if (!new_tok)
+	// 	return (NULL);
+	// new_tok->type = to_add->type;
+	// new_tok->value = ft_strdup(to_add->value);
+	// new_tok->next = NULL;
+	new_tok = token_dup(to_add);
 	if (*block_head == NULL)
 		*block_head = new_tok;
 	else
@@ -58,7 +74,7 @@ t_token	*token_add_back(t_token **block_head, t_token *to_add)
 }
 
 t_redir	*redir_add_back(t_redir	**head, enum e_token_type type
-						, const char *filename)
+						, t_token *operand)
 {
 	t_redir	*current;
 	t_redir	*to_add;
@@ -70,12 +86,13 @@ t_redir	*redir_add_back(t_redir	**head, enum e_token_type type
 		exit(1);
 	}
 	to_add->type = type;
-	to_add->filename = ft_strdup(filename);
-	if (!to_add->filename)
-	{
-		printf("TODO: free memory!\n");
-		exit(1);
-	}
+	// to_add->filename = ft_strdup(filename);
+	// if (!to_add->filename)
+	// {
+	// 	printf("TODO: free memory!\n");
+	// 	exit(1);
+	// }
+	to_add->operand = token_dup(operand);
 	to_add->next = NULL;
 	if (!*head)
 		*head = to_add;
@@ -102,7 +119,7 @@ void	parse_command_block(t_command_block *command_block)
 		next = token->next;
 		if (is_redirection(token) && next)
 		{
-			redir_add_back(&command_block->redirs, token->type, next->value);
+			redir_add_back(&command_block->redirs, token->type, next);
 			token = next->next;
 		}
 		else
@@ -254,7 +271,7 @@ void	print_command_block(t_command_block *block)
 			case T_HEREDOC:			type_str = "<<"; break;
 			default:				type_str = "?"; break;
 		}
-		printf("  %s %s\n", type_str, redir->filename);
+		printf("  %s %s \n", type_str, redir->operand->value);
 		redir = redir->next;
 	}
 	printf("\n");

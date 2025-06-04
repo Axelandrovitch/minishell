@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <readline/history.h>
-#include <readline/readline.h>
 
 void	free_redirs(t_redir *redirs)
 {
@@ -21,8 +19,8 @@ void	free_redirs(t_redir *redirs)
 	while (redirs)
 	{
 		tmp = redirs->next;
-		if (redirs->filename)
-			free(redirs->filename);
+		if (redirs->operand && redirs->operand->value)
+			free(redirs->operand->value);
 		free(redirs);
 		redirs = tmp;
 	}

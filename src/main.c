@@ -12,6 +12,56 @@
 
 #include "../minishell.h"
 
+// // Solo para testear
+void print_tokens(t_token *head)
+{
+    t_token *current = head;
+
+    while (current != NULL)
+    {
+        switch (current->type)
+        {
+            case T_WORD:
+                printf("T_WORD       : ");
+                break;
+            case T_PIPE:
+                printf("T_PIPE       : ");
+                break;
+            case T_REDIR_IN:
+                printf("T_REDIR_IN   : ");
+                break;
+            case T_REDIR_OUT:
+                printf("T_REDIR_OUT  : ");
+                break;
+            case T_REDIR_APPEND:
+                printf("T_REDIR_APPEND: ");
+                break;
+            case T_HEREDOC:
+                printf("T_HEREDOC    : ");
+                break;
+            case T_DQUOTE:
+                printf("T_DQUOTE     : ");
+                break;
+            case T_SQUOTE:
+                printf("T_SQUOTE     : ");
+                break;
+            case T_EMPTY:
+                printf("T_EMPTY      : ");
+                break;
+            default:
+                printf("UNKNOWN      : ");
+                break;
+        }
+
+        if (current->value)
+            printf("\"%s\"\n", current->value);
+        else
+            printf("(null)\n");
+
+        current = current->next;
+    }
+}
+
 static void	init_minishell(t_shell *shell, char **envp)
 {
 	shell->env = NULL;
@@ -52,7 +102,9 @@ static void	execute_command_pipeline(t_shell *shell)
 		free_shell(shell);
 		return ;
 	}
+	// print_tokens(shell->tokens);
 	parse_pipeline(shell, shell->tokens);
+	// print_all_command_blocks(shell->command_blocks);
 	execute_pipeline(shell);
 }
 
