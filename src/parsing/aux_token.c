@@ -79,8 +79,6 @@ char	**get_args_from_tokens(t_token *tokens)
 	char	*clean_value;
 
 	args = malloc(sizeof(char *) * (count_tokens(tokens) + 1));
-	if (!args)
-		return (NULL);
 	i = 0;
 	while (tokens)
 	{
