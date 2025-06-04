@@ -6,13 +6,12 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:42:06 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/03 16:56:37 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:52:13 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// Cuenta el número de variables de entorno en el vector env
 int	find_env_var(char **env, char *key)
 {
 	int	i;
@@ -30,26 +29,32 @@ int	find_env_var(char **env, char *key)
 	return (-1);
 }
 
-// Actualiza el valor de una variable de entorno existente
-// cd
-int	update_env_var(char **env, char *var_name, char *value)
+static char	*create_env_string(char *var_name, char *value)
 {
 	char	*env_var;
 	char	*temp;
-	int		i;
-	int		var_len;
 
-	var_len = ft_strlen(var_name);
 	if (value)
 	{
 		temp = ft_strjoin(var_name, "=");
 		if (!temp)
-			return (1);
+			return (NULL);
 		env_var = ft_strjoin(temp, value);
 		free(temp);
 	}
 	else
 		env_var = ft_strdup(var_name);
+	return (env_var);
+}
+
+int	update_env_var(char **env, char *var_name, char *value)
+{
+	char	*env_var;
+	int		i;
+	int		var_len;
+
+	var_len = ft_strlen(var_name);
+	env_var = create_env_string(var_name, value);
 	if (!env_var)
 		return (1);
 	i = 0;
@@ -68,11 +73,22 @@ int	update_env_var(char **env, char *var_name, char *value)
 	return (0);
 }
 
-// Añade una nueva variable de entorno al vector env
+static int	setup_new_env(char ***env, char **new_env, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		new_env[i] = (*env)[i];
+		i++;
+	}
+	return (i);
+}
+
 int	add_env_var(char ***env, char *key, char *value)
 {
 	int		size;
-	char	*new_var;
 	char	**new_env;
 	int		i;
 
@@ -80,25 +96,8 @@ int	add_env_var(char ***env, char *key, char *value)
 	new_env = malloc(sizeof(char *) * (size + 2));
 	if (!new_env)
 		return (1);
-	i = 0;
-	while (i < size)
-	{
-		new_env[i] = (*env)[i];
-		i++;
-	}
-	if (value)
-	{
-		new_var = ft_strjoin(key, "=");
-		if (!new_var)
-		{
-			free(new_env);
-			return (1);
-		}
-		new_env[i] = ft_strjoin(new_var, value);
-		free(new_var);
-	}
-	else
-		new_env[i] = ft_strdup(key);
+	i = setup_new_env(env, new_env, size);
+	new_env[i] = create_env_string(key, value);
 	if (!new_env[i])
 	{
 		free(new_env);
@@ -108,43 +107,4 @@ int	add_env_var(char ***env, char *key, char *value)
 	free(*env);
 	*env = new_env;
 	return (0);
-}
-
-// Añade o actualiza una variable de entorno en el vector env
-int	add_or_update_env(char ***env, char *key, char *value)
-{
-	int	pos;
-
-	if (!key || !env || !*env)
-		return (1);
-	pos = find_env_var(*env, key);
-	if (pos >= 0)
-		return (update_env_var(*env, key, value));
-	else	
-		return (add_env_var(env, key, value));
-}
-
-// Ordena el vector de variables de entorno alfabéticamente
-void	sort_env_copy(char **env)
-{
-	int		i;
-	int		j;
-	char	*temp;
-
-	i = 0;
-	while (env[i])
-	{
-		j = i + 1;
-		while (env[j])
-		{
-			if (ft_strcmp(env[i], env[j]) > 0)
-			{
-				temp = env[i];
-				env[i] = env[j];
-				env[j] = temp;
-			}
-			j++;
-		}
-		i++;
-	}
 }

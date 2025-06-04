@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/03 17:58:36 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:52:10 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int				find_env_var(char **env, char *key);
 int				update_env_var(char **env, char *var_name, char *value);
 int				add_env_var(char ***env, char *key, char *value);
 int				add_or_update_env(char ***env, char *key, char *value);
+
 
 // debugging functions
 void			print_vector(char **vec);

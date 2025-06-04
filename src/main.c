@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/04 13:26:06 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:34:39 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	update_shlvl(t_shell *shell)
 		shlvl++;
 	new_value = ft_itoa(shlvl);
 
-	builtin_unset(args, shell->env);
+	builtin_unset(args, shell);
 	ft_setenv(shell, "SHLVL", new_value);
 	free(new_value);
 }
