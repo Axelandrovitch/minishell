@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/04 14:31:17 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:12:15 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,13 @@ typedef struct s_shell
 t_token			*new_token(t_token_type type, const char *value, int len);
 void			free_tokens(t_token *token);
 int				skip_spaces(const char *line, int i);
+t_token			*create_quote_token(const char *line, int start,
+						int len, char quote_type);
+t_token			*handle_quotes(const char *line, int *i, char quote_type);
+t_token			*handle_pipe(int *i);
+t_token			*handle_redir(const char *line, int *i);
+int				handle_quoted_char(const char *line, int *i,
+						char *buffer, int *j);
 
 char			**get_args_from_tokens(t_token *tokens);
 

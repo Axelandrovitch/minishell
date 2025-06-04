@@ -6,7 +6,7 @@
 #    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/06/04 13:53:53 by dcampas-         ###   ########.fr        #
+#    Updated: 2025/06/04 16:20:22 by dcampas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ LIBFT := $(LIBFT_DIR)/libft.a
 SRC := \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/parsing/token.c \
+	$(SRC_DIR)/parsing/token2.c \
 	$(SRC_DIR)/parsing/aux_token.c \
 	$(SRC_DIR)/parsing/parse.c \
 	$(SRC_DIR)/parsing/parser.c \

@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:41:00 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/28 12:28:22 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:49:42 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ char	**copy_environment(char **envp)
 	while (envp[i] != NULL)
 	{
 		current_var = strdup(envp[i]);
-		//free previous strings
 		if (!current_var)
 			return (NULL);
 		env[i] = current_var;

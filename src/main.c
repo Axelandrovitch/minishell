@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/04 14:32:40 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:12:35 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	shell.last_exit_status = 0;
 	init_minishell(&shell, envp);
+	//print_vector(envp);
 	update_shlvl(&shell);
 	setup_interactive_signals();
 	while (1)
