@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:42:06 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/04 13:52:13 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:19:30 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static char	*create_env_string(char *var_name, char *value)
 			return (NULL);
 		env_var = ft_strjoin(temp, value);
 		free(temp);
+		if (!env_var)
+			return (NULL);
 	}
 	else
 		env_var = ft_strdup(var_name);

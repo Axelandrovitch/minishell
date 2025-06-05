@@ -57,7 +57,7 @@ void	free_tokens(t_token *token)
 }
 
 // Counts the number of tokens in the linked list
-static int	count_tokens(t_token *tokens)
+int	count_tokens(t_token *tokens)
 {
 	int	count;
 

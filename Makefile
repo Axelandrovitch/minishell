@@ -6,7 +6,7 @@
 #    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/06/05 11:39:46 by dcampas-         ###   ########.fr        #
+#    Updated: 2025/06/05 13:19:18 by dcampas-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRC := \
 	$(SRC_DIR)/environment.c \
 	$(SRC_DIR)/builtins/builtin_simple.c \
 	$(SRC_DIR)/builtins/builtin_cd.c \
+	$(SRC_DIR)/builtins/cd_utils.c \
 	$(SRC_DIR)/builtins/builtin_echo.c \
 	$(SRC_DIR)/builtins/builtin_env.c \
 	$(SRC_DIR)/builtins/env_utils.c \

@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/04 16:12:15 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:21:20 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ t_token			*handle_pipe(int *i);
 t_token			*handle_redir(const char *line, int *i);
 int				handle_quoted_char(const char *line, int *i,
 						char *buffer, int *j);
+int				count_tokens(t_token *tokens);
 
 char			**get_args_from_tokens(t_token *tokens);
 
@@ -170,6 +171,11 @@ int				is_valid_identifier_export(const char *str);
 int				should_print_var(char *env_var);
 int				print_filtered_env(char **sorted_env);
 void			update_bin_paths(t_shell *shell);
+
+// cd utils
+int				update_pwd_vars(t_shell *shell, char *old_directory);
+int				go_to_path(t_shell *shell, const char *target);
+int 			handle_no_args(t_shell *shell, char *current_dir);
 
 // sort
 void			sort_env_copy(char **env);
