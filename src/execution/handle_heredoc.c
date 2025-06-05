@@ -30,58 +30,64 @@ static void	write_line_to_fd(int fd, char *line, int expand, t_shell *shell)
 	write(fd, "\n", 1);
 }
 
+static void	heredoc_child(int write_fd, t_token *operand, t_shell *shell)
+{
+	char	*line;
+	int		expand;
+
+	expand = operand->type != T_SQUOTE && operand->type != T_DQUOTE;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+			break ;
+		if (ft_strcmp(line, operand->value) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write_line_to_fd(write_fd, line, expand, shell);
+		free(line);
+	}
+	close(write_fd);
+	exit(0);
+}
+
+static int	heredoc_parent(pid_t pid, int *pipe_fd, t_shell *shell)
+{
+	int	status;
+
+	close(pipe_fd[1]);
+	wait_and_get_status(pid, &status);
+	if (status == 130 || status == 128 + SIGINT)
+	{
+		close(pipe_fd[0]);
+		shell->last_exit_status = status;
+		return (-1);
+	}
+	return (pipe_fd[0]);
+}
+
 int	handle_heredoc(t_token *operand, t_shell *shell)
 {
 	int		pipe_fd[2];
 	pid_t	pid;
-	int		status;
-	int		expand;
 
 	if (pipe(pipe_fd) < 0)
 		return (-1);
-	expand = operand->type == !T_SQUOTE && operand->type != T_DQUOTE;
 	pid = fork();
 	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		close(pipe_fd[0]);
-
-		while (1)
-		{
-			char *line = readline("> ");
-			if (!line)
-				break;
-			if (ft_strcmp(line, operand->value) == 0)
-			{
-				free(line);
-				break;
-			}
-			write_line_to_fd(pipe_fd[1], line, expand, shell);
-			free(line);
-		}
-		close(pipe_fd[1]);
-		exit(0);
-	}
+		heredoc_child(pipe_fd[1], operand, shell);
 	else if (pid > 0)
-	{
-		close(pipe_fd[1]);
-		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status))
-		{
-			close(pipe_fd[0]);
-			return (-1);
-		}
-		return pipe_fd[0];
-	}
-	else
-	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		return (-1);
-	}
+		return (heredoc_parent(pid, pipe_fd, shell));
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	return (-1);
 }
 
-int prepare_heredocs(t_command_block *cmd, t_shell *shell)
+int	prepare_heredocs(t_command_block *cmd, t_shell *shell)
 {
 	t_redir	*redir;
 	int		fd;
@@ -104,4 +110,3 @@ int prepare_heredocs(t_command_block *cmd, t_shell *shell)
 	}
 	return (0);
 }
-
