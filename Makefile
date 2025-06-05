@@ -30,8 +30,9 @@ SRC := \
 	$(SRC_DIR)/parsing/handle_quotes.c \
 	$(SRC_DIR)/parsing/aux_token.c \
 	$(SRC_DIR)/parsing/parse.c \
-	$(SRC_DIR)/parsing/parser.c \
-	$(SRC_DIR)/parsing/parser2.c \
+	$(SRC_DIR)/parsing/parse_pipeline.c \
+	$(SRC_DIR)/parsing/parse_command_blocks.c \
+	$(SRC_DIR)/parsing/parser_utils.c \
 	$(SRC_DIR)/execution/execute_pipeline.c \
 	$(SRC_DIR)/execution/execute_commands.c \
 	$(SRC_DIR)/execution/execution_utils.c \

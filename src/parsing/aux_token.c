@@ -86,7 +86,7 @@ char	**get_args_from_tokens(t_token *tokens)
 		{
 			args[i] = ft_strdup(tokens->value);
 			if (!args[i++])
-				return (free_vector(args) ,NULL);
+				return (free_vector(args), NULL);
 		}
 		else if (tokens->type == T_DQUOTE || tokens->type == T_SQUOTE)
 		{

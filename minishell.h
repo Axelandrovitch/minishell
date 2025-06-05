@@ -136,6 +136,8 @@ int				check_syntax(t_token *tokens);
 int				is_redirection(t_token *token);
 void			apply_redirections(t_redir *redir);
 void			parse_pipeline(t_shell *shell, t_token *tokens);
+t_token			*token_dup_and_add_back(t_token **block_head, t_token *to_add);
+void			parse_command_block(t_command_block *command_block);
 
 // free commands
 void			free_vector(char **vec);

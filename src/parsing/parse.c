@@ -67,7 +67,6 @@ static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 			var[i++] = input[(*pos)++];
 	}
 	var[i] = '\0';
-
 	tmp_value = ft_getenv(shell, var);
 	if (tmp_value)
 	{
@@ -77,7 +76,6 @@ static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 	}
 	return (ft_strdup(""));
 }
-
 
 // Actualiza el estado de la comillas
 static void	update_quote_state(char c, int *in_single_q, int *in_double_q)
