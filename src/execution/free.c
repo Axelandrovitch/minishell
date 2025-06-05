@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:50:09 by ahetru            #+#    #+#             */
-/*   Updated: 2025/05/22 18:04:38 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 12:14:37 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	free_command_blocks(t_command_block *command_blocks)
 		free_tokens(command_blocks->tokens);
 		free_tokens(command_blocks->argv_tokens);
 		free_redirs(command_blocks->redirs);
+		free_vector(command_blocks->argv);
 		free(command_blocks);
 		command_blocks = tmp;
 	}
