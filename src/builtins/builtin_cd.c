@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:55:51 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/05 13:37:28 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 13:46:59 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,12 @@ static int	handle_path_arg(char **args, t_shell *shell, char *current_dir)
 	return (0);
 }
 
-static int	check_cd_args(char **args, t_shell *shell)
+static int	check_cd_args(t_shell *shell)
 {
 	int	arg_count;
 
 	arg_count = count_tokens(shell->tokens);
+	//printf("Argument count: %d\n", arg_count);
 	if (arg_count > 2)
 	{
 		shell->last_exit_status = 1;
@@ -68,7 +69,7 @@ int	builtin_cd(char **args, t_shell *shell)
 {
 	char	*current_dir;
 
-	if (check_cd_args(args, shell) != 0)
+	if (check_cd_args(shell) != 0)
 		return (1);
 	current_dir = getcwd(NULL, 0);
 	if (!args[1])
