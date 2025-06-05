@@ -65,11 +65,6 @@ void	free_shell(t_shell	*shell)
 		free_command_blocks(shell->command_blocks);
 		shell->command_blocks = NULL;
 	}
-	if (shell->bin_paths)
-	{
-		free_vector(shell->bin_paths);
-		shell->bin_paths = NULL;
-	}
 }
 
 void	free_env(t_shell *shell)
