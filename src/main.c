@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/05 12:33:32 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:46:49 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,11 @@ void print_tokens(t_token *head)
 static void	init_minishell(t_shell *shell, char **envp)
 {
 	shell->env = NULL;
-	shell->bin_paths = NULL;
 	shell->command_blocks = NULL;
 	shell->input = NULL;
 	shell->expanded = NULL;
 	shell->tokens = NULL;
 	shell->env = copy_environment(envp);
-	shell->bin_paths = set_path_environment();
 }
 
 // Procesar el input y manejar señales/EOF

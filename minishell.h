@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/05 13:21:20 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:44:48 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_parse_state
 typedef struct s_redir
 {
 	t_token_type	type;
-	// char			*filename;
 	t_token			*operand;
 	int				heredoc_fd;
 	struct s_redir	*next;
@@ -90,7 +89,6 @@ typedef struct s_shell
 	t_token			*tokens;
 	t_command_block	*command_blocks;
 	char			**env;
-	char			**bin_paths;
 	char			*input;
 	char			*expanded;
 	int				last_exit_status;
@@ -146,7 +144,7 @@ void			free_env(t_shell *shell);
 void			exit_shell(t_shell	*shell, int exit_code);
 
 // environment functions
-char			**set_path_environment(void);
+char	**set_path_environment(t_shell *shell);
 char			**copy_environment(char **envp);
 int				count_environment_vars(char **envp);
 char			*get_pathname(char *command, char **path_variable);

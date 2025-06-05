@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 14:02:16 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/04 13:16:27 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:47:34 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ static int	process_single_arg(char *arg, t_shell *shell)
 		free(value);
 		return (1);
 	}
-	if (ft_strcmp(key, "PATH") == 0)
-		update_bin_paths(shell);
+/* 	if (ft_strcmp(key, "PATH") == 0)
+		update_bin_paths(shell); */
 	free(key);
 	free(value);
 	return (0);

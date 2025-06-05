@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:41:00 by ahetru            #+#    #+#             */
-/*   Updated: 2025/06/05 12:14:56 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:36:10 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ void	form_bin_path(char **envp_vec)
 	}
 }
 
-char	**set_path_environment(void)
+char	**set_path_environment(t_shell *shell)
 {
 	const char	*envp;
 	char		**envp_vec;
 
-	envp = getenv("PATH");
+	envp = ft_getenv(shell, "PATH");
 	if (!envp)
 	{
 		printf("No environment found\n");
