@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:43:57 by ahetru            #+#    #+#             */
-/*   Updated: 2025/06/05 16:44:03 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:53:03 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ void	execute_external_command(char **argv, t_shell *shell)
 	{
 		print_command_not_found(argv[0]);
 		free(path);
+		free_vector(bin_paths);
 		exit_shell(shell, 127);
 	}
 	execve(path, argv, shell->env);
 	perror("execve");
 	free(path);
+	free_vector(bin_paths);
 	exit(EXIT_FAILURE);
 }
 

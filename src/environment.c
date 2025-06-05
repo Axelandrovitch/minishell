@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:41:00 by ahetru            #+#    #+#             */
-/*   Updated: 2025/06/05 16:36:10 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:55:30 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	form_bin_path(char **envp_vec)
 
 char	**set_path_environment(t_shell *shell)
 {
-	const char	*envp;
-	char		**envp_vec;
+	char	*envp;
+	char	**envp_vec;
 
 	envp = ft_getenv(shell, "PATH");
 	if (!envp)
@@ -77,6 +77,7 @@ char	**set_path_environment(t_shell *shell)
 		printf("Memory allocation failed\n");
 		exit (1);
 	}
+	free(envp);
 	form_bin_path(envp_vec);
 	return (envp_vec);
 }
