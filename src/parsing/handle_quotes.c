@@ -12,11 +12,6 @@
 
 #include "../../minishell.h"
 
-static int	is_separator(char c)
-{
-	return (c == ' ' || c == '>' || c == '<' || c == '|');
-}
-
 static int	should_escape(const char *line, int i, char quote_type)
 {
 	if (line[i] != '\\' || line[i + 1] == '\0')
@@ -63,7 +58,7 @@ t_token	*handle_quotes(const char *line, int *i, char quote_type)
 	state.i = *i;
 	state.j = 0;
 	in_quotes = 0;
-	while (state.line[state.i] && !is_separator(state.line[state.i]))
+	while (state.line[state.i])
 	{
 		if (process_char(&state, quote_type, &in_quotes) == -1)
 			return (NULL);
