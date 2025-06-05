@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahetru <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 13:43:57 by ahetru            #+#    #+#             */
-/*   Updated: 2025/06/03 13:51:05 by ahetru           ###   ########.fr       */
+/*   Updated: 2025/06/05 12:14:34 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	execute_external_command(char **argv, t_shell *shell)
 	}
 	execve(path, argv, shell->env);
 	perror("execve");
+	free(path);
 	exit(EXIT_FAILURE);
 }
 

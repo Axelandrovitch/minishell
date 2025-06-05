@@ -44,6 +44,7 @@ static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 {
 	char	var[256];
 	int		i;
+	char	*tmp_value;
 
 	i = 0;
 	(*pos)++;
@@ -63,16 +64,20 @@ static char	*extract_and_expand(const char *input, int *pos, t_shell *shell)
 	else
 	{
 		while (input[*pos] && (ft_isalnum(input[*pos]) || input[*pos] == '_'))
-		{
-			var[i++] = input[*pos];
-			(*pos)++;
-		}
+			var[i++] = input[(*pos)++];
 	}
 	var[i] = '\0';
-	if (ft_getenv(shell, var))
-		return (ft_strdup(ft_getenv(shell, var)));
+
+	tmp_value = ft_getenv(shell, var);
+	if (tmp_value)
+	{
+		char *copy = ft_strdup(tmp_value);
+		free(tmp_value);
+		return (copy);
+	}
 	return (ft_strdup(""));
 }
+
 
 // Actualiza el estado de la comillas
 static void	update_quote_state(char c, int *in_single_q, int *in_double_q)

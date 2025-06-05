@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/04 16:12:35 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/05 12:14:57 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,19 +117,22 @@ void	update_shlvl(t_shell *shell)
 
 	shlvl_str = ft_getenv(shell, "SHLVL");
 	if (!shlvl_str)
-	{
-		add_or_update_env(&shell->env, "SHLVL", "1");
-		return ;
-	}
-	shlvl = ft_atoi(shlvl_str);
-	if (shlvl < 0)
-		shlvl = 0;
+		shlvl = 1;
 	else
-		shlvl++;
+	{
+		shlvl = ft_atoi(shlvl_str);
+		if (shlvl < 0)
+			shlvl = 0;
+		else
+			shlvl++;
+		free(shlvl_str);
+	}
 	new_value = ft_itoa(shlvl);
-	builtin_unset(SHLVL_UNSET_ARGS, shell);
-	add_or_update_env(&shell->env, "SHLVL", new_value);
-	free(new_value);
+	if (new_value)
+	{
+		add_or_update_env(&shell->env, "SHLVL", new_value);
+		free(new_value);
+	}
 }
 
 int	main(int ac, char **av, char **envp)

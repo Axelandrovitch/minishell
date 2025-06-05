@@ -86,13 +86,13 @@ char	**get_args_from_tokens(t_token *tokens)
 		{
 			args[i] = ft_strdup(tokens->value);
 			if (!args[i++])
-				return (NULL);
+				return (free_vector(args) ,NULL);
 		}
 		else if (tokens->type == T_DQUOTE || tokens->type == T_SQUOTE)
 		{
 			clean_value = ft_strndup(tokens->value, ft_strlen(tokens->value));
 			if (!clean_value)
-				return (NULL);
+				return (free_vector(args), NULL);
 			args[i++] = clean_value;
 		}
 		tokens = tokens->next;
