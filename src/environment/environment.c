@@ -10,34 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-void	print_vector(char **vec)
-{
-	int	i;
-
-	i = 0;
-	while (vec[i])
-	{
-		printf("%s\n", vec[i]);
-		i++;
-	}
-}
-
-void	free_vector(char **vec)
-{
-	int	i;
-
-	i = 0;
-	if (!vec)
-		return ;
-	while (vec[i])
-	{
-		free(vec[i]);
-		i++;
-	}
-	free(vec);
-}
+#include "../../minishell.h"
 
 void	form_bin_path(char **envp_vec)
 {
@@ -139,27 +112,4 @@ char	**copy_environment(char **envp)
 	}
 	env[i] = NULL;
 	return (env);
-}
-
-char	*ft_getenv(t_shell *shell, char *var)
-{
-	int		i;
-	int		var_len;
-	char	*ret;
-
-	i = 0;
-	var_len = ft_strlen(var);
-	while (shell->env[i])
-	{
-		if (ft_strncmp(shell->env[i], var, var_len) == 0
-			&& shell->env[i][var_len] == '=')
-		{
-			ret = ft_strdup(shell->env[i] + var_len + 1);
-			if (!ret)
-				exit_shell(shell, 1);
-			return (ret);
-		}
-		i++;
-	}
-	return (NULL);
 }

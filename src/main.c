@@ -12,65 +12,55 @@
 
 #include "../minishell.h"
 
-// // Solo para testear
-void print_tokens(t_token *head)
-{
-    t_token *current = head;
-
-    while (current != NULL)
-    {
-        switch (current->type)
-        {
-            case T_WORD:
-                printf("T_WORD       : ");
-                break;
-            case T_PIPE:
-                printf("T_PIPE       : ");
-                break;
-            case T_REDIR_IN:
-                printf("T_REDIR_IN   : ");
-                break;
-            case T_REDIR_OUT:
-                printf("T_REDIR_OUT  : ");
-                break;
-            case T_REDIR_APPEND:
-                printf("T_REDIR_APPEND: ");
-                break;
-            case T_HEREDOC:
-                printf("T_HEREDOC    : ");
-                break;
-            case T_DQUOTE:
-                printf("T_DQUOTE     : ");
-                break;
-            case T_SQUOTE:
-                printf("T_SQUOTE     : ");
-                break;
-            case T_EMPTY:
-                printf("T_EMPTY      : ");
-                break;
-            default:
-                printf("UNKNOWN      : ");
-                break;
-        }
-
-        if (current->value)
-            printf("\"%s\"\n", current->value);
-        else
-            printf("(null)\n");
-
-        current = current->next;
-    }
-}
-
-static void	init_minishell(t_shell *shell, char **envp)
-{
-	shell->env = NULL;
-	shell->command_blocks = NULL;
-	shell->input = NULL;
-	shell->expanded = NULL;
-	shell->tokens = NULL;
-	shell->env = copy_environment(envp);
-}
+// // // Solo para testear
+// void print_tokens(t_token *head)
+// {
+//     t_token *current = head;
+//
+//     while (current != NULL)
+//     {
+//         switch (current->type)
+//         {
+//             case T_WORD:
+//                 printf("T_WORD       : ");
+//                 break;
+//             case T_PIPE:
+//                 printf("T_PIPE       : ");
+//                 break;
+//             case T_REDIR_IN:
+//                 printf("T_REDIR_IN   : ");
+//                 break;
+//             case T_REDIR_OUT:
+//                 printf("T_REDIR_OUT  : ");
+//                 break;
+//             case T_REDIR_APPEND:
+//                 printf("T_REDIR_APPEND: ");
+//                 break;
+//             case T_HEREDOC:
+//                 printf("T_HEREDOC    : ");
+//                 break;
+//             case T_DQUOTE:
+//                 printf("T_DQUOTE     : ");
+//                 break;
+//             case T_SQUOTE:
+//                 printf("T_SQUOTE     : ");
+//                 break;
+//             case T_EMPTY:
+//                 printf("T_EMPTY      : ");
+//                 break;
+//             default:
+//                 printf("UNKNOWN      : ");
+//                 break;
+//         }
+//
+//         if (current->value)
+//             printf("\"%s\"\n", current->value);
+//         else
+//             printf("(null)\n");
+//
+//         current = current->next;
+//     }
+// }
 
 // Procesar el input y manejar señales/EOF
 static int	process_input_line(t_shell *shell)
@@ -131,6 +121,18 @@ void	update_shlvl(t_shell *shell)
 	}
 }
 
+static void	init_minishell(t_shell *shell, char **envp)
+{
+	shell->env = NULL;
+	shell->command_blocks = NULL;
+	shell->input = NULL;
+	shell->expanded = NULL;
+	shell->tokens = NULL;
+	shell->env = copy_environment(envp);
+	shell->last_exit_status = 0;
+	update_shlvl(shell);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell;
@@ -140,9 +142,7 @@ int	main(int ac, char **av, char **envp)
 		printf("Usage: %s\n", av[0]);
 		return (0);
 	}
-	shell.last_exit_status = 0;
 	init_minishell(&shell, envp);
-	update_shlvl(&shell);
 	setup_interactive_signals();
 	while (1)
 	{
@@ -160,7 +160,6 @@ int	main(int ac, char **av, char **envp)
 			shell.input = NULL;
 		}
 	}
-	rl_clear_history();
 	exit_shell(&shell, 0);
 	return (0);
 }

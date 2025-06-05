@@ -12,6 +12,29 @@
 
 #include "../../minishell.h"
 
+char	*ft_getenv(t_shell *shell, char *var)
+{
+	int		i;
+	int		var_len;
+	char	*ret;
+
+	i = 0;
+	var_len = ft_strlen(var);
+	while (shell->env[i])
+	{
+		if (ft_strncmp(shell->env[i], var, var_len) == 0
+			&& shell->env[i][var_len] == '=')
+		{
+			ret = ft_strdup(shell->env[i] + var_len + 1);
+			if (!ret)
+				exit_shell(shell, 1);
+			return (ret);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
 int	add_or_update_env(char ***env, char *key, char *value)
 {
 	int	pos;
@@ -47,4 +70,19 @@ void	sort_env_copy(char **env)
 		}
 		i++;
 	}
+}
+
+void	free_vector(char **vec)
+{
+	int	i;
+
+	i = 0;
+	if (!vec)
+		return ;
+	while (vec[i])
+	{
+		free(vec[i]);
+		i++;
+	}
+	free(vec);
 }

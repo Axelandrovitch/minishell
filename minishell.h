@@ -29,7 +29,7 @@
 # include <termios.h>
 
 extern int	g_signal_received;
-#define SHLVL_UNSET_ARGS ((char *[]){"unset", "SHLVL", NULL})
+# define SHLVL_UNSET_ARGS ((char *[]){"unset", "SHLVL", NULL}) 
 
 typedef enum e_token_type
 {
@@ -94,7 +94,7 @@ typedef struct s_shell
 	int				last_exit_status;
 }	t_shell;
 
-//TOKEN
+//lexer
 t_token			*new_token(t_token_type type, const char *value, int len);
 void			free_tokens(t_token *token);
 int				skip_spaces(const char *line, int i);
@@ -103,21 +103,19 @@ t_token			*handle_quotes(const char *line, int *i, char quote_type);
 t_token			*handle_pipe(int *i);
 t_token			*handle_redir(const char *line, int *i);
 int				handle_quoted_char(const char *line, int *i,
-						char *buffer, int *j);
+					char *buffer, int *j);
 int				count_tokens(t_token *tokens);
-
 char			**get_args_from_tokens(t_token *tokens);
-
 t_token			*tokenize(const char *line);
-
-t_command_block	*set_command_block(t_token *head_token);
-
-int				handle_redirections(t_command_block *command_block);
-
-int				handle_heredoc(t_token *operand, t_shell *shell);
-
-// $
 char			*expand_variables(const char *input, t_shell *shell);
+
+// parser
+int				check_syntax(t_token *tokens);
+int				is_redirection(t_token *token);
+t_command_block	*set_command_block(t_token *head_token);
+void			parse_pipeline(t_shell *shell, t_token *tokens);
+t_token			*token_dup_and_add_back(t_token **block_head, t_token *to_add);
+void			parse_command_block(t_command_block *command_block);
 
 //execution
 void			execute_pipeline(t_shell *shell);
@@ -129,15 +127,23 @@ bool			is_single_builtin(t_command_block *cmd);
 int				prepare_pipe(int *fd);
 void			print_command_not_found(const char *command);
 int				is_builtin(const char *command);
-int				prepare_heredocs(t_command_block *cmd, t_shell *shell);
-
-// parsing
-int				check_syntax(t_token *tokens);
-int				is_redirection(t_token *token);
+int				handle_heredoc(t_token *operand, t_shell *shell);
 void			apply_redirections(t_redir *redir);
-void			parse_pipeline(t_shell *shell, t_token *tokens);
-t_token			*token_dup_and_add_back(t_token **block_head, t_token *to_add);
-void			parse_command_block(t_command_block *command_block);
+int				prepare_heredocs(t_command_block *cmd, t_shell *shell);
+int				handle_redirections(t_command_block *command_block);
+
+// environment
+char			**set_path_environment(t_shell *shell);
+char			**copy_environment(char **envp);
+int				count_environment_vars(char **envp);
+char			*get_pathname(char *command, char **path_variable);
+char			*ft_getenv(t_shell *shell, char *var);
+void			form_bin_path(char **envp_vec);
+int				find_env_var(char **env, char *key);
+int				update_env_var(char **env, char *var_name, char *value);
+int				add_env_var(char ***env, char *key, char *value);
+int				add_or_update_env(char ***env, char *key, char *value);
+void			sort_env_copy(char **env);
 
 // free commands
 void			free_vector(char **vec);
@@ -145,22 +151,7 @@ void			free_shell(t_shell	*shell);
 void			free_env(t_shell *shell);
 void			exit_shell(t_shell	*shell, int exit_code);
 
-// environment functions
-char	**set_path_environment(t_shell *shell);
-char			**copy_environment(char **envp);
-int				count_environment_vars(char **envp);
-char			*get_pathname(char *command, char **path_variable);
-char			*ft_getenv(t_shell *shell, char *var);
-void			form_bin_path(char **envp_vec);
-
-// env_utils
-int				find_env_var(char **env, char *key);
-int				update_env_var(char **env, char *var_name, char *value);
-int				add_env_var(char ***env, char *key, char *value);
-int				add_or_update_env(char ***env, char *key, char *value);
-
 // debugging functions
-void			print_vector(char **vec);
 void			print_command_blocks(t_command_block *head_block);
 void			print_all_command_blocks(t_command_block *head);
 
@@ -183,10 +174,7 @@ void			update_bin_paths(t_shell *shell);
 // cd utils
 int				update_pwd_vars(t_shell *shell, char *old_directory);
 int				go_to_path(t_shell *shell, const char *target);
-int 			handle_no_args(t_shell *shell, char *current_dir);
-
-// sort
-void			sort_env_copy(char **env);
+int				handle_no_args(t_shell *shell, char *current_dir);
 
 // signals
 void			handle_sigint(int sig);

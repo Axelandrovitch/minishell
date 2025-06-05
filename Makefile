@@ -25,28 +25,28 @@ LIBFT := $(LIBFT_DIR)/libft.a
 
 SRC := \
 	$(SRC_DIR)/main.c \
-	$(SRC_DIR)/parsing/token.c \
-	$(SRC_DIR)/parsing/token2.c \
-	$(SRC_DIR)/parsing/handle_quotes.c \
-	$(SRC_DIR)/parsing/aux_token.c \
-	$(SRC_DIR)/parsing/parse.c \
-	$(SRC_DIR)/parsing/parse_pipeline.c \
-	$(SRC_DIR)/parsing/parse_command_blocks.c \
-	$(SRC_DIR)/parsing/parser_utils.c \
+	$(SRC_DIR)/lexer/token.c \
+	$(SRC_DIR)/lexer/token2.c \
+	$(SRC_DIR)/lexer/handle_quotes.c \
+	$(SRC_DIR)/lexer/aux_token.c \
+	$(SRC_DIR)/parser/parse.c \
+	$(SRC_DIR)/parser/parse_pipeline.c \
+	$(SRC_DIR)/parser/parse_command_blocks.c \
+	$(SRC_DIR)/parser/parser_utils.c \
 	$(SRC_DIR)/execution/execute_pipeline.c \
 	$(SRC_DIR)/execution/execute_commands.c \
 	$(SRC_DIR)/execution/execution_utils.c \
 	$(SRC_DIR)/execution/free.c \
 	$(SRC_DIR)/execution/handle_redirections.c \
 	$(SRC_DIR)/execution/handle_heredoc.c \
-	$(SRC_DIR)/environment.c \
 	$(SRC_DIR)/builtins/builtin_simple.c \
 	$(SRC_DIR)/builtins/builtin_cd.c \
 	$(SRC_DIR)/builtins/cd_utils.c \
 	$(SRC_DIR)/builtins/builtin_echo.c \
 	$(SRC_DIR)/builtins/builtin_env.c \
-	$(SRC_DIR)/builtins/env_utils.c \
-	$(SRC_DIR)/builtins/env_utils2.c \
+	$(SRC_DIR)/environment/environment.c \
+	$(SRC_DIR)/environment/env_utils.c \
+	$(SRC_DIR)/environment/env_utils2.c \
 	$(SRC_DIR)/builtins/builtin_export.c \
 	$(SRC_DIR)/builtins/export_utils.c \
 	$(SRC_DIR)/builtins/execute.c \
