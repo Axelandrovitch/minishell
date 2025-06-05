@@ -102,9 +102,7 @@ static void	execute_command_pipeline(t_shell *shell)
 		free_shell(shell);
 		return ;
 	}
-	print_tokens(shell->tokens);
 	parse_pipeline(shell, shell->tokens);
-	// print_all_command_blocks(shell->command_blocks);
 	execute_pipeline(shell);
 }
 
@@ -146,7 +144,6 @@ int	main(int ac, char **av, char **envp)
 	}
 	shell.last_exit_status = 0;
 	init_minishell(&shell, envp);
-	//print_vector(envp);
 	update_shlvl(&shell);
 	setup_interactive_signals();
 	while (1)

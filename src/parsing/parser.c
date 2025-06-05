@@ -35,13 +35,9 @@ t_token	*token_dup_and_add_back(t_token **block_head, t_token *to_add)
 	t_token	*new_tok;
 	t_token	*temp_tok;
 
-	// new_tok = malloc(sizeof(t_token));
-	// if (!new_tok)
-	// 	return (NULL);
-	// new_tok->type = to_add->type;
-	// new_tok->value = ft_strdup(to_add->value);
-	// new_tok->next = NULL;
 	new_tok = token_dup(to_add);
+	if (!new_tok)
+		return (NULL);
 	if (*block_head == NULL)
 		*block_head = new_tok;
 	else
@@ -84,18 +80,11 @@ t_redir	*redir_add_back(t_redir	**head, enum e_token_type type
 
 	to_add = malloc(sizeof(t_redir));
 	if (!to_add)
-	{
-		printf("TODO: free memory!\n");
-		exit(1);
-	}
+		return (NULL);
 	to_add->type = type;
-	// to_add->filename = ft_strdup(filename);
-	// if (!to_add->filename)
-	// {
-	// 	printf("TODO: free memory!\n");
-	// 	exit(1);
-	// }
 	to_add->operand = token_dup(operand);
+	if (!to_add->operand)
+		return (NULL);
 	to_add->next = NULL;
 	if (!*head)
 		*head = to_add;

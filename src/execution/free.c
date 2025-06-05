@@ -21,6 +21,7 @@ void	free_redirs(t_redir *redirs)
 		tmp = redirs->next;
 		if (redirs->operand && redirs->operand->value)
 			free(redirs->operand->value);
+		free(redirs->operand);
 		free(redirs);
 		redirs = tmp;
 	}
@@ -63,6 +64,11 @@ void	free_shell(t_shell	*shell)
 	{
 		free_command_blocks(shell->command_blocks);
 		shell->command_blocks = NULL;
+	}
+	if (shell->bin_paths)
+	{
+		free_vector(shell->bin_paths);
+		shell->bin_paths = NULL;
 	}
 }
 
