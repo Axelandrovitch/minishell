@@ -59,6 +59,14 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_parse_state
+{
+	const char	*line;
+	int			i;
+	char		buffer[1024];
+	int			j;
+}	t_parse_state;
+
 typedef struct s_redir
 {
 	t_token_type	type;

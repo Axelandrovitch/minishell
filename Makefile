@@ -27,6 +27,7 @@ SRC := \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/parsing/token.c \
 	$(SRC_DIR)/parsing/token2.c \
+	$(SRC_DIR)/parsing/handle_quotes.c \
 	$(SRC_DIR)/parsing/aux_token.c \
 	$(SRC_DIR)/parsing/parse.c \
 	$(SRC_DIR)/parsing/parser.c \
