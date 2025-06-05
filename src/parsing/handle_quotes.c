@@ -38,13 +38,13 @@ static int	process_char(t_parse_state *state, char quote_type, int *in_quotes)
 	{
 		if (*in_quotes && should_escape(state->line, state->i, quote_type))
 			state->i++;
+		if (state->j >= 1023)
+		{
+			write(STDERR_FILENO, "minishell: Token too long\n", 26);
+			return (-1);
+		}
 		state->buffer[state->j++] = state->line[state->i];
 		state->i++;
-	}
-	if (state->j >= 1023)
-	{
-		write(STDERR_FILENO, "minishell: Token too long\n", 26);
-		return (-1);
 	}
 	return (0);
 }
