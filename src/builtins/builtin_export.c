@@ -79,8 +79,6 @@ static int	process_single_arg(char *arg, t_shell *shell)
 		free(value);
 		return (1);
 	}
-/* 	if (ft_strcmp(key, "PATH") == 0)
-		update_bin_paths(shell); */
 	free(key);
 	free(value);
 	return (0);

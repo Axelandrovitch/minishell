@@ -55,7 +55,6 @@ static int	check_cd_args(t_shell *shell)
 	int	arg_count;
 
 	arg_count = count_tokens(shell->tokens);
-	//printf("Argument count: %d\n", arg_count);
 	if (arg_count > 2)
 	{
 		shell->last_exit_status = 1;

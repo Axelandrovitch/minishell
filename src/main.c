@@ -138,10 +138,7 @@ int	main(int ac, char **av, char **envp)
 	t_shell	shell;
 
 	if (ac != 1)
-	{
-		printf("Usage: %s\n", av[0]);
-		return (0);
-	}
+		return (printf("Usage: %s\n", av[0]), 0);
 	init_minishell(&shell, envp);
 	setup_interactive_signals();
 	while (1)

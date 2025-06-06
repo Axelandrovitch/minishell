@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-char	*ft_getenv(t_shell *shell, char *var)
+char	*ft_getenv(t_shell *shell, const char *var)
 {
 	int		i;
 	int		var_len;

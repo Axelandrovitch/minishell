@@ -59,6 +59,15 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_expand_var
+{
+	const char	*input;
+	char		*result;
+	int			i;
+	int			in_s_quote;
+	int			in_d_quote;
+}	t_expand_var;
+
 typedef struct s_parse_state
 {
 	const char	*line;
@@ -107,7 +116,6 @@ int				handle_quoted_char(const char *line, int *i,
 int				count_tokens(t_token *tokens);
 char			**get_args_from_tokens(t_token *tokens);
 t_token			*tokenize(const char *line);
-char			*expand_variables(const char *input, t_shell *shell);
 
 // parser
 int				check_syntax(t_token *tokens);
@@ -116,6 +124,12 @@ t_command_block	*set_command_block(t_token *head_token);
 void			parse_pipeline(t_shell *shell, t_token *tokens);
 t_token			*token_dup_and_add_back(t_token **block_head, t_token *to_add);
 void			parse_command_block(t_command_block *command_block);
+void			update_quote_state(char c, int *in_single_q, int *in_double_q);
+char			*expand_variables(const char *input, t_shell *shell);
+char			*append_str(char *str, const char *to_append);
+char			*append_char(char *str, char c);
+char			*extract_and_expand(const char *input,
+					int *pos, t_shell *shell);
 
 //execution
 void			execute_pipeline(t_shell *shell);
@@ -137,7 +151,7 @@ char			**set_path_environment(t_shell *shell);
 char			**copy_environment(char **envp);
 int				count_environment_vars(char **envp);
 char			*get_pathname(char *command, char **path_variable);
-char			*ft_getenv(t_shell *shell, char *var);
+char			*ft_getenv(t_shell *shell, const char *var);
 void			form_bin_path(char **envp_vec);
 int				find_env_var(char **env, char *key);
 int				update_env_var(char **env, char *var_name, char *value);

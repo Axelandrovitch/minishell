@@ -6,7 +6,7 @@
 #    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/06/05 13:19:18 by dcampas-         ###   ########.fr        #
+#    Updated: 2025/06/06 11:48:04 by ahetru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ SRC := \
 	$(SRC_DIR)/lexer/token2.c \
 	$(SRC_DIR)/lexer/handle_quotes.c \
 	$(SRC_DIR)/lexer/aux_token.c \
-	$(SRC_DIR)/parser/parse.c \
+	$(SRC_DIR)/parser/expand_variables.c \
+	$(SRC_DIR)/parser/expand_variables_utils.c \
+	$(SRC_DIR)/parser/expand_variables_utils2.c \
 	$(SRC_DIR)/parser/parse_pipeline.c \
 	$(SRC_DIR)/parser/parse_command_blocks.c \
 	$(SRC_DIR)/parser/parser_utils.c \
