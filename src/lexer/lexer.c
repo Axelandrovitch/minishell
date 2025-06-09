@@ -28,7 +28,8 @@ static t_token	*handle_word_or_assignment(const char *line, int *i)
 		else
 		{
 			if (j >= 1023)
-				return (fprintf(stderr, "Error: token trop long\n"), NULL);
+				return (write(STDERR_FILENO, "Error: token too long\n", 22),
+					NULL);
 			buffer[j++] = line[(*i)++];
 		}
 	}
@@ -47,15 +48,14 @@ static t_token	*handle_compound_word(const char *line, int *i)
 		if (line[*i] == '"' || line[*i] == '\'')
 		{
 			if (handle_quoted_char(line, i, buffer, &j) == -1)
-			{
-				write(STDERR_FILENO, "minishell: Unclosed quote\n", 26);
-				return (NULL);
-			}
+				return (write(STDERR_FILENO, "minishell: Unclosed quote\n", 26),
+					NULL);
 		}
 		else
 		{
 			if (j >= 1023)
-				return (fprintf(stderr, "Error: token trop long\n"), NULL);
+				return (write(STDERR_FILENO, "Error: token too long\n", 22),
+					NULL);
 			buffer[j++] = line[(*i)++];
 		}
 	}
