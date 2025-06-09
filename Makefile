@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/06/09 16:37:25 by ahetru           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME := minishell
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g -fsanitize=address
@@ -55,20 +43,58 @@ SRC := \
 	$(SRC_DIR)/builtins/execute.c \
 	$(SRC_DIR)/builtins/builtin_unset.c \
 	$(SRC_DIR)/signals/signals.c \
+
+LIBFT_SRC := \
+	$(LIBFT_DIR)/src/ft_is/ft_isalpha.c \
+	$(LIBFT_DIR)/src/ft_is/ft_isdigit.c \
+	$(LIBFT_DIR)/src/ft_is/ft_isalnum.c \
+	$(LIBFT_DIR)/src/ft_is/ft_isascii.c \
+	$(LIBFT_DIR)/src/ft_is/ft_isprint.c \
+	$(LIBFT_DIR)/src/ft_mem/ft_memset.c \
+	$(LIBFT_DIR)/src/ft_mem/ft_bzero.c \
+	$(LIBFT_DIR)/src/ft_mem/ft_memcpy.c \
+	$(LIBFT_DIR)/src/ft_mem/ft_memmove.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strlen.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strlcpy.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strdup.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strndup.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strchr.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strrchr.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strncmp.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strcmp.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strncpy.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strnstr.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strlcat.c \
+	$(LIBFT_DIR)/src/ft_put/ft_putchar_fd.c \
+	$(LIBFT_DIR)/src/ft_mem/ft_memchr.c \
+	$(LIBFT_DIR)/src/ft_mem/ft_memcmp.c \
+	$(LIBFT_DIR)/src/ft_str/ft_substr.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strjoin.c \
+	$(LIBFT_DIR)/src/ft_str/ft_putstr_fd.c \
+	$(LIBFT_DIR)/src/ft_put/ft_putendl_fd.c \
+	$(LIBFT_DIR)/src/ft_str/ft_strtrim.c \
+	$(LIBFT_DIR)/src/ft_str/ft_split.c \
+	$(LIBFT_DIR)/src/ft_to/ft_atoi.c \
+	$(LIBFT_DIR)/src/ft_to/ft_itoa.c \
+	$(LIBFT_DIR)/src/ft_to/ft_atol.c \
+	$(LIBFT_DIR)/src/ft_mem/ft_calloc.c \
+	$(LIBFT_DIR)/src/ft_to/ft_toupper.c \
+	$(LIBFT_DIR)/src/ft_to/ft_tolower.c
+
 	
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
+$(LIBFT): $(LIBFT_SRC) 
+	$(MAKE) -C $(LIBFT_DIR)
+
+$(NAME): $(OBJ) $(LIBFT) Makefile minishell.h $(LIBFT_DIR)/Makefile $(LIBFT_DIR)/inc/libft.h
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJ) $(LIBFT) -o $(NAME) $(READLINE)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean

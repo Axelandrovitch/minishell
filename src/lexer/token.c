@@ -75,7 +75,6 @@
 // 		(*i)++;
 // 	return (0);
 // }
-
 t_token	*create_quote_token(const char *line, int len, char quote_type)
 {
 	if (len == 0)
