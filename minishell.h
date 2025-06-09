@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/05 16:44:48 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:18:40 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 # include <termios.h>
 
 extern int	g_signal_received;
-# define SHLVL_UNSET_ARGS ((char *[]){"unset", "SHLVL", NULL}) 
 
 typedef enum e_token_type
 {

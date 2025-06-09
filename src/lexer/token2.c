@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:45:49 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/05 12:14:48 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:26:23 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_token	*handle_word_or_assignment(const char *line, int *i)
 		else
 			buffer[j++] = line[(*i)++];
 		if (j >= 1024)
-			return (fprintf(stderr, "Error: token demasiado largo\n"), NULL);
+			return (perror("Error: token demasiado largo\n"), NULL);
 	}
 	buffer[j] = '\0';
 	return (new_token(T_WORD, buffer, j));
