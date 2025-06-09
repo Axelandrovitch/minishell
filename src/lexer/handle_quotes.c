@@ -26,25 +26,32 @@ static int	should_escape(const char *line, int i, char quote_type)
 	return (0);
 }
 
-static int	process_char(t_parse_state *state, char quote_type, int *in_quotes)
-
+static int	process_quoted_content(t_parse_state *state, char quote_type)
 {
-	if (state->line[state->i] == quote_type)
+	while (state->line[state->i] && state->line[state->i] != quote_type)
 	{
-		*in_quotes = !(*in_quotes);
-		state->i++;
-	}
-	else
-	{
-		if (*in_quotes && should_escape(state->line, state->i, quote_type))
+		if (should_escape(state->line, state->i, quote_type))
 			state->i++;
 		if (state->j >= 1023)
 		{
 			write(STDERR_FILENO, "minishell: Token too long\n", 26);
 			return (-1);
 		}
-		state->buffer[state->j++] = state->line[state->i];
-		state->i++;
+		state->buffer[state->j++] = state->line[state->i++];
+	}
+	return (0);
+}
+
+static int	handle_empty_quotes(const char *line, int *i, char quote_type)
+{
+	if (line[*i] == quote_type && line[*i + 1] == quote_type)
+	{
+		if (line[*i + 2] && line[*i + 2] != ' ' && line[*i + 2] != '\t'
+			&& line[*i + 2] != '|'
+			&& line[*i + 2] != '<' && line[*i + 2] != '>')
+			return (0);
+		*i += 2;
+		return (1);
 	}
 	return (0);
 }
@@ -52,22 +59,20 @@ static int	process_char(t_parse_state *state, char quote_type, int *in_quotes)
 t_token	*handle_quotes(const char *line, int *i, char quote_type)
 {
 	t_parse_state	state;
-	int				in_quotes;
 
+	if (handle_empty_quotes(line, i, quote_type))
+		return (new_token(T_EMPTY, "", 0));
 	state.line = line;
-	state.i = *i;
+	state.i = *i + 1;
 	state.j = 0;
-	in_quotes = 0;
-	while (state.line[state.i])
-	{
-		if (process_char(&state, quote_type, &in_quotes) == -1)
-			return (NULL);
-	}
-	if (in_quotes)
+	if (process_quoted_content(&state, quote_type) == -1)
+		return (NULL);
+	if (state.line[state.i] != quote_type)
 	{
 		write(STDERR_FILENO, "minishell: Unclosed quote\n", 26);
 		return (NULL);
 	}
+	state.i++;
 	state.buffer[state.j] = '\0';
 	*i = state.i;
 	if (quote_type == '"')

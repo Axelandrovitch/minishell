@@ -6,7 +6,7 @@
 #    By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/25 10:26:21 by dcampas-          #+#    #+#              #
-#    Updated: 2025/06/06 11:48:04 by ahetru           ###   ########.fr        #
+#    Updated: 2025/06/09 16:37:25 by ahetru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,9 @@ LIBFT := $(LIBFT_DIR)/libft.a
 SRC := \
 	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/lexer/token.c \
-	$(SRC_DIR)/lexer/token2.c \
+	$(SRC_DIR)/lexer/lexer.c \
 	$(SRC_DIR)/lexer/handle_quotes.c \
+	$(SRC_DIR)/lexer/lexer_utils.c \
 	$(SRC_DIR)/lexer/aux_token.c \
 	$(SRC_DIR)/parser/expand_variables.c \
 	$(SRC_DIR)/parser/expand_variables_utils.c \

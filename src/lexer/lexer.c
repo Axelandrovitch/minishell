@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token2.c                                           :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 15:45:49 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:26:23 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:37:09 by ahetru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,59 @@ static t_token	*handle_word_or_assignment(const char *line, int *i)
 	int		j;
 
 	j = 0;
-	while (line[*i] && line[*i] != ' ' && line[*i] != '\t'
-		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+	while (line[*i] && !is_word_boundary(line[*i]))
 	{
 		if (line[*i] == '"' || line[*i] == '\'')
 		{
-			handle_quoted_char(line, i, buffer, &j);
+			if (handle_quoted_char(line, i, buffer, &j) == -1)
+				return (NULL);
 		}
 		else
+		{
+			if (j >= 1023)
+				return (fprintf(stderr, "Error: token trop long\n"), NULL);
 			buffer[j++] = line[(*i)++];
-		if (j >= 1024)
-			return (perror("Error: token demasiado largo\n"), NULL);
+		}
 	}
 	buffer[j] = '\0';
 	return (new_token(T_WORD, buffer, j));
 }
 
+static t_token	*handle_compound_word(const char *line, int *i)
+{
+	char	buffer[1024];
+	int		j;
+
+	j = 0;
+	while (line[*i] && !is_word_boundary(line[*i]))
+	{
+		if (line[*i] == '"' || line[*i] == '\'')
+		{
+			if (handle_quoted_char(line, i, buffer, &j) == -1)
+			{
+				write(STDERR_FILENO, "minishell: Unclosed quote\n", 26);
+				return (NULL);
+			}
+		}
+		else
+		{
+			if (j >= 1023)
+				return (fprintf(stderr, "Error: token trop long\n"), NULL);
+			buffer[j++] = line[(*i)++];
+		}
+	}
+	buffer[j] = '\0';
+	if (j == 0)
+		return (new_token(T_EMPTY, "", 0));
+	return (new_token(T_WORD, buffer, j));
+}
+
 static t_token	*get_next_token(const char *line, int *i)
 {
-	if (line[*i] == '"')
+	if ((line[*i] == '"' || line[*i] == '\'')
+		&& has_adjacent_content(line, *i, line[*i]))
+		return (handle_compound_word(line, i));
+	else if (line[*i] == '"')
 		return (handle_quotes(line, i, '"'));
 	else if (line[*i] == '\'')
 		return (handle_quotes(line, i, '\''));
@@ -57,7 +91,6 @@ static void	add_token_to_list(t_token **head, t_token **last, t_token *new_tok)
 	*last = new_tok;
 }
 
-// Tokenizes a line of input into a linked list of tokens
 t_token	*tokenize(const char *line)
 {
 	t_token	*head;

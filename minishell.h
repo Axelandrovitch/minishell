@@ -107,12 +107,14 @@ t_token			*new_token(t_token_type type, const char *value, int len);
 void			free_tokens(t_token *token);
 int				skip_spaces(const char *line, int i);
 t_token			*create_quote_token(const char *line, int len, char quote_type);
+int				is_word_boundary(char c);
 t_token			*handle_quotes(const char *line, int *i, char quote_type);
 t_token			*handle_pipe(int *i);
 t_token			*handle_redir(const char *line, int *i);
 int				handle_quoted_char(const char *line, int *i,
 					char *buffer, int *j);
 int				count_tokens(t_token *tokens);
+int				has_adjacent_content(const char *line, int i, char quote_type);
 char			**get_args_from_tokens(t_token *tokens);
 t_token			*tokenize(const char *line);
 
