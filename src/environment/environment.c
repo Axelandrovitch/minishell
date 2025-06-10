@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:41:00 by ahetru            #+#    #+#             */
-/*   Updated: 2025/06/05 16:55:30 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:08:34 by ahetru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**set_path_environment(t_shell *shell)
 		printf("No environment found\n");
 		exit(1);
 	}
-	envp_vec = ft_split(envp + 5, ':');
+	envp_vec = ft_split(envp, ':');
 	if (!envp_vec)
 	{
 		printf("Memory allocation failed\n");
