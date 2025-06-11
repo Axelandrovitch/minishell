@@ -79,7 +79,10 @@ int	handle_heredoc(t_token *operand, t_shell *shell)
 		return (-1);
 	pid = fork();
 	if (pid == 0)
+	{
+		close(pipe_fd[0]);
 		heredoc_child(pipe_fd[1], operand, shell);
+	}
 	else if (pid > 0)
 		return (heredoc_parent(pid, pipe_fd, shell));
 	close(pipe_fd[0]);

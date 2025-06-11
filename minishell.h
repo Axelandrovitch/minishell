@@ -150,6 +150,7 @@ int				prepare_heredocs(t_command_block *cmd, t_shell *shell);
 int				handle_redirections(t_command_block *command_block);
 void			print_no_such_file_or_directory(const char *command);
 void			print_permission_denied(const char *command);
+void			cleanup_heredocs(t_command_block *cmd);
 
 // environment
 char			**set_path_environment(t_shell *shell);

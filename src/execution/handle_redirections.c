@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   handle_redirections.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:57:42 by ahetru            #+#    #+#             */
-/*   Updated: 2025/06/05 12:14:42 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:59:37 by ahetru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	apply_redirections(t_redir *redir)
 	{
 		fd = handle_fd(redir);
 		if (fd == -1)
-			exit(1);
+			return ;
 		if (redir->type == T_REDIR_OUT || redir->type == T_REDIR_APPEND)
 			dup2 (fd, STDOUT_FILENO);
 		else if (redir->type == T_REDIR_IN || redir->type == T_HEREDOC)

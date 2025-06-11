@@ -46,7 +46,19 @@ void	execute_single_builtin(t_command_block *cmd, t_shell *shell)
 
 	stdin_copy = dup(STDIN_FILENO);
 	stdout_copy = dup(STDOUT_FILENO);
+	if (stdin_copy == -1 || stdout_copy == -1)
+	{
+		write(STDERR_FILENO, "dup error\n", 10);
+		exit_shell(shell, EXIT_FAILURE);
+	}
 	apply_redirections(cmd->redirs);
+	if (!ft_strcmp(cmd->argv[0], "exit"))
+	{
+		dup2(stdin_copy, STDIN_FILENO);
+		dup2(stdout_copy, STDOUT_FILENO);
+		close(stdin_copy);
+		close(stdout_copy);
+	}
 	status = execute_builtin(cmd->argv, shell);
 	dup2(stdin_copy, STDIN_FILENO);
 	dup2(stdout_copy, STDOUT_FILENO);
