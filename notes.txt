@@ -1,6 +1,6 @@
-Ne pas oublier de trouver le cas de l'exit apres une commande.
+Ne pas oublier de trouver le cas de l'exit apres une cshommande.
 Regler le leak de fd. OK
 cas de heredoc sans rien OK: cas pass de limiter ajoute comme syntax error OK
 Signaux dans hereoc, un d'eux fait exit du programme
-verifier les prints dans bonne sortie: stdout stderr
-env avec argument en plus ne print pas env: too many arguments, peut etre revoir le message d erreur ?
+verifier les prints dans bonne sortie: stdout stderr OK ?
+env avec argument en plus ne print pas env: too many arguments, peut etre revoir le message d erreur ? remplacer le check builtin pour env ?

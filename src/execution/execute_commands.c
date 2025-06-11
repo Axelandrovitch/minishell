@@ -82,6 +82,7 @@ pid_t	launch_child(t_command_block *cmd, int prev_fd, int *fd, t_shell *shell)
 		setup_child_signals();
 		exec_child_process(cmd, prev_fd, fd, shell);
 	}
+	cleanup_heredocs(cmd);
 	return (pid);
 }
 

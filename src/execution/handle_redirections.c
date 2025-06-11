@@ -43,6 +43,26 @@ static int	handle_fd(t_redir *redir)
 	return (fd);
 }
 
+void	cleanup_heredocs(t_command_block *cmd)
+{
+	t_redir	*redir;
+
+	while (cmd)
+	{
+		redir = cmd->redirs;
+		while (redir)
+		{
+			if (redir->type == T_HEREDOC && redir->heredoc_fd != -1)
+			{
+				close(redir->heredoc_fd);
+				redir->heredoc_fd = -1;
+			}
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
+}
+
 void	apply_redirections(t_redir *redir)
 {
 	int	fd;
