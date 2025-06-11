@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:28:26 by ahetru            #+#    #+#             */
-/*   Updated: 2025/06/05 19:41:51 by ahetru           ###   ########.fr       */
+/*   Updated: 2025/06/11 18:15:26 by ahetru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@ int	pipe_error(t_token *token, int index)
 
 int	redirection_error(t_token *token)
 {
-	if (is_redirection(token) && token->type != T_HEREDOC)
-	{
+    if (is_redirection(token))
+    {
 		if (!token->next)
 			return (1);
+    }
+	if (is_redirection(token) && token->type != T_HEREDOC)
+	{
 		if (token->next->type != T_WORD
 			&& token->next->type != T_SQUOTE
 			&& token->next->type != T_DQUOTE)

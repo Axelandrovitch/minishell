@@ -1,4 +1,4 @@
 Ne pas oublier de trouver le cas de l'exit apres une commande.
-Regler le leak de fd.
+Regler le leak de fd. OK
 cas de heredoc sans rien.
 Signaux dans hereoc, un d'eux fait exit du programme
