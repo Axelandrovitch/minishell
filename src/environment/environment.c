@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <unistd.h>
 
 void	form_bin_path(char **envp_vec)
 {
@@ -41,15 +42,11 @@ char	**set_path_environment(t_shell *shell)
 	envp = ft_getenv(shell, "PATH");
 	if (!envp)
 	{
-		printf("No environment found\n");
-		exit(1);
+		return (NULL);
 	}
 	envp_vec = ft_split(envp, ':');
 	if (!envp_vec)
-	{
-		printf("Memory allocation failed\n");
-		exit (1);
-	}
+		exit_shell(shell, 1);
 	free(envp);
 	form_bin_path(envp_vec);
 	return (envp_vec);
@@ -71,8 +68,7 @@ char	*get_pathname(char *command, char **path_variable)
 		pathname = ft_strjoin(path_variable[i], command);
 		if (!pathname)
 			exit(EXIT_FAILURE);
-		fd = access(pathname, X_OK);
-		if (fd != -1)
+		if (access(pathname, X_OK) == 0)
 			return (pathname);
 		free(pathname);
 		i++;

@@ -12,31 +12,6 @@
 
 #include "../../minishell.h"
 
-void	execute_external_command(char **argv, t_shell *shell)
-{
-	char	**bin_paths;
-	char	*path;
-
-	path = NULL;
-	bin_paths = set_path_environment(shell);
-	if (ft_strchr(argv[0], '/') != NULL)
-		path = ft_strdup(argv[0]);
-	else
-		path = get_pathname(argv[0], bin_paths);
-	if (path == NULL)
-	{
-		print_command_not_found(argv[0]);
-		free(path);
-		free_vector(bin_paths);
-		exit_shell(shell, 127);
-	}
-	execve(path, argv, shell->env);
-	perror("execve");
-	free(path);
-	free_vector(bin_paths);
-	exit(EXIT_FAILURE);
-}
-
 void	exec_child_process(t_command_block *cmd, int p_fd, int *fd, t_shell *sh)
 {
 	int	status;

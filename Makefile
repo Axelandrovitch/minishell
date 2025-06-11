@@ -6,7 +6,7 @@
 #    By: ahetru <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/10 16:06:42 by ahetru            #+#    #+#              #
-#    Updated: 2025/06/10 16:14:28 by ahetru           ###   ########.fr        #
+#    Updated: 2025/06/11 14:14:38 by ahetru           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,9 @@ SRC := \
 	$(SRC_DIR)/parser/parser_utils.c \
 	$(SRC_DIR)/execution/execute_pipeline.c \
 	$(SRC_DIR)/execution/execute_commands.c \
+	$(SRC_DIR)/execution/execute_external_command.c \
 	$(SRC_DIR)/execution/execution_utils.c \
+	$(SRC_DIR)/execution/print_errors.c \
 	$(SRC_DIR)/execution/free.c \
 	$(SRC_DIR)/execution/handle_redirections.c \
 	$(SRC_DIR)/execution/handle_heredoc.c \

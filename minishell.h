@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdbool.h>
+# include <errno.h>
 # include <limits.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
@@ -135,6 +136,7 @@ char			*extract_and_expand(const char *input,
 //execution
 void			execute_pipeline(t_shell *shell);
 int				execute_builtin(char **argv, t_shell *shell);
+void			execute_external_command(char **argv, t_shell *shell);
 int				pipe_and_execute(t_command_block *cmd, int prev_fd,
 					int *fd, t_shell *shell);
 void			execute_single_builtin(t_command_block *cmd, t_shell *shell);
@@ -146,6 +148,8 @@ int				handle_heredoc(t_token *operand, t_shell *shell);
 void			apply_redirections(t_redir *redir);
 int				prepare_heredocs(t_command_block *cmd, t_shell *shell);
 int				handle_redirections(t_command_block *command_block);
+void			print_no_such_file_or_directory(const char *command);
+void			print_permission_denied(const char *command);
 
 // environment
 char			**set_path_environment(t_shell *shell);

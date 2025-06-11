@@ -53,17 +53,3 @@ int	prepare_pipe(int *fd)
 	}
 	return (0);
 }
-
-void	print_command_not_found(const char *command)
-{
-	char	*message;
-	char	*message_endl;
-	int		len;
-
-	message = ft_strjoin("minishell: command not found: ", command);
-	message_endl = ft_strjoin(message, "\n");
-	len = ft_strlen(message_endl);
-	write(STDERR_FILENO, message_endl, len);
-	free(message);
-	free(message_endl);
-}
