@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <unistd.h>
 
 int	builtin_env(char **args, t_shell *shell)
 {
@@ -19,7 +20,7 @@ int	builtin_env(char **args, t_shell *shell)
 	if (args[1])
 	{
 		shell->last_exit_status = 1;
-		printf("env: too many arguments\n");
+		write(STDERR_FILENO, "env: too many arguments\n", 24);
 		return (1);
 	}
 	i = 0;

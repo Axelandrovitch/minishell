@@ -11,13 +11,19 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <unistd.h>
+
+static void	print_no_command(void)
+{
+	write(STDERR_FILENO, "Error: No command provided\n", 27);
+}
 
 int	execute_builtin(char **argv, t_shell *shell)
 {
 	if (!argv || !argv[0])
 		return (1);
 	if (!argv[0])
-		return (printf("Error: No command provided\n"), free_vector(argv), 1);
+		return (print_no_command(), free_vector(argv), 1);
 	if (strcmp(argv[0], "pwd") == 0)
 		return (builtin_pwd(argv, shell));
 	else if (ft_strcmp(argv[0], "echo") == 0)
