@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:40:07 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:17:25 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:37:29 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static int	process_input_line(t_shell *shell)
 	if (g_signal_received == SIGINT)
 	{
 		g_signal_received = 0;
+		shell->last_exit_status = 130;
 		return (0);
 	}
 	if (shell->input && *shell->input)
