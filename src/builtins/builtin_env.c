@@ -20,7 +20,8 @@ int	builtin_env(char **args, t_shell *shell)
 	if (args[1])
 	{
 		shell->last_exit_status = 1;
-		write(STDERR_FILENO, "env: too many arguments\n", 24);
+		//write(STDERR_FILENO, "env: too many arguments\n", 24);
+		printf("env: '%s': No such file or directory\n", args[1]);
 		return (1);
 	}
 	i = 0;
