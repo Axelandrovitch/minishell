@@ -38,18 +38,6 @@ void	exec_child_process(t_command_block *cmd, int p_fd, int *fd, t_shell *sh)
 	execute_external_command(cmd->argv, sh);
 }
 
-// void	clean_fd(t_command_block *cmd)
-// {
-// 	t_redir	*current;
-//
-// 	current = cmd->redirs;
-// 	while(current) {
-// 		if (current->type == T_HEREDOC)
-// 			close(current->heredoc_fd);
-// 		current = current->next;
-// 	}
-// }
-
 void	execute_single_builtin(t_command_block *cmd, t_shell *shell)
 {
 	int	stdin_copy;
