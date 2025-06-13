@@ -65,7 +65,7 @@ int	count_tokens(t_token *tokens)
 	while (tokens)
 	{
 		if (tokens->type == T_WORD || tokens->type == T_DQUOTE
-			|| tokens->type == T_SQUOTE)
+			|| tokens->type == T_SQUOTE || tokens->type == T_EMPTY)
 			count++;
 		tokens = tokens->next;
 	}
@@ -79,6 +79,8 @@ char	**get_args_from_tokens(t_token *tokens)
 	char	*clean_value;
 
 	args = malloc(sizeof(char *) * (count_tokens(tokens) + 1));
+	if (!args)
+		return (NULL);
 	i = 0;
 	while (tokens)
 	{
@@ -95,8 +97,15 @@ char	**get_args_from_tokens(t_token *tokens)
 				return (free_vector(args), NULL);
 			args[i++] = clean_value;
 		}
+		else if (tokens->type == T_EMPTY)
+		{
+			args[i] = ft_strdup("");
+			if (!args[i++])
+				return (free_vector(args), NULL);
+		}
 		tokens = tokens->next;
 	}
 	args[i] = NULL;
 	return (args);
 }
+

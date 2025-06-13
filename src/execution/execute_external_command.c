@@ -39,6 +39,16 @@ static void	handle_direct_path(char **argv, t_shell *shell)
 	exit_shell(shell, EXIT_FAILURE);
 }
 
+void	print_vector(char **vector)
+{
+	int	i = 0;
+	while (vector[i])
+	{
+		printf("%s\n", vector[i]);
+		i++;
+	}
+}
+
 static void	handle_path_lookup(char **argv, t_shell *shell)
 {
 	char	**bin_paths;
