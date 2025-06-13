@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_external_command.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahetru <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 14:19:01 by ahetru            #+#    #+#             */
-/*   Updated: 2025/06/11 14:19:04 by ahetru           ###   ########.fr       */
+/*   Updated: 2025/06/13 17:48:19 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,6 @@ static void	handle_direct_path(char **argv, t_shell *shell)
 	perror("execve");
 	free(path);
 	exit_shell(shell, EXIT_FAILURE);
-}
-
-void	print_vector(char **vector)
-{
-	int	i = 0;
-	while (vector[i])
-	{
-		printf("%s\n", vector[i]);
-		i++;
-	}
 }
 
 static void	handle_path_lookup(char **argv, t_shell *shell)

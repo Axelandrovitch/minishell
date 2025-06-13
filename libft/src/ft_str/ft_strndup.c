@@ -41,4 +41,3 @@ char	*ft_strndup(const char *str, size_t n)
 	dup[i] = '\0';
 	return (dup);
 }
-
