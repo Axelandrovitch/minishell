@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:23:19 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/05 12:14:50 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:33:34 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	g_signal_received = SIGINT;
 }
 
 void	setup_interactive_signals(void)
