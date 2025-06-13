@@ -12,7 +12,7 @@
 
 NAME := minishell
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -fsanitize=address
+CFLAGS := -Wall -Wextra -Werror -g
 READLINE := -lreadline
 
 SRC_DIR := src

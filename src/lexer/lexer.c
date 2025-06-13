@@ -23,7 +23,8 @@ static t_token	*handle_word_or_assignment(const char *line, int *i)
 		if (line[*i] == '"' || line[*i] == '\'')
 		{
 			if (handle_quoted_char(line, i, buffer, &j) == -1)
-				return (NULL);
+				return (write(STDERR_FILENO, "minishell: Unclosed quote\n", 26),
+					NULL);
 		}
 		else
 		{
