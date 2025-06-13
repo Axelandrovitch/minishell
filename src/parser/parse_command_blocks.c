@@ -82,6 +82,7 @@ t_redir	*redir_add_back(t_redir	**head, enum e_token_type type
 	if (!to_add)
 		return (NULL);
 	to_add->type = type;
+	to_add->heredoc_fd = -1;
 	to_add->operand = token_dup(operand);
 	if (!to_add->operand)
 		return (NULL);

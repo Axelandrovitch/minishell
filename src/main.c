@@ -90,7 +90,6 @@ static void	execute_command_pipeline(t_shell *shell)
 		free_shell(shell);
 		return ;
 	}
-	// print_tokens(shell->tokens);
 	parse_pipeline(shell, shell->tokens);
 	execute_pipeline(shell);
 }

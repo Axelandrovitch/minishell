@@ -83,7 +83,7 @@ void	parse_pipeline(t_shell *shell, t_token *tokens)
 	}
 	shell->command_blocks = head;
 }
-//
+
 // void	print_command_block(t_command_block *block)
 // {
 // 	t_token	*arg;

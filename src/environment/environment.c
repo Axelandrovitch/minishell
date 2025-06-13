@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <unistd.h>
 
-void	form_bin_path(char **envp_vec)
+void	form_bin_path(t_shell *shell, char **envp_vec)
 {
 	char	*full_path;
 	int		i;
@@ -26,7 +25,7 @@ void	form_bin_path(char **envp_vec)
 		{
 			free_vector(envp_vec);
 			perror("Could not create executable path");
-			exit(EXIT_FAILURE);
+			exit_shell(shell, EXIT_FAILURE);
 		}
 		free(envp_vec[i]);
 		envp_vec[i] = full_path;
@@ -48,7 +47,7 @@ char	**set_path_environment(t_shell *shell)
 	if (!envp_vec)
 		exit_shell(shell, 1);
 	free(envp);
-	form_bin_path(envp_vec);
+	form_bin_path(shell, envp_vec);
 	return (envp_vec);
 }
 

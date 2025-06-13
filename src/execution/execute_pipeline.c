@@ -51,6 +51,28 @@ void	execute_commands(t_command_block *cmd, int prev_fd, t_shell *shell)
 	wait_all_processes(pids, i, shell);
 }
 
+void	cleanup_all_heredocs(t_command_block *cmd)
+{
+	t_command_block	*current;
+	t_redir			*redir;
+
+	current = cmd;
+	while (current)
+	{
+		redir = current->redirs;
+		while (redir)
+		{
+			if (redir->type == T_HEREDOC && redir->heredoc_fd > 2)
+			{
+				close(redir->heredoc_fd);
+				redir->heredoc_fd = -1;
+			}
+			redir = redir->next;
+		}
+		current = current->next;
+	}
+}
+
 void	execute_pipeline(t_shell *shell)
 {
 	t_command_block	*cmd;
@@ -69,4 +91,5 @@ void	execute_pipeline(t_shell *shell)
 		return ;
 	}
 	execute_commands(cmd, prev_fd, shell);
+	cleanup_all_heredocs(cmd);
 }

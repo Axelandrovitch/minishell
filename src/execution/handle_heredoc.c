@@ -30,7 +30,7 @@ static void	write_line_to_fd(int fd, char *line, int expand, t_shell *shell)
 	write(fd, "\n", 1);
 }
 
-static void	heredoc_child(int write_fd, t_token *operand, t_shell *shell)
+static void	heredoc_child(t_redir *r, int w_fd, t_token *operand, t_shell *sh)
 {
 	char	*line;
 	int		expand;
@@ -48,11 +48,12 @@ static void	heredoc_child(int write_fd, t_token *operand, t_shell *shell)
 			free(line);
 			break ;
 		}
-		write_line_to_fd(write_fd, line, expand, shell);
+		write_line_to_fd(w_fd, line, expand, sh);
 		free(line);
 	}
-	close(write_fd);
-	exit(0);
+	close(w_fd);
+	clean_other_redirs(sh->command_blocks, r);
+	exit_shell(sh, 0);
 }
 
 static int	heredoc_parent(pid_t pid, int *pipe_fd, t_shell *shell)
@@ -70,7 +71,7 @@ static int	heredoc_parent(pid_t pid, int *pipe_fd, t_shell *shell)
 	return (pipe_fd[0]);
 }
 
-int	handle_heredoc(t_token *operand, t_shell *shell)
+int	handle_heredoc(t_redir *redir, t_token *operand, t_shell *shell)
 {
 	int		pipe_fd[2];
 	pid_t	pid;
@@ -81,7 +82,7 @@ int	handle_heredoc(t_token *operand, t_shell *shell)
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		heredoc_child(pipe_fd[1], operand, shell);
+		heredoc_child(redir, pipe_fd[1], operand, shell);
 	}
 	else if (pid > 0)
 		return (heredoc_parent(pid, pipe_fd, shell));
@@ -102,7 +103,7 @@ int	prepare_heredocs(t_command_block *cmd, t_shell *shell)
 		{
 			if (redir->type == T_HEREDOC)
 			{
-				fd = handle_heredoc(redir->operand, shell);
+				fd = handle_heredoc(redir, redir->operand, shell);
 				if (fd < 0)
 					return (-1);
 				redir->heredoc_fd = fd;

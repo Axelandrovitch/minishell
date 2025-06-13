@@ -36,11 +36,11 @@ int	pipe_error(t_token *token, int index)
 
 int	redirection_error(t_token *token)
 {
-    if (is_redirection(token))
-    {
+	if (is_redirection(token))
+	{
 		if (!token->next)
 			return (1);
-    }
+	}
 	if (is_redirection(token) && token->type != T_HEREDOC)
 	{
 		if (token->next->type != T_WORD

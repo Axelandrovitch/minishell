@@ -76,7 +76,7 @@ int	builtin_exit(char **args, t_shell *shell)
 
 	printf("exit\n");
 	if (!args[1])
-		exit(0);
+		exit_shell(shell, 0);
 	if (!is_valid_nb(args[1]) || is_long_overflow(args[1]))
 		exit_with_error(args[1], shell);
 	arg_count = 0;

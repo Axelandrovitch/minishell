@@ -36,7 +36,7 @@ static void	handle_direct_path(char **argv, t_shell *shell)
 	execve(path, argv, shell->env);
 	perror("execve");
 	free(path);
-	exit(EXIT_FAILURE);
+	exit_shell(shell, EXIT_FAILURE);
 }
 
 static void	handle_path_lookup(char **argv, t_shell *shell)

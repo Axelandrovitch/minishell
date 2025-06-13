@@ -142,10 +142,11 @@ int				pipe_and_execute(t_command_block *cmd, int prev_fd,
 void			execute_single_builtin(t_command_block *cmd, t_shell *shell);
 bool			is_single_builtin(t_command_block *cmd);
 int				prepare_pipe(int *fd);
+void			clean_other_redirs(t_command_block *cmd, t_redir *cur_redir);
+void			cleanup_all_heredocs(t_command_block *cmd);
 void			print_command_not_found(const char *command);
 int				is_builtin(const char *command);
-int				handle_heredoc(t_token *operand, t_shell *shell);
-void			apply_redirections(t_redir *redir);
+void			apply_redirections(t_shell *shell, t_redir *redir);
 int				prepare_heredocs(t_command_block *cmd, t_shell *shell);
 int				handle_redirections(t_command_block *command_block);
 void			print_no_such_file_or_directory(const char *command);
@@ -158,7 +159,7 @@ char			**copy_environment(char **envp);
 int				count_environment_vars(char **envp);
 char			*get_pathname(char *command, char **path_variable);
 char			*ft_getenv(t_shell *shell, const char *var);
-void			form_bin_path(char **envp_vec);
+void			form_bin_path(t_shell *shell, char **envp_vec);
 int				find_env_var(char **env, char *key);
 int				update_env_var(char **env, char *var_name, char *value);
 int				add_env_var(char ***env, char *key, char *value);
@@ -174,6 +175,7 @@ void			exit_shell(t_shell	*shell, int exit_code);
 // debugging functions
 void			print_command_blocks(t_command_block *head_block);
 void			print_all_command_blocks(t_command_block *head);
+void			print_open_fds(void);
 
 // builtins
 int				builtin_pwd(char **args, t_shell *shell);

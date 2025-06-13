@@ -27,16 +27,28 @@ void	exec_child_process(t_command_block *cmd, int p_fd, int *fd, t_shell *sh)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	apply_redirections(cmd->redirs);
+	apply_redirections(sh, cmd->redirs);
 	if (!cmd->argv || !cmd->argv[0])
-		exit(1);
+		exit_shell(sh, 1);
 	if (is_builtin(cmd->argv[0]))
 	{
 		status = execute_builtin(cmd->argv, sh);
-		exit(status);
+		exit_shell(sh, status);
 	}
 	execute_external_command(cmd->argv, sh);
 }
+
+// void	clean_fd(t_command_block *cmd)
+// {
+// 	t_redir	*current;
+//
+// 	current = cmd->redirs;
+// 	while(current) {
+// 		if (current->type == T_HEREDOC)
+// 			close(current->heredoc_fd);
+// 		current = current->next;
+// 	}
+// }
 
 void	execute_single_builtin(t_command_block *cmd, t_shell *shell)
 {
@@ -51,7 +63,7 @@ void	execute_single_builtin(t_command_block *cmd, t_shell *shell)
 		write(STDERR_FILENO, "dup error\n", 10);
 		exit_shell(shell, EXIT_FAILURE);
 	}
-	apply_redirections(cmd->redirs);
+	apply_redirections(shell, cmd->redirs);
 	if (!ft_strcmp(cmd->argv[0], "exit"))
 	{
 		dup2(stdin_copy, STDIN_FILENO);
@@ -82,7 +94,6 @@ pid_t	launch_child(t_command_block *cmd, int prev_fd, int *fd, t_shell *shell)
 		setup_child_signals();
 		exec_child_process(cmd, prev_fd, fd, shell);
 	}
-	cleanup_heredocs(cmd);
 	return (pid);
 }
 

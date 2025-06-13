@@ -53,3 +53,51 @@ int	prepare_pipe(int *fd)
 	}
 	return (0);
 }
+
+void	cleanup_all_heredocs(t_command_block *cmd)
+{
+	t_command_block	*current;
+	t_redir			*redir;
+
+	current = cmd;
+	while (current)
+	{
+		redir = current->redirs;
+		while (redir)
+		{
+			if (redir->type == T_HEREDOC && redir->heredoc_fd > 2)
+			{
+				close(redir->heredoc_fd);
+				redir->heredoc_fd = -1;
+			}
+			redir = redir->next;
+		}
+		current = current->next;
+	}
+}
+
+void	clean_other_redirs(t_command_block *cmd, t_redir *cur_redir)
+{
+	t_command_block	*current;
+	t_redir			*redir;
+
+	if (!cmd || !cur_redir)
+		return ;
+	current = cmd;
+	while (current)
+	{
+		redir = current->redirs;
+		while (redir)
+		{
+			if (redir != cur_redir
+				&& redir->type == T_HEREDOC
+				&& redir->heredoc_fd > 2)
+			{
+				close(redir->heredoc_fd);
+				redir->heredoc_fd = -1;
+			}
+			redir = redir->next;
+		}
+		current = current->next;
+	}
+}

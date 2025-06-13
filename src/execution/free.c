@@ -45,6 +45,8 @@ void	free_command_blocks(t_command_block *command_blocks)
 
 void	free_shell(t_shell	*shell)
 {
+	if (!shell)
+		return ;
 	if (shell->input)
 	{
 		free(shell->input);
@@ -69,6 +71,8 @@ void	free_shell(t_shell	*shell)
 
 void	free_env(t_shell *shell)
 {
+	if (!shell)
+		return ;
 	free_vector(shell->env);
 	shell->env = NULL;
 }
