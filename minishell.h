@@ -6,7 +6,7 @@
 /*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:21:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:18:40 by dcampas-         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:58:09 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int				handle_quoted_char(const char *line, int *i,
 					char *buffer, int *j);
 int				count_tokens(t_token *tokens);
 int				has_adjacent_content(const char *line, int i, char quote_type);
+int				process_single_token(t_token *token, char **args, int i);
 char			**get_args_from_tokens(t_token *tokens);
 t_token			*tokenize(const char *line);
 

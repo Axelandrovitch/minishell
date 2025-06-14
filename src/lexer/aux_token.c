@@ -76,6 +76,30 @@ char	**get_args_from_tokens(t_token *tokens)
 {
 	char	**args;
 	int		i;
+
+	args = malloc(sizeof(char *) * (count_tokens(tokens) + 1));
+	if (!args)
+		return (NULL);
+	i = 0;
+	while (tokens)
+	{
+		if (tokens->type == T_WORD || tokens->type == T_DQUOTE
+			|| tokens->type == T_SQUOTE || tokens->type == T_EMPTY)
+		{
+			if (!process_single_token(tokens, args, i))
+				return (free_vector(args), NULL);
+			i++;
+		}
+		tokens = tokens->next;
+	}
+	args[i] = NULL;
+	return (args);
+}
+
+/* char	**get_args_from_tokens(t_token *tokens)
+{
+	char	**args;
+	int		i;
 	char	*clean_value;
 
 	args = malloc(sizeof(char *) * (count_tokens(tokens) + 1));
@@ -108,4 +132,4 @@ char	**get_args_from_tokens(t_token *tokens)
 	args[i] = NULL;
 	return (args);
 }
-
+ */

@@ -147,3 +147,30 @@ int	handle_quoted_char(const char *line, int *i, char *buffer, int *j)
 		return (-1);
 	return (0);
 }
+
+// for get_args_from_tokens 
+int	process_single_token(t_token *token, char **args, int i)
+{
+	char	*clean_value;
+
+	if (token->type == T_WORD)
+	{
+		args[i] = ft_strdup(token->value);
+		if (!args[i])
+			return (0);
+	}
+	else if (token->type == T_DQUOTE || token->type == T_SQUOTE)
+	{
+		clean_value = ft_strndup(token->value, ft_strlen(token->value));
+		if (!clean_value)
+			return (0);
+		args[i] = clean_value;
+	}
+	else if (token->type == T_EMPTY)
+	{
+		args[i] = ft_strdup("");
+		if (!args[i])
+			return (0);
+	}
+	return (1);
+}
