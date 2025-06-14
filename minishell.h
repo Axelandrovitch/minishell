@@ -147,7 +147,7 @@ void			clean_other_redirs(t_command_block *cmd, t_redir *cur_redir);
 void			cleanup_all_heredocs(t_command_block *cmd);
 void			print_command_not_found(const char *command);
 int				is_builtin(const char *command);
-void			apply_redirections(t_shell *shell, t_redir *redir);
+int				apply_redirections(t_shell *shell, t_redir *redir);
 int				prepare_heredocs(t_command_block *cmd, t_shell *shell);
 int				handle_redirections(t_command_block *command_block);
 void			print_no_such_file_or_directory(const char *command);

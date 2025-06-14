@@ -39,6 +39,16 @@ void	exec_child_process(t_command_block *cmd, int p_fd, int *fd, t_shell *sh)
 	execute_external_command(cmd->argv, sh);
 }
 
+void	dup_and_close_all(int stdin_copy, int stdout_copy)
+{
+	if (dup2(stdin_copy, STDIN_FILENO) == -1)
+		perror("dup2 stdin");
+	if (dup2(stdout_copy, STDOUT_FILENO) == -1)
+		perror("dup2 stdout");
+	close(stdin_copy);
+	close(stdout_copy);
+}
+
 void	execute_single_builtin(t_command_block *cmd, t_shell *shell)
 {
 	int	stdin_copy;
@@ -54,17 +64,9 @@ void	execute_single_builtin(t_command_block *cmd, t_shell *shell)
 	}
 	apply_redirections(shell, cmd->redirs);
 	if (!ft_strcmp(cmd->argv[0], "exit"))
-	{
-		dup2(stdin_copy, STDIN_FILENO);
-		dup2(stdout_copy, STDOUT_FILENO);
-		close(stdin_copy);
-		close(stdout_copy);
-	}
+		dup_and_close_all(stdin_copy, stdout_copy);
 	status = execute_builtin(cmd->argv, shell);
-	dup2(stdin_copy, STDIN_FILENO);
-	dup2(stdout_copy, STDOUT_FILENO);
-	close(stdin_copy);
-	close(stdout_copy);
+	dup_and_close_all(stdin_copy, stdout_copy);
 	shell->last_exit_status = status;
 }
 

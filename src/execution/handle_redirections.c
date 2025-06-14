@@ -37,13 +37,15 @@ static int	handle_fd(t_shell *shell, t_redir *redir)
 	}
 	if (fd < 0)
 	{
-		perror("open");
+		perror("minishell");
+		if (is_single_builtin(shell->command_blocks))
+			return (-1);
 		exit_shell(shell, 1);
 	}
 	return (fd);
 }
 
-void	apply_redirections(t_shell *shell, t_redir *redir)
+int	apply_redirections(t_shell *shell, t_redir *redir)
 {
 	int	fd;
 
@@ -51,7 +53,7 @@ void	apply_redirections(t_shell *shell, t_redir *redir)
 	{
 		fd = handle_fd(shell, redir);
 		if (fd == -1)
-			return ;
+			return (-1);
 		if (redir->type == T_REDIR_OUT || redir->type == T_REDIR_APPEND)
 			dup2 (fd, STDOUT_FILENO);
 		else if (redir->type == T_REDIR_IN || redir->type == T_HEREDOC)
@@ -61,4 +63,5 @@ void	apply_redirections(t_shell *shell, t_redir *redir)
 		close(fd);
 		redir = redir->next;
 	}
+	return (1);
 }
