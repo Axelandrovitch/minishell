@@ -33,6 +33,7 @@ void	exec_child_process(t_command_block *cmd, int p_fd, int *fd, t_shell *sh)
 	if (is_builtin(cmd->argv[0]))
 	{
 		status = execute_builtin(cmd->argv, sh);
+		cleanup_all_heredocs(sh->command_blocks);
 		exit_shell(sh, status);
 	}
 	execute_external_command(cmd->argv, sh);

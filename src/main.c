@@ -93,6 +93,7 @@ static void	execute_command_pipeline(t_shell *shell)
 	}
 	parse_pipeline(shell, shell->tokens);
 	execute_pipeline(shell);
+	cleanup_all_heredocs(shell->command_blocks);
 }
 
 // Actualiza la variable de entorno SHLVL
